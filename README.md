@@ -1,6 +1,6 @@
 # Project Vega  
 
-Project Vega is the application development project that is developed by five GTU CSE students for Software Engineering in 2021-2022 Fall.
+Project Vega is the software development project that is developed by five GTU CSE students for Software Engineering in 2021-2022 Fall.
 
 ## Contributors
 
