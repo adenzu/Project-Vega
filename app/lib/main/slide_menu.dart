@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../about/screen.dart';
+import '../profile/screen.dart';
+import '../settings/screen.dart';
+import '../feedback/screen.dart';
+import '../my_shuttles/screen.dart';
+import '../child_profiles/screen.dart';
+
 import 'slide_menu_tile.dart';
 
 class SlideMenu extends StatelessWidget {
@@ -17,19 +24,34 @@ class SlideMenu extends StatelessWidget {
       "isDivider": false,
       "title": "Profilim",
       "iconData": Icons.account_circle,
-      "onTap": (BuildContext context) {},
+      "onTap": (BuildContext context) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfileScreen(),
+            ),
+          ),
     },
     {
       "isDivider": false,
       "title": "Servislerim",
       "iconData": Icons.directions_bus,
-      "onTap": (BuildContext context) {},
+      "onTap": (BuildContext context) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MyShuttlesScreen(),
+            ),
+          ),
     },
     {
       "isDivider": false,
       "title": "Bağlı Profiller",
       "iconData": Icons.account_tree,
-      "onTap": (BuildContext context) {},
+      "onTap": (BuildContext context) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChildProfilesScreen(),
+            ),
+          ),
     },
     {
       "isDivider": true,
@@ -38,19 +60,34 @@ class SlideMenu extends StatelessWidget {
       "isDivider": false,
       "title": "Bildir",
       "iconData": Icons.mail,
-      "onTap": (BuildContext context) {},
+      "onTap": (BuildContext context) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FeedbackScreen(),
+            ),
+          ),
     },
     {
       "isDivider": false,
       "title": "Hakkında",
       "iconData": Icons.info,
-      "onTap": (BuildContext context) {},
+      "onTap": (BuildContext context) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AboutScreen(),
+            ),
+          ),
     },
     {
       "isDivider": false,
       "title": "Ayarlar",
       "iconData": Icons.settings,
-      "onTap": (BuildContext context) {},
+      "onTap": (BuildContext context) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SettingsScreen(),
+            ),
+          ),
     },
     {
       "isDivider": false,

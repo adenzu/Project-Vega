@@ -8,17 +8,15 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Project-Vega",
-          ),
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Project-Vega",
         ),
-        drawer: SlideMenu(),
-        body: MainBody(),
+        centerTitle: true,
       ),
+      drawer: SlideMenu(),
+      body: MainBody(),
     );
   }
 }
