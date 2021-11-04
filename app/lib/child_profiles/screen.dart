@@ -7,7 +7,7 @@ class ChildProfilesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Child Profiles here"),
+        title: const Text("Child Profiles here"),
       ),
     );
   }

@@ -7,7 +7,7 @@ class MyShuttlesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Shuttles screen here"),
+        title: const Text("My Shuttles screen here"),
       ),
     );
   }

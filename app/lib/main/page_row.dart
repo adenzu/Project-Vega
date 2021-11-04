@@ -6,10 +6,11 @@ class PageRow extends StatelessWidget {
   final List<String> stringChildren;
 
   const PageRow({
+    Key? key,
     this.height,
     this.leading,
     this.stringChildren = const [],
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

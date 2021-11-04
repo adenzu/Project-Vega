@@ -1,5 +1,6 @@
-import 'page_list.dart';
 import 'package:flutter/material.dart';
+
+import 'page_list.dart';
 
 class ListBlock extends StatelessWidget {
   const ListBlock({Key? key}) : super(key: key);
@@ -8,7 +9,6 @@ class ListBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 200,
-      margin: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.blue[200],
         borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -17,6 +17,7 @@ class ListBlock extends StatelessWidget {
           style: BorderStyle.none,
         ),
       ),
+      // aşağıdaki değerler tamamiyle yer tutması içindir ve görünüm amaçlıdır
       child: PageView(
         children: <Widget>[
           PageList(
@@ -27,7 +28,7 @@ class ListBlock extends StatelessWidget {
           ),
           PageList(
             stringLists: const [
-              ["Eren Çakar", "Oğul"],
+              ["Boş Boş", "Boş"],
             ],
           ),
         ],

@@ -1,5 +1,6 @@
-import 'page_row.dart';
 import 'package:flutter/material.dart';
+
+import 'page_row.dart';
 
 // ignore: must_be_immutable
 class PageList extends StatelessWidget {
@@ -7,9 +8,10 @@ class PageList extends StatelessWidget {
   final List<List<String>> stringLists;
 
   PageList({
+    Key? key,
     this.leadings,
     this.stringLists = const [],
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

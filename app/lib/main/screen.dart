@@ -17,7 +17,7 @@ class MainScreen extends StatelessWidget {
         centerTitle: true,
       ),
       drawer: SlideMenu(),
-      body: MainBody(),
+      body: const MainBody(),
     );
   }
 }
