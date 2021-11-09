@@ -1,3 +1,10 @@
-*/*.tex
-*/*.synctex.gz
 Papers
+
+app
+app/*
+
+!.gitignore
+
+!app/
+!app/lib/
+!app/lib/*
