@@ -1,10 +1,7 @@
-Papers
-
-app
-app/*
-
+*
+!README.md
 !.gitignore
-
 !app/
 !app/lib/
 !app/lib/*
+!app/lib/*/*
