@@ -1,3 +1,7 @@
-*/*.tex
-*/*.synctex.gz
-Papers
+*
+!README.md
+!.gitignore
+!app/
+!app/lib/
+!app/lib/*
+!app/lib/*/*
