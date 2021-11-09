@@ -9,3 +9,15 @@ Future Function(BuildContext) redirectionTo(
         ),
       );
 }
+
+Future<T?> showTightModalBottomSheet<T>({
+  required BuildContext context,
+  required List<Widget> children,
+}) {
+  return showModalBottomSheet(
+    context: context,
+    builder: (context) {
+      return Wrap(children: children);
+    },
+  );
+}

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'body.dart';
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -7,8 +9,9 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Settings screen here"),
+        title: const Text("Ayarlar"),
       ),
+      body: const SettingsBody(),
     );
   }
 }

@@ -6,7 +6,7 @@ import '../settings/screen.dart';
 import '../feedback/screen.dart';
 import '../my_shuttles/screen.dart';
 import '../child_profiles/screen.dart';
-import '../util.dart';
+import '../general/util.dart';
 
 import 'slide_menu_tile.dart';
 
@@ -38,6 +38,22 @@ class SlideMenu extends StatelessWidget {
       "title": "Bağlı Profiller",
       "iconData": Icons.account_tree,
       "onTap": redirectionTo((context) => const ChildProfilesScreen()),
+    },
+    {
+      "isDivider": true,
+    },
+    // NOTE: servis yetkilisi modundayken gözükmeli
+    {
+      "isDivider": false,
+      "title": "Servis ekle",
+      "iconData": Icons.add,
+      "onTap": (context) {},
+    },
+    {
+      "isDivider": false,
+      "title": "Değiştir",
+      "iconData": Icons.swap_horiz,
+      "onTap": (context) {},
     },
     {
       "isDivider": true,

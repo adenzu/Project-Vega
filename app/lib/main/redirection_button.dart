@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../util.dart';
+import '../general/util.dart';
 
 class RedirectionButton extends StatelessWidget {
   final String text;
