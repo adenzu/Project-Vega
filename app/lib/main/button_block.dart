@@ -14,17 +14,17 @@ class ButtonsBlock extends StatelessWidget {
     return Row(
       children: [
         RedirectionButton(
-          text: "Redirection to profile",
+          text: "Profilim",
           builder: (context) => const ProfileScreen(),
         ),
         const Expanded(child: SizedBox()),
         RedirectionButton(
-          text: "Redirection to my shuttles",
+          text: "Servislerim",
           builder: (context) => const MyShuttlesScreen(),
         ),
         const Expanded(child: SizedBox()),
         RedirectionButton(
-          text: "Redirection to child profiles",
+          text: "Bağlı Profiller",
           builder: (context) => const ChildProfilesScreen(),
         ),
       ],

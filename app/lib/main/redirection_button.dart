@@ -14,7 +14,7 @@ class RedirectionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100,
+      width: 105,
       height: 100,
       child: ElevatedButton(
         onPressed: () => redirectionTo(builder)(context),

@@ -5,3 +5,4 @@
 !app/lib/
 !app/lib/*
 !app/lib/*/*
+!app/pubspec.yaml
