@@ -1,3 +1,4 @@
+import 'package:app/shared/slide_menu.dart';
 import 'package:flutter/material.dart';
 
 class MyShuttlesScreen extends StatelessWidget {
@@ -9,6 +10,7 @@ class MyShuttlesScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("My Shuttles screen here"),
       ),
+      drawer: SlideMenu(),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:app/shared/slide_menu.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -9,6 +10,7 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Profile screen here"),
       ),
+      drawer: SlideMenu(),
     );
   }
 }

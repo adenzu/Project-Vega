@@ -1,3 +1,4 @@
+import 'package:app/shared/slide_menu.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackScreen extends StatelessWidget {
@@ -9,6 +10,7 @@ class FeedbackScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Feedback screen here"),
       ),
+      drawer: SlideMenu(),
     );
   }
 }

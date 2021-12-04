@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../about/screen.dart';
-import '../profile/screen.dart';
-import '../settings/screen.dart';
-import '../feedback/screen.dart';
-import '../my_shuttles/screen.dart';
-import '../child_profiles/screen.dart';
-import '../general/util.dart';
+import 'package:app/main/screen.dart';
+import 'package:app/about/screen.dart';
+import 'package:app/profile/screen.dart';
+import 'package:app/settings/screen.dart';
+import 'package:app/feedback/screen.dart';
+import 'package:app/my_shuttles/screen.dart';
+import 'package:app/child_profiles/screen.dart';
+import 'package:app/general/util.dart';
 
 import 'slide_menu_tile.dart';
 
@@ -14,12 +15,18 @@ class SlideMenu extends StatelessWidget {
   final List<Map<String, Object>> menuTiles = [
     {
       "isDivider": false,
-      "title": "Ana Sayfa",
+      "title": "Geri",
       "iconData": Icons.arrow_back,
       "onTap": (context) => Navigator.pop(context),
     },
     {
       "isDivider": true,
+    },
+    {
+      "isDivider": false,
+      "title": "Ana Sayfa",
+      "iconData": Icons.house,
+      "onTap": redirectionTo((context) => const MainScreen()),
     },
     {
       "isDivider": false,

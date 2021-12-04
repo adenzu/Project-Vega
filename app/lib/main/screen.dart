@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'slide_menu.dart';
+import 'package:app/shared/slide_menu.dart';
+
 import 'body.dart';
 
 class MainScreen extends StatelessWidget {
@@ -9,7 +10,6 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
           "Project-Vega",

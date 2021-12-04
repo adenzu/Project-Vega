@@ -1,3 +1,4 @@
+import 'package:app/shared/slide_menu.dart';
 import 'package:flutter/material.dart';
 
 import 'body.dart';
@@ -12,6 +13,7 @@ class SettingsScreen extends StatelessWidget {
         title: const Text("Ayarlar"),
       ),
       body: const SettingsBody(),
+      drawer: SlideMenu(),
     );
   }
 }

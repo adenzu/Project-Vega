@@ -15,8 +15,28 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with TickerProviderStateMixin {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 5),
+    )..addListener(() {
+        setState(() {});
+      });
+    controller.repeat(reverse: true);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -32,8 +52,10 @@ class _MyAppState extends State<MyApp> {
           return const MaterialApp(home: MainScreen());
         }
 
-        return const CircularProgressIndicator(
-          color: Colors.blue,
+        return Center(
+          child: CircularProgressIndicator(
+            value: controller.value,
+          ),
         );
       },
     );
