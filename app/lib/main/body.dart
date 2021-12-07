@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:app/map/screen.dart';
-import 'package:app/profile/screen.dart';
-import 'package:app/my_shuttles/screen.dart';
-import 'package:app/child_profiles/screen.dart';
-
 import 'redirection_button.dart';
+import '../general/screens.dart';
 
 class MainBody extends StatelessWidget {
   const MainBody({Key? key}) : super(key: key);
@@ -20,39 +16,38 @@ class MainBody extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             seperator,
-            MainPageRedirectionButton(
+            const MainPageRedirectionButton(
               icon: Icons.account_circle,
               iconBackgroundColor: Colors.purple,
               text: "Profil",
               imageName: "lib/materials/images/placeholder.png",
-              builder: (context) => const ProfileScreen(),
+              screenName: ScreenNames.profile,
               height: 150,
             ),
             seperator,
-            MainPageRedirectionButton(
+            const MainPageRedirectionButton(
               icon: Icons.account_tree,
               iconBackgroundColor: Colors.blue,
               text: "Bağlı Profiller",
               imageName: "lib/materials/images/placeholder.png",
-              builder: (context) => const ChildProfilesScreen(),
+              screenName: ScreenNames.childProfiles,
               height: 150,
             ),
             seperator,
-            MainPageRedirectionButton(
+            const MainPageRedirectionButton(
               icon: Icons.directions_bus,
               iconBackgroundColor: Colors.green,
               text: "Servisler",
               imageName: "lib/materials/images/placeholder.png",
-              builder: (context) => const MyShuttlesScreen(),
-              height: 150,
+              screenName: ScreenNames.myShuttles,
             ),
             seperator,
-            MainPageRedirectionButton(
+            const MainPageRedirectionButton(
               icon: Icons.map,
               iconBackgroundColor: Colors.pink,
               text: "Harita",
               imageName: "lib/materials/images/map.png",
-              builder: (context) => const MapScreen(),
+              screenName: ScreenNames.map,
             ),
             seperator,
           ],

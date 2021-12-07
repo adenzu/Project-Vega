@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:app/shared/slide_menu.dart';
+import '../shared/slide_menu.dart';
 
 class MapScreen extends StatelessWidget {
   const MapScreen({Key? key}) : super(key: key);

@@ -1,6 +1,7 @@
-import 'package:app/general/titled_rect_widget_button.dart';
 import 'package:flutter/material.dart';
-import 'package:app/general/util.dart';
+
+import '../general/titled_rect_widget_button.dart';
+import '../general/util.dart';
 
 class MainPageRedirectionButton extends StatelessWidget {
   final IconData icon;
@@ -8,7 +9,7 @@ class MainPageRedirectionButton extends StatelessWidget {
   final String text;
   final Color textColor;
   final String imageName;
-  final Widget Function(BuildContext) builder;
+  final String screenName;
   final double? width, height;
   final EdgeInsets padding;
   final double borderRadiusValue;
@@ -24,7 +25,7 @@ class MainPageRedirectionButton extends StatelessWidget {
     required this.text,
     this.textColor = Colors.white,
     required this.imageName,
-    required this.builder,
+    required this.screenName,
     this.width = double.infinity,
     this.height,
     this.padding = const EdgeInsets.all(10),
@@ -85,7 +86,7 @@ class MainPageRedirectionButton extends StatelessWidget {
           height: height,
         ),
       ),
-      onTap: () => redirectionTo(builder)(context),
+      onTap: () => redirectionTo(screenName)(context),
       borderRadius: BorderRadius.circular(borderRadiusValue),
       padding: padding,
     );

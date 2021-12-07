@@ -1,4 +1,4 @@
-import 'package:app/shared/slide_menu.dart';
+import '../shared/slide_menu.dart';
 import 'package:flutter/material.dart';
 
 import 'body.dart';

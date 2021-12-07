@@ -38,7 +38,7 @@ class TitledRectWidgetButton extends StatelessWidget {
         ),
         Container(
           padding: padding,
-          child: Expanded(child: title),
+          child: title,
         ),
       ],
     );

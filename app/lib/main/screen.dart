@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:app/shared/slide_menu.dart';
-
+import '../shared/slide_menu.dart';
 import 'body.dart';
 
 class MainScreen extends StatelessWidget {

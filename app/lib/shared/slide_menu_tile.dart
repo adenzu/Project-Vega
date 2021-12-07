@@ -21,9 +21,9 @@ class SlideMenuTile extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 15,
-          color: Colors.grey[600],
+          // color: Colors.grey[600],
         ),
       ),
       horizontalTitleGap: 0,
