@@ -6,3 +6,11 @@
 !app/lib/*
 !app/lib/*/*
 !app/pubspec.yaml
+!app/android
+!app/android/app
+!app/android/app/src
+!app/android/app/src/*
+!app/android/build.gradle
+!AndroidManifest.xml
+!app/android/app/src/profile/AndroidManifest.xml
+!app/android/app/build.gradle

@@ -1,6 +1,6 @@
-# app
+# shuttleapp
 
-A new Flutter project.
+Safe shuttle-bus system
 
 ## Getting Started
 

@@ -19,7 +19,7 @@ class _SettingsBodyState extends State<SettingsBody> {
 
   final List<String> _themeNames = ["Aydınlık", "Karanlık"];
   final List<Icon> _themeIcons =
-      [Icons.light_mode, Icons.dark_mode].map((e) => Icon(e)).toList();
+  [Icons.light_mode, Icons.dark_mode].map((e) => Icon(e)).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class _SettingsBodyState extends State<SettingsBody> {
               context: context,
               children: List.generate(
                 _themeNames.length,
-                (index) => ListTile(
+                    (index) => ListTile(
                   leading: _themeIcons[index],
                   title: Text(_themeNames[index]),
                   onTap: () {

@@ -1,5 +1,6 @@
-import '../shared/slide_menu.dart';
 import 'package:flutter/material.dart';
+
+import 'body.dart';
 
 class ChildProfilesScreen extends StatelessWidget {
   const ChildProfilesScreen({Key? key}) : super(key: key);
@@ -8,9 +9,13 @@ class ChildProfilesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Child Profiles here"),
+        title: const Text("Child Profiles"),
+        foregroundColor: Colors.blue,
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        centerTitle: true,
       ),
-      drawer: SlideMenu(),
+      body: const MainBody(),
     );
   }
 }
