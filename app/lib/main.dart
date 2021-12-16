@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Login Page',
         theme: ThemeData(
-          primaryColor: Colors.pink,
+          primaryColor: Colors.purple,
         ),
         home: const WelcomeScreen(),
       );
