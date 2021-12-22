@@ -18,6 +18,11 @@
 !app/android/app
 !app/android/app/src
 !app/android/app/src/*
+!app/android/app/src/main/*
+!app/android/app/src/main/kotlin/*
+!app/android/app/src/main/kotlin/com/*
+!app/android/app/src/main/kotlin/com/vega/*
+!app/android/app/src/main/kotlin/com/vega/shuttleapp/MainActivity.kt
 !app/android/build.gradle
 !AndroidManifest.xml
 !app/android/app/src/profile/AndroidManifest.xml

@@ -1,8 +1,7 @@
 import 'package:app/child_profiles/screen.dart';
 import 'package:app/myshuttle/map.dart';
 import 'package:app/profile/screen.dart';
-import 'package:app/screens/login_screen/login_screen.dart';
-import 'package:app/screens/my_shuttle_screen/my_shuttle_screen.dart';
+import '../my_shuttle_screen/my_shuttle_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'redirection_button.dart';

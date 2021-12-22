@@ -2,11 +2,10 @@ import 'package:app/main/screen.dart';
 import 'package:app/profile/redirection_button.dart';
 import 'package:app/profile/screen.dart';
 import 'package:app/profile/screen_helper.dart';
-import 'package:app/screens/my_shuttle_screen/my_shuttle_screen.dart';
+import '../my_shuttle_screen/my_shuttle_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../profile/screen.dart';
-
 
 import 'redirection_button.dart';
 

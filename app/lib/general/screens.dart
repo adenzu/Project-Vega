@@ -1,4 +1,4 @@
-import 'package:app/screens/my_shuttle_screen/my_shuttle_screen.dart';
+import '../my_shuttle_screen/my_shuttle_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 //import '../about/screen.dart';
