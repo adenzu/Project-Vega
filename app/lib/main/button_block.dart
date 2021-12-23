@@ -1,8 +1,8 @@
-import 'package:app/main/screen.dart';
-import 'package:app/profile/redirection_button.dart';
-import 'package:app/profile/screen.dart';
-import 'package:app/profile/screen_helper.dart';
-import '../my_shuttle_screen/my_shuttle_screen.dart';
+import '../main/screen.dart';
+import '../profile/redirection_button.dart';
+import '../profile/screen.dart';
+import '../profile/screen_helper.dart';
+import '../my_shuttles/screen.dart';
 import 'package:flutter/material.dart';
 
 import '../profile/screen.dart';

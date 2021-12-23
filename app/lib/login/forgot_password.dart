@@ -1,6 +1,6 @@
-import 'package:app/components/circular_button.dart';
-import 'package:app/components/visible_text_field_container.dart';
-import 'package:app/service/auth.dart';
+import '../components/circular_button.dart';
+import '../components/visible_text_field_container.dart';
+import '../service/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -30,7 +30,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-
       body: ListView(children: <Widget>[
         SizedBox(
           height: size.height,
@@ -60,7 +59,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 press: () {
                   setState(() async {
                     try {
-                      _authService.forgotPassword( _emailText);
+                      _authService.forgotPassword(_emailText);
                       Navigator.of(context).pop();
                     } on FirebaseAuthException catch (e) {
                       Fluttertoast.showToast(

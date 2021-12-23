@@ -1,8 +1,8 @@
-import 'package:app/components/circular_button.dart';
-import 'package:app/components/not_visible_text_field_container.dart';
-import 'package:app/components/visible_text_field_container.dart';
-import 'package:app/main/screen.dart';
-import '../login_screen/forgot_password.dart';
+import '../components/circular_button.dart';
+import '../components/not_visible_text_field_container.dart';
+import '../components/visible_text_field_container.dart';
+import '../main/screen.dart';
+import 'forgot_password.dart';
 import '../signup/verification_screen.dart';
 
 import '../../service/auth.dart';
@@ -70,40 +70,38 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
             SizedBox(height: size.height * 0.04),
             CircularButton(
               buttonText: "LOGIN",
-              press: () {
-                setState(() async {
-                  try {
-                    // await _authService.SignIn( _emailText,_passwordText)
-                    //     .then((_) {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //           builder: (context) => const VerifyScreen()),
-                    //     );
-                    //
-                    // });
-                    User? user =
-                        await _authService.SignIn(_emailText, _passwordText);
-                    if (user == null) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const VerifyScreen()),
-                      );
-                    } else {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MainScreen()),
-                      );
-                    }
-                  } on FirebaseAuthException catch (e) {
-                    Fluttertoast.showToast(
-                        msg: e.message.toString(),
-                        gravity: ToastGravity.CENTER,
-                        textColor: Colors.red);
+              press: () async {
+                try {
+                  // await _authService.SignIn( _emailText,_passwordText)
+                  //     .then((_) {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //           builder: (context) => const VerifyScreen()),
+                  //     );
+                  //
+                  // });
+                  User? user =
+                      await _authService.SignIn(_emailText, _passwordText);
+                  if (user == null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const VerifyScreen()),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MainScreen()),
+                    );
                   }
-                });
+                } on FirebaseAuthException catch (e) {
+                  Fluttertoast.showToast(
+                      msg: e.message.toString(),
+                      gravity: ToastGravity.CENTER,
+                      textColor: Colors.red);
+                }
               },
             ),
             SizedBox(height: size.height * 0.03),

@@ -32,7 +32,7 @@ class SlideMenu extends StatelessWidget {
       "title": "Servislerim",
       "iconData": Icons.directions_bus,
       "onTap": (context) =>
-          Navigator.of(context).pushNamed(ScreenNames.myShuttles),
+          Navigator.of(context).pushNamed(ScreenNames.myShuttle),
     },
     {
       "isDivider": false,

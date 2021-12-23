@@ -1,6 +1,7 @@
+import 'package:app/general/screens.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'welcome_screen/welcome_screen.dart';
+import 'welcome/screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,8 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue,
       ),
       home: const WelcomeScreen(),
+      routes: Screens.screenMap
+          .map((key, value) => MapEntry(key, (context) => value)),
     );
   }
 }

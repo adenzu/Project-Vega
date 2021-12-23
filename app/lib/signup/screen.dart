@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../welcome_screen/welcome_screen.dart';
-import 'package:app/service/auth.dart';
+import '../welcome/screen.dart';
+import '../service/auth.dart';
 
 import 'mybutton.dart';
 
@@ -257,44 +257,42 @@ class _SignUpState extends State<SignUp> {
           margin: const EdgeInsets.fromLTRB(10, 50, 0, 0),
           child: ButtonTheme(
             child: mybutton(
-              press: () {
-                setState(() async {
-                  try {
-                    if (_psswd == _repsswd && _name != "" && _surname != "") {
-                      await _authService.SignUp(_name, _surname, email, _psswd)
-                          .then((_) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const WelcomeScreen()),
-                        );
-                      });
-                    } else {
-                      if (_psswd != _repsswd) {
-                        Fluttertoast.showToast(
-                          msg: 'Please make sure your passwords match.',
-                          gravity: ToastGravity.TOP,
-                        );
-                      } else if (_name == "") {
-                        Fluttertoast.showToast(
-                          msg: 'Name must not be empty.',
-                          gravity: ToastGravity.TOP,
-                        );
-                      } else if (_surname == "") {
-                        Fluttertoast.showToast(
-                          gravity: ToastGravity.TOP,
-                          textColor: Colors.red,
-                          msg: 'Surname must not be empty.',
-                        );
-                      }
+              press: () async {
+                try {
+                  if (_psswd == _repsswd && _name != "" && _surname != "") {
+                    await _authService.SignUp(_name, _surname, email, _psswd)
+                        .then((_) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const WelcomeScreen()),
+                      );
+                    });
+                  } else {
+                    if (_psswd != _repsswd) {
+                      Fluttertoast.showToast(
+                        msg: 'Please make sure your passwords match.',
+                        gravity: ToastGravity.TOP,
+                      );
+                    } else if (_name == "") {
+                      Fluttertoast.showToast(
+                        msg: 'Name must not be empty.',
+                        gravity: ToastGravity.TOP,
+                      );
+                    } else if (_surname == "") {
+                      Fluttertoast.showToast(
+                        gravity: ToastGravity.TOP,
+                        textColor: Colors.red,
+                        msg: 'Surname must not be empty.',
+                      );
                     }
-                  } on FirebaseAuthException catch (e) {
-                    Fluttertoast.showToast(
-                        msg: e.message.toString(),
-                        gravity: ToastGravity.CENTER,
-                        textColor: Colors.red);
                   }
-                });
+                } on FirebaseAuthException catch (e) {
+                  Fluttertoast.showToast(
+                      msg: e.message.toString(),
+                      gravity: ToastGravity.CENTER,
+                      textColor: Colors.red);
+                }
               },
               text: 'Sign Up',
             ),

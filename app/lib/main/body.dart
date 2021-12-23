@@ -1,11 +1,12 @@
-import 'package:app/child_profiles/screen.dart';
-import 'package:app/myshuttle/map.dart';
-import 'package:app/profile/screen.dart';
-import '../my_shuttle_screen/my_shuttle_screen.dart';
 import 'package:flutter/material.dart';
 
-import 'redirection_button.dart';
+import '../child_profiles/screen.dart';
+import '../my_shuttles_map/screen.dart';
+import '../profile/screen.dart';
+import '../my_shuttles/screen.dart';
 import '../general/screens.dart';
+
+import 'redirection_button.dart';
 
 class MainBody extends StatelessWidget {
   const MainBody({Key? key}) : super(key: key);
@@ -46,7 +47,7 @@ class MainBody extends StatelessWidget {
               text: "Servisler",
               height: 150,
               imageName: "assets/images/shuttleservice.jpeg",
-              screenName: ScreenNames.myShuttles,
+              screenName: ScreenNames.myShuttle,
               navigateTo: MyShuttleScreen(),
             ),
             seperator,

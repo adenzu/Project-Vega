@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../my_shuttle_screen/my_shuttle_screen_body.dart';
+import 'body.dart';
 
 class MyShuttleScreen extends StatelessWidget {
   const MyShuttleScreen({Key? key}) : super(key: key);

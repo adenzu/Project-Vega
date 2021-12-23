@@ -19,7 +19,7 @@ class _SettingsBodyState extends State<SettingsBody> {
 
   final List<String> _themeNames = ["Aydınlık", "Karanlık"];
   final List<Icon> _themeIcons =
-  [Icons.light_mode, Icons.dark_mode].map((e) => Icon(e)).toList();
+      [Icons.light_mode, Icons.dark_mode].map((e) => Icon(e)).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -56,38 +56,38 @@ class _SettingsBodyState extends State<SettingsBody> {
             });
           },
         ),
-        const Divider(),
-        Consumer<ThemeModel>(
-          builder: (context, ThemeModel themeNotifier, child) => ListTile(
-            leading: _themeIcons[themeNotifier.themeId],
-            title: const Text("Tema"),
-            trailing: Text.rich(
-              TextSpan(
-                text: _themeNames[themeNotifier.themeId],
-                children: const [
-                  WidgetSpan(child: Icon(Icons.arrow_drop_down)),
-                ],
-              ),
-              textAlign: TextAlign.center,
-            ),
-            onTap: () => showTightModalBottomSheet(
-              context: context,
-              children: List.generate(
-                _themeNames.length,
-                    (index) => ListTile(
-                  leading: _themeIcons[index],
-                  title: Text(_themeNames[index]),
-                  onTap: () {
-                    setState(() {
-                      themeNotifier.themeId = index;
-                    });
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-          ),
-        ),
+        // const Divider(),
+        // Consumer<ThemeModel>(
+        //   builder: (context, ThemeModel themeNotifier, child) => ListTile(
+        //     leading: _themeIcons[themeNotifier.themeId],
+        //     title: const Text("Tema"),
+        //     trailing: Text.rich(
+        //       TextSpan(
+        //         text: _themeNames[themeNotifier.themeId],
+        //         children: const [
+        //           WidgetSpan(child: Icon(Icons.arrow_drop_down)),
+        //         ],
+        //       ),
+        //       textAlign: TextAlign.center,
+        //     ),
+        //     onTap: () => showTightModalBottomSheet(
+        //       context: context,
+        //       children: List.generate(
+        //         _themeNames.length,
+        //             (index) => ListTile(
+        //           leading: _themeIcons[index],
+        //           title: Text(_themeNames[index]),
+        //           onTap: () {
+        //             setState(() {
+        //               themeNotifier.themeId = index;
+        //             });
+        //             Navigator.pop(context);
+        //           },
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

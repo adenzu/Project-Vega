@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../components/circular_button.dart';
-import '../login_screen/login_screen.dart';
-import '../signup/signup.dart';
+import '../login/screen.dart';
+import '../signup/screen.dart';
 
 class WelcomeScreenBody extends StatelessWidget {
   const WelcomeScreenBody({Key? key}) : super(key: key);

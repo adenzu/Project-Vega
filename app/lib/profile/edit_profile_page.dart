@@ -1,14 +1,14 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
-import 'package:app/profile/button_widget.dart';
-import 'package:app/profile/redirection_button.dart';
-import 'package:app/profile/screen.dart';
-import 'package:app/profile/screen_helper.dart';
+import '../profile/button_widget.dart';
+import '../profile/redirection_button.dart';
+import '../profile/screen.dart';
+import '../profile/screen_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:app/profile/user.dart';
-import 'package:app/profile/user_preferences.dart';
-import 'package:app/profile/appbar_widget.dart';
-import 'package:app/profile/profile_widget.dart';
-import 'package:app/profile/textfield_widget.dart';
+import '../profile/user.dart';
+import '../profile/user_preferences.dart';
+import '../profile/appbar_widget.dart';
+import '../profile/profile_widget.dart';
+import '../profile/textfield_widget.dart';
 
 import '../util.dart';
 
@@ -39,7 +39,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 TextFieldWidget(
                   label: 'Name',
                   text: user.name,
-                  onChanged: (name) {UserPreferences.myUser.name = name;},
+                  onChanged: (name) {
+                    UserPreferences.myUser.name = name;
+                  },
                 ),
                 const SizedBox(height: 24),
                 TextFieldWidget(
@@ -68,16 +70,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 child: Text('Save'),
               ),
               */
-              ButtonWidget(
-          text: "Save",
-          onClicked: () {
-            print("sdgsdgsdgsdgsdg\n\n");
-            //UserPreferences.myUser.name = temp;
-            Navigator.pop(context);
-             },
-        ),
-              
-              
+                ButtonWidget(
+                  text: "Save",
+                  onClicked: () {
+                    print("sdgsdgsdgsdgsdg\n\n");
+                    //UserPreferences.myUser.name = temp;
+                    Navigator.pop(context);
+                  },
+                ),
               ],
             ),
           ),

@@ -1,4 +1,4 @@
-import 'package:app/profile/user.dart';
+import '../profile/user.dart';
 
 class UserPreferences {
   static User myUser = User(

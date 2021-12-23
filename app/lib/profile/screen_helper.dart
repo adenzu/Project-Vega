@@ -1,9 +1,9 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:app/profile/screen.dart';
-import 'package:app/themes.dart';
-import 'package:app/profile/user_preferences.dart';
+import '../profile/screen.dart';
+import '../themes.dart';
+import '../profile/user_preferences.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();

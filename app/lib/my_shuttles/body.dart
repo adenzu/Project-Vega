@@ -1,8 +1,8 @@
-import 'package:app/myshuttle/map.dart';
+import '../my_shuttles_map/screen.dart';
+import '../shuttle_info/screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:app/components/gradient_icon_button.dart';
-import '../shuttle_info_screen/shuttle_info_screen.dart';
+import '../components/gradient_icon_button.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MyShuttleScreenBody extends StatefulWidget {
