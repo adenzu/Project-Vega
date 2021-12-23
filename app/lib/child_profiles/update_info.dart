@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class UpdateInfo extends StatefulWidget {
-  UpdateInfo({Key? key}) : super(key: key);
+  const UpdateInfo({Key? key}) : super(key: key);
 
   @override
   _UpdateInfoState createState() => _UpdateInfoState();
@@ -12,7 +12,7 @@ class _UpdateInfoState extends State<UpdateInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Child"),
+        title: const Text("Add Child"),
       ),
       body: Center(
         child: Padding(
@@ -20,20 +20,20 @@ class _UpdateInfoState extends State<UpdateInfo> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              TextField(
+              const TextField(
                 decoration: InputDecoration(labelText: "Child's name"),
               ),
-              TextField(
+              const TextField(
                 decoration: InputDecoration(labelText: "Child's surname"),
               ),
-              TextField(
+              const TextField(
                 decoration: InputDecoration(labelText: "Shuttle code"),
               ),
               ElevatedButton(
                 onPressed: () {
                   setState(() {});
                 },
-                child: Text('Submit'),
+                child: const Text('Submit'),
               ),
             ],
           ),

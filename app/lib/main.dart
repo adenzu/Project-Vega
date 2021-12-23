@@ -21,6 +21,10 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue,
       ),
       home: const WelcomeScreen(),
+
+      /// screens.dart dosyasında Screens classında screenMapte
+      /// olan sayfaları route'a ekleme satırı, yeni sayfaları
+      /// screen.dart'a ekleyin
       routes: Screens.screenMap
           .map((key, value) => MapEntry(key, (context) => value)),
     );

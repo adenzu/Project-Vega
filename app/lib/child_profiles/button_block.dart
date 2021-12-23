@@ -1,5 +1,7 @@
 //import 'dart:html';
 
+import 'package:app/general/screens.dart';
+
 import '../child_profiles/add_child_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -21,11 +23,11 @@ class ButtonsBlock extends StatelessWidget {
       // alignment: AlignmentDirectional.bottomStart,
       children: [
         Column(
-          children: [
+          children: const [
             //   const Expanded(child: SizedBox()),
             RedirectionButton(
               text: "Oğuz Acar",
-              builder: (context) => const ChildProfilesScreen(),
+              screenName: ScreenNames.childProfiles,
             ),
             SizedBox(
               height: 15,
@@ -33,7 +35,7 @@ class ButtonsBlock extends StatelessWidget {
             ),
             RedirectionButton(
               text: "Ahmet Mutlu",
-              builder: (context) => const ChildProfilesScreen(),
+              screenName: ScreenNames.childProfiles,
             ),
             SizedBox(
               height: 15,
@@ -41,16 +43,16 @@ class ButtonsBlock extends StatelessWidget {
             ),
             RedirectionButton(
               text: "Mehmet Yazıcı",
-              builder: (context) => const ChildProfilesScreen(),
+              screenName: ScreenNames.childProfiles,
             ),
           ],
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(
               size.width * 0.8, size.height * 0.1, 0.0, 0.0),
-          child: AddChildButton(
+          child: const AddChildButton(
             text: "",
-            builder: (context) => UpdateInfo(),
+            screenName: ScreenNames.childUpdate,
           ),
         )
       ],

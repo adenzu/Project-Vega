@@ -1,3 +1,6 @@
+import 'package:app/profile/edit_profile_page.dart';
+
+import '../child_profiles/update_info.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../child_profiles/screen.dart';
@@ -9,6 +12,12 @@ import '../profile/screen.dart';
 import '../settings/screen.dart';
 import '../main/screen.dart';
 
+/// Sayfa isimleri, yeni bir sayfa yaptığınızda buraya ona ilişkin bir değer
+/// atayın.
+///
+/// Örnek:
+/// Servis ekleme yapılan bir sayfa için AddShuttPage gibi bir class yağtığınızda
+/// buraya da `static const addShuttle = 'addShuttle';` şeklinde değer eklersiniz
 class ScreenNames {
   ScreenNames._();
 
@@ -20,8 +29,21 @@ class ScreenNames {
   static const about = 'about';
   static const feedback = 'feedback';
   static const settings = 'settings';
+  static const childUpdate = 'childUpdate';
+  static const editProfile = 'editProfile';
 }
 
+/// Yeni bir sayfa oluşturduğunuzda buraya ilişkin değişkeni ekleyin
+/// screenMap mapine de var olanlar şeklinde yine eklersiniz
+///
+/// Örnek:
+/// Servis ekleme yapılan bir sayfa için AddShuttPage gibi bir class yağtığınızda
+/// buraya da `static const addShuttle = AddShuttPage();` şeklinde değer eklersiniz
+/// ```
+/// ...
+/// ScreenNames.addShuttle: Screens.addShuttle,
+/// ...
+/// ```
 class Screens {
   Screens._();
 
@@ -33,6 +55,8 @@ class Screens {
   static const about = AboutScreen();
   static const feedback = FeedbackScreen();
   static const settings = SettingsScreen();
+  static const childUpdate = UpdateInfo();
+  static const editProfile = EditProfilePage();
 
   static const Map<String, Widget> screenMap = {
     ScreenNames.main: Screens.main,
@@ -43,5 +67,7 @@ class Screens {
     ScreenNames.about: Screens.about,
     ScreenNames.feedback: Screens.feedback,
     ScreenNames.settings: Screens.settings,
+    ScreenNames.childUpdate: Screens.childUpdate,
+    ScreenNames.editProfile: Screens.editProfile,
   };
 }

@@ -1,14 +1,15 @@
+import 'package:app/general/screens.dart';
 import 'package:flutter/material.dart';
-import '../util.dart';
+import '../general/util.dart';
 
 class AddChildButton extends StatelessWidget {
   final String text;
-  final Widget Function(BuildContext) builder;
+  final String screenName;
 
   const AddChildButton({
     Key? key,
     required this.text,
-    required this.builder,
+    required this.screenName,
   }) : super(key: key);
 
   @override
@@ -18,7 +19,7 @@ class AddChildButton extends StatelessWidget {
       // height: 100,
       //alignment: Alignment.bottomRight,
       child: ElevatedButton(
-        onPressed: () => redirectionTo(builder)(context),
+        onPressed: () => redirectionTo(screenName)(context),
         child: Icon(
           Icons.add,
           size: 18.0,
