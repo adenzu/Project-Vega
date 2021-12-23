@@ -18,7 +18,6 @@
 !app/android/app
 !app/android/app/src
 !app/android/app/src/*
-!app/android/app/src/google-services.json
 !app/android/app/src/main/*
 !app/android/app/src/main/kotlin/*
 !app/android/app/src/main/kotlin/com/*
