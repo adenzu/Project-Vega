@@ -1,3 +1,4 @@
+import 'package:app/database/functions.dart';
 import 'package:app/general/screens.dart';
 import 'package:flutter/material.dart';
 import '../general/util.dart';
@@ -65,11 +66,7 @@ class AddChildButton extends StatelessWidget {
                     ),
                   ),
                   actions: [
-                    RaisedButton(
-                        child: Text("Submit"),
-                        onPressed: () {
-                          // your code
-                        })
+                    ElevatedButton(child: Text("Submit"), onPressed: () {})
                   ],
                 );
               });

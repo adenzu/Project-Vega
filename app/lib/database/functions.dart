@@ -58,6 +58,14 @@ Future<void> addChild(String childId) async {
       .set(true);
 }
 
+Future<void> createUser(
+    String userId, String userName, String userSurname) async {
+  FirebaseDatabase.instance
+      .reference()
+      .child("users/$userId")
+      .set({"name": userName, "surname": userSurname});
+}
+
 /// verilend id'yi kullanıcının bağlı (children) profillerinden siler
 Future<void> removeChild(String childId) async {
   String userId = FirebaseAuth.instance.currentUser!.uid;
