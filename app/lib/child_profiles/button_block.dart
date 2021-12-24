@@ -3,7 +3,7 @@
 import '../child_profiles/add_child_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import '../child_profiles/update_info.dart';
+import '../child_profiles/enter_info.dart';
 
 import '../child_profiles/screen.dart';
 
@@ -18,14 +18,14 @@ class ButtonsBlock extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final screenHeight = size.height;
     return Stack(
-      // alignment: AlignmentDirectional.bottomStart,
+      //alignment: AlignmentDirectional.bottomStart,
       children: [
         Column(
           children: [
             //   const Expanded(child: SizedBox()),
             RedirectionButton(
               text: "Oğuz Acar",
-              builder: (context) => const ChildProfilesScreen(),
+              //builder: (context) => const ChildProfilesScreen(),
             ),
             SizedBox(
               height: 15,
@@ -33,7 +33,7 @@ class ButtonsBlock extends StatelessWidget {
             ),
             RedirectionButton(
               text: "Ahmet Mutlu",
-              builder: (context) => const ChildProfilesScreen(),
+              //builder: (context) => const ChildProfilesScreen(),
             ),
             SizedBox(
               height: 15,
@@ -41,16 +41,15 @@ class ButtonsBlock extends StatelessWidget {
             ),
             RedirectionButton(
               text: "Mehmet Yazıcı",
-              builder: (context) => const ChildProfilesScreen(),
+              //builder: (context) => const ChildProfilesScreen(),
             ),
           ],
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(
-              size.width * 0.8, size.height * 0.1, 0.0, 0.0),
+              size.width * 0.8, size.height * 0.2, 0.0, 0.0),
           child: AddChildButton(
             text: "",
-            builder: (context) => UpdateInfo(),
           ),
         )
       ],

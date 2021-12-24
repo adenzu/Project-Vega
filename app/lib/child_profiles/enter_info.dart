@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class UpdateInfo extends StatefulWidget {
-  UpdateInfo({Key? key}) : super(key: key);
+class EnterInfo extends StatefulWidget {
+  EnterInfo({Key? key}) : super(key: key);
 
   @override
-  _UpdateInfoState createState() => _UpdateInfoState();
+  _EnterInfoState createState() => _EnterInfoState();
 }
 
-class _UpdateInfoState extends State<UpdateInfo> {
+class _EnterInfoState extends State<EnterInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
