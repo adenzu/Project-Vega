@@ -1,18 +1,21 @@
+import 'package:app/database/functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-class UpdateInfo extends StatefulWidget {
-  UpdateInfo({Key? key}) : super(key: key);
+class EnterInfo extends StatefulWidget {
+  EnterInfo({Key? key}) : super(key: key);
 
   @override
-  _UpdateInfoState createState() => _UpdateInfoState();
+  _EnterInfoState createState() => _EnterInfoState();
 }
 
-class _UpdateInfoState extends State<UpdateInfo> {
+class _EnterInfoState extends State<EnterInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Child"),
+        title: const Text("Add Child"),
       ),
       body: Center(
         child: Padding(
@@ -20,20 +23,18 @@ class _UpdateInfoState extends State<UpdateInfo> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              TextField(
+              const TextField(
                 decoration: InputDecoration(labelText: "Child's name"),
               ),
-              TextField(
+              const TextField(
                 decoration: InputDecoration(labelText: "Child's surname"),
               ),
-              TextField(
+              const TextField(
                 decoration: InputDecoration(labelText: "Shuttle code"),
               ),
               ElevatedButton(
-                onPressed: () {
-                  setState(() {});
-                },
-                child: Text('Submit'),
+                onPressed: () {},
+                child: const Text('Submit'),
               ),
             ],
           ),

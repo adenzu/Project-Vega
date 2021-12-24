@@ -12,6 +12,9 @@ class MainScreen extends StatelessWidget {
         title: const Text(
           "Project-Vega",
         ),
+        foregroundColor: Colors.blue,
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
         centerTitle: true,
       ),
       drawer: SlideMenu(),
