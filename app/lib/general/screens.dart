@@ -1,6 +1,6 @@
 import 'package:app/profile/edit_profile_page.dart';
 
-import '../child_profiles/update_info.dart';
+import '../child_profiles/enter_info.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../child_profiles/screen.dart';
@@ -55,7 +55,6 @@ class Screens {
   static const about = AboutScreen();
   static const feedback = FeedbackScreen();
   static const settings = SettingsScreen();
-  static const childUpdate = UpdateInfo();
   static const editProfile = EditProfilePage();
 
   static const Map<String, Widget> screenMap = {
@@ -67,7 +66,6 @@ class Screens {
     ScreenNames.about: Screens.about,
     ScreenNames.feedback: Screens.feedback,
     ScreenNames.settings: Screens.settings,
-    ScreenNames.childUpdate: Screens.childUpdate,
     ScreenNames.editProfile: Screens.editProfile,
   };
 }

@@ -4,12 +4,12 @@ import '../general/util.dart';
 
 class AddChildButton extends StatelessWidget {
   final String text;
-  final String screenName;
+//  final String screenName;
 
   const AddChildButton({
     Key? key,
     required this.text,
-    required this.screenName,
+    // required this.screenName,
   }) : super(key: key);
 
   @override
@@ -19,7 +19,7 @@ class AddChildButton extends StatelessWidget {
       // height: 100,
       //alignment: Alignment.bottomRight,
       child: ElevatedButton(
-        onPressed: () => redirectionTo(screenName)(context),
+//<<<<<<< HEAD
         child: Icon(
           Icons.add,
           size: 18.0,
@@ -30,6 +30,50 @@ class AddChildButton extends StatelessWidget {
           primary: Colors.blue, // <-- Button color
           onPrimary: Colors.white, // <-- Splash color
         ),
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  scrollable: true,
+                  title: Text("Add Child"),
+                  content: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Form(
+                      child: Column(
+                        children: <Widget>[
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Child's Name",
+                              icon: Icon(Icons.person),
+                            ),
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Child's Surname",
+                              icon: Icon(Icons.person),
+                            ),
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Shuttle Code',
+                              icon: Icon(Icons.car_rental),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  actions: [
+                    RaisedButton(
+                        child: Text("Submit"),
+                        onPressed: () {
+                          // your code
+                        })
+                  ],
+                );
+              });
+        },
       ),
     );
   }

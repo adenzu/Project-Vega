@@ -3,14 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-class UpdateInfo extends StatefulWidget {
-  const UpdateInfo({Key? key}) : super(key: key);
+class EnterInfo extends StatefulWidget {
+  EnterInfo({Key? key}) : super(key: key);
 
   @override
-  _UpdateInfoState createState() => _UpdateInfoState();
+  _EnterInfoState createState() => _EnterInfoState();
 }
 
-class _UpdateInfoState extends State<UpdateInfo> {
+class _EnterInfoState extends State<EnterInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
