@@ -14,6 +14,9 @@ class AddChildButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController lastNameController = TextEditingController();
+    TextEditingController firstNameController = TextEditingController();
+    TextEditingController shuttleIDController = TextEditingController();
     return Align(
       // width:300,
       // height: 100,
@@ -43,18 +46,21 @@ class AddChildButton extends StatelessWidget {
                       child: Column(
                         children: <Widget>[
                           TextFormField(
+                            controller: firstNameController,
                             decoration: InputDecoration(
                               labelText: "Child's Name",
                               icon: Icon(Icons.person),
                             ),
                           ),
                           TextFormField(
+                            controller: lastNameController,
                             decoration: InputDecoration(
                               labelText: "Child's Surname",
                               icon: Icon(Icons.person),
                             ),
                           ),
                           TextFormField(
+                            controller: shuttleIDController,
                             decoration: InputDecoration(
                               labelText: 'Shuttle Code',
                               icon: Icon(Icons.car_rental),
@@ -65,7 +71,7 @@ class AddChildButton extends StatelessWidget {
                     ),
                   ),
                   actions: [
-                    RaisedButton(
+                    ElevatedButton(
                         child: Text("Submit"),
                         onPressed: () {
                           // your code
