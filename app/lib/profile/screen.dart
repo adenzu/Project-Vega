@@ -1,4 +1,5 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../profile/user.dart';
@@ -37,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
               const SizedBox(height: 24),
-              buildName(user),
+              buildName(),
               const SizedBox(height: 24),
               Center(child: buildUpgradeButton()),
               const SizedBox(height: 48),
@@ -52,15 +53,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget buildName(User user) => Column(
+  Widget buildName() => Column(
         children: [
           Text(
-            user.name,
+            'Mehmet',
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           const SizedBox(height: 4),
           Text(
-            user.email,
+             FirebaseAuth.instance.currentUser!.email as String,
             style: const TextStyle(color: Colors.grey),
           )
         ],
