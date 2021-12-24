@@ -1,11 +1,11 @@
 //import 'dart:html';
 
+import 'package:app/general/screens.dart';
+
 import '../child_profiles/add_child_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import '../child_profiles/enter_info.dart';
-
-import '../child_profiles/screen.dart';
 
 import 'redirection_button.dart';
 import 'add_child_button.dart';
@@ -21,11 +21,15 @@ class ButtonsBlock extends StatelessWidget {
       //alignment: AlignmentDirectional.bottomStart,
       children: [
         Column(
-          children: [
+          children: const [
             //   const Expanded(child: SizedBox()),
             RedirectionButton(
               text: "Oğuz Acar",
+//<<<<<<< HEAD
               //builder: (context) => const ChildProfilesScreen(),
+//=======
+              //     screenName: ScreenNames.childProfiles,
+//>>>>>>> 077764b814720f6733d391430494881677788c3d
             ),
             SizedBox(
               height: 15,
@@ -33,7 +37,11 @@ class ButtonsBlock extends StatelessWidget {
             ),
             RedirectionButton(
               text: "Ahmet Mutlu",
+//<<<<<<< HEAD
               //builder: (context) => const ChildProfilesScreen(),
+//=======
+              //   screenName: ScreenNames.childProfiles,
+//>>>>>>> 077764b814720f6733d391430494881677788c3d
             ),
             SizedBox(
               height: 15,
@@ -41,15 +49,32 @@ class ButtonsBlock extends StatelessWidget {
             ),
             RedirectionButton(
               text: "Mehmet Yazıcı",
+//<<<<<<< HEAD
               //builder: (context) => const ChildProfilesScreen(),
+//=======
+              //           screenName: ScreenNames.childProfiles,
+//>>>>>>> 077764b814720f6733d391430494881677788c3d
             ),
           ],
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(
-              size.width * 0.8, size.height * 0.2, 0.0, 0.0),
+//<<<<<<< HEAD
+              size.width * 0.8,
+              size.height * 0.2,
+              0.0,
+              0.0),
           child: AddChildButton(
             text: "",
+/*
+              size.width * 0.8,
+              size.height * 0.1,
+              0.0,
+              0.0),
+          child: const AddChildButton(
+            text: "",
+            screenName: ScreenNames.childUpdate,
+>>>>>>> 077764b814720f6733d391430494881677788c3d*/
           ),
         )
       ],

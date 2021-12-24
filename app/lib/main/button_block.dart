@@ -1,3 +1,5 @@
+import 'package:app/general/screens.dart';
+
 import '../main/screen.dart';
 import '../profile/redirection_button.dart';
 import '../profile/screen.dart';
@@ -15,15 +17,15 @@ class ButtonsBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
+      children: const [
         RedirectionButton(
           text: "Redirection to profile",
-          builder: (context) => const MainScreen(),
+          screenName: ScreenNames.main,
         ),
-        const Expanded(child: SizedBox()),
+        Expanded(child: SizedBox()),
         RedirectionButton(
           text: "Redirection to my shuttles",
-          builder: (context) => const MyShuttleScreen(),
+          screenName: ScreenNames.myShuttle,
         ),
         // const Expanded(child: SizedBox()),
         // RedirectionButton(

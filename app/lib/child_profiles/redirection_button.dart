@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import '../util.dart';
+import '../general/util.dart';
 
 class RedirectionButton extends StatelessWidget {
   final String text;
-  //final Widget Function(BuildContext) builder;
 
   const RedirectionButton({
     Key? key,
     String name = "",
     String shuttleNumber = "",
     required this.text,
-    //required this.builder,
   }) : super(key: key);
 
   @override

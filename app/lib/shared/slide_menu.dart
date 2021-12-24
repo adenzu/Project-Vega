@@ -44,20 +44,12 @@ class SlideMenu extends StatelessWidget {
     {
       "isDivider": true,
     },
-    // NOTE: servis yetkilisi modundayken gözükmeli
     {
       "isDivider": false,
       "title": "Servis ekle",
       "iconData": Icons.add,
-      "onTap": (context) {},
+      "onTap": () {},
     },
-    {
-      "isDivider": false,
-      "title": "Değiştir",
-      "iconData": Icons.swap_horiz,
-      "onTap": (context) {},
-    },
-    // NOTE: servis yetkilisi modundayken gözükmeli
     {
       "isDivider": true,
     },

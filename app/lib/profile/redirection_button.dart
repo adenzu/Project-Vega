@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import '../util.dart';
+import '../general/util.dart';
 
 class RedirectionButton extends StatelessWidget {
   final String text;
-  final Widget Function(BuildContext) builder;
+  final String screenName;
 
   const RedirectionButton({
     Key? key,
     required this.text,
-    required this.builder,
+    required this.screenName,
   }) : super(key: key);
 
   @override
@@ -17,7 +17,7 @@ class RedirectionButton extends StatelessWidget {
       width: 100,
       height: 100,
       child: ElevatedButton(
-        onPressed: () => redirectionTo(builder)(context),
+        onPressed: () => redirectionTo(screenName)(context),
         child: Text(text),
       ),
     );
