@@ -72,7 +72,18 @@ class AddChildButton extends StatelessWidget {
                     ),
                   ),
                   actions: [
-                    ElevatedButton(child: Text("Submit"), onPressed: () {})
+                    ElevatedButton(
+                        child: Text("Submit"),
+                        onPressed: shuttleIDController.text.isNotEmpty
+                            ? () async {
+                                String childid = "dummyId";
+                                addChild(childid);
+                                createUser(childid, firstNameController.text,
+                                    lastNameController.text);
+                                subscribeToShuttle(
+                                    childid, shuttleIDController.text);
+                              }
+                            : null)
                   ],
                 );
               });

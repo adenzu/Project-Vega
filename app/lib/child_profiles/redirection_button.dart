@@ -24,37 +24,26 @@ class RedirectionButton extends StatelessWidget {
               builder: (BuildContext context) {
                 return AlertDialog(
                   scrollable: true,
-                  title: Text("Add Child"),
+                  title: Text("Child Info"),
                   content: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Form(
                       child: Column(
                         children: <Widget>[
-                          TextFormField(
-                            decoration: InputDecoration(
-                              labelText: "Child's Name",
-                              icon: Icon(Icons.person),
-                            ),
-                          ),
-                          TextFormField(
-                            decoration: InputDecoration(
-                              labelText: "Child's Surname",
-                              icon: Icon(Icons.person),
-                            ),
-                          ),
-                          TextFormField(
-                            decoration: InputDecoration(
-                              labelText: 'Shuttle Code',
-                              icon: Icon(Icons.car_rental),
-                            ),
+                          Text("Oğuz Acar"),
+                          Text(
+                            //decoration: InputDecoration(
+                            'Shuttle Code',
+                            textAlign: TextAlign.left,
+                            // icon: Icon(Icons.car_rental),
                           ),
                         ],
                       ),
                     ),
                   ),
                   actions: [
-                    RaisedButton(
-                        child: Text(""),
+                    ElevatedButton(
+                        child: Text("Edit"),
                         onPressed: () {
                           // your code
                         })

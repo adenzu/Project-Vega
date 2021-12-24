@@ -7,7 +7,7 @@ class MainBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       //margin: const EdgeInsets.all(20),
       body: ButtonsBlock(),
     );

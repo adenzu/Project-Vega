@@ -1,7 +1,7 @@
 //import 'dart:html';
 
 import 'package:app/general/screens.dart';
-
+import 'package:app/general/titled_rect_widget_button.dart';
 import '../child_profiles/add_child_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -20,16 +20,11 @@ class ButtonsBlock extends StatelessWidget {
     return Stack(
       //alignment: AlignmentDirectional.bottomStart,
       children: [
-        Column(
+        ListView(
           children: const [
             //   const Expanded(child: SizedBox()),
             RedirectionButton(
               text: "Oğuz Acar",
-//<<<<<<< HEAD
-              //builder: (context) => const ChildProfilesScreen(),
-//=======
-              //     screenName: ScreenNames.childProfiles,
-//>>>>>>> 077764b814720f6733d391430494881677788c3d
             ),
             SizedBox(
               height: 15,
