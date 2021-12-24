@@ -75,6 +75,40 @@ Future<void> removeChild(String childId) async {
       .set(null);
 }
 
+/// user için unique id/token oluşturur
+Future<int> generateUserToken() async {
+  DatabaseReference tokenRef =
+      FirebaseDatabase.instance.reference().child("userToken");
+  // if (!(await tokenRef.once()).exists) {
+  //   await tokenRef.set(0);
+  //   return 0;
+  // }
+  await FirebaseDatabase.instance
+      .reference()
+      .update({"userToken": ServerValue.increment(1)});
+  return (await tokenRef.once()).value;
+}
+
+Future<List<String>> getChildrenIds() async {
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+
+  return ((await FirebaseDatabase.instance
+              .reference()
+              .child("users/$userId/children")
+              .once())
+          .value as Map<String, String>)
+      .keys
+      .toList();
+}
+
+Future<Map<String, dynamic>> getUserInfo(String userId) async {
+  return (await FirebaseDatabase.instance
+          .reference()
+          .child("users/$userId")
+          .once())
+      .value;
+}
+
 /// hiyerarşi:
 ///```
 /// database
