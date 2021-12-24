@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import '../child_profiles/update_info.dart';
 
-import '../child_profiles/screen.dart';
-
 import 'redirection_button.dart';
 import 'add_child_button.dart';
 

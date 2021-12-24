@@ -1,3 +1,6 @@
+import 'package:app/database/functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class UpdateInfo extends StatefulWidget {
@@ -30,9 +33,7 @@ class _UpdateInfoState extends State<UpdateInfo> {
                 decoration: InputDecoration(labelText: "Shuttle code"),
               ),
               ElevatedButton(
-                onPressed: () {
-                  setState(() {});
-                },
+                onPressed: () {},
                 child: const Text('Submit'),
               ),
             ],

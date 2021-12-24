@@ -1,3 +1,5 @@
+import 'package:app/database/functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../child_profiles/screen.dart';
