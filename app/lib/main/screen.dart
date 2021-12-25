@@ -14,7 +14,6 @@ class MainScreen extends StatelessWidget {
         ),
         foregroundColor: Colors.blue,
         backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
       ),
