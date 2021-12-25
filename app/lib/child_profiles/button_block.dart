@@ -2,6 +2,8 @@
 
 import 'package:app/general/screens.dart';
 import 'package:app/general/titled_rect_widget_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import '../child_profiles/add_child_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -11,72 +13,83 @@ import 'redirection_button.dart';
 import 'add_child_button.dart';
 
 class ButtonsBlock extends StatelessWidget {
-  const ButtonsBlock({Key? key}) : super(key: key);
+  final childrenRef = FirebaseDatabase.instance
+      .reference()
+      .child("users/" + FirebaseAuth.instance.currentUser!.uid + "/children");
+
+  ButtonsBlock({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final screenHeight = size.height;
+    // final screenHeight = size.height;
     return Stack(
-      //alignment: AlignmentDirectional.bottomStart,
       children: [
-        ListView(
-          children: const [
-            //   const Expanded(child: SizedBox()),
-            RedirectionButton(
-              text: "Oğuz Acar",
-            ),
-            SizedBox(
-              height: 15,
-              width: double.maxFinite,
-            ),
-            RedirectionButton(
-              text: "Ahmet Mutlu",
-//<<<<<<< HEAD
-              //builder: (context) => const ChildProfilesScreen(),
-//=======
-              //   screenName: ScreenNames.childProfiles,
-//>>>>>>> 077764b814720f6733d391430494881677788c3d
-            ),
-            SizedBox(
-              height: 15,
-              width: double.maxFinite,
-            ),
-            RedirectionButton(
-              text: "Mehmet Yazıcı",
-//<<<<<<< HEAD
-              //builder: (context) => const ChildProfilesScreen(),
-//=======
-              //           screenName: ScreenNames.childProfiles,
-//>>>>>>> 077764b814720f6733d391430494881677788c3d
-            ),
-          ],
-        ),
+        FutureBuilder(
+            future: childrenRef.once(),
+            builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data!.exists) {
+                  Map<String, bool> children =
+                      Map<String, bool>.from(snapshot.data!.value);
+                  List<String> childIds = children.keys.toList();
+                  print(childIds);
+                  return ListView.builder(
+                      itemCount: childIds.length,
+                      itemBuilder: (context, i) {
+                        return FutureBuilder(
+                          future: FirebaseDatabase.instance
+                              .reference()
+                              .child("users/" + childIds[i])
+                              .once(),
+                          builder:
+                              (context, AsyncSnapshot<DataSnapshot> snapshot) {
+                            if (snapshot.hasData && snapshot.data!.exists) {
+                              Map<String, dynamic> childInfo =
+                                  Map<String, dynamic>.from(
+                                      snapshot.data!.value);
+
+                              return Container(
+                                  padding: EdgeInsets.all(20),
+                                  child: TitledRectWidgetButton(
+                                      padding: EdgeInsets.all(20),
+                                      borderRadius: BorderRadius.circular(25),
+                                      alignment: Alignment.centerLeft,
+                                      title: Container(
+                                        child: Text(childInfo['name'],
+                                            style: TextStyle(fontSize: 50)),
+                                      ),
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 150,
+                                        color: Colors.blue,
+                                      ),
+                                      onTap: () {}));
+                            }
+                            return SizedBox();
+                          },
+                        );
+                      });
+                }
+                return const Expanded(
+                  child: Center(
+                    child: Text(
+                      "Bağlı profiliniz bulunmamaktadır.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 30),
+                    ),
+                  ),
+                );
+              }
+              return const Center(child: CircularProgressIndicator());
+            }),
         Padding(
           padding: EdgeInsets.fromLTRB(
-//<<<<<<< HEAD
-              size.width * 0.8,
-              size.height * 0.2,
-              0.0,
-              0.0),
-          child: AddChildButton(
-            text: "",
-/*
-              size.width * 0.8,
-              size.height * 0.1,
-              0.0,
-              0.0),
-          child: const AddChildButton(
-            text: "",
-            screenName: ScreenNames.childUpdate,
->>>>>>> 077764b814720f6733d391430494881677788c3d*/
-          ),
+              size.width * 0.8, size.height * 0.2, 0.0, 0.0),
+          child: const AddChildButton(),
         )
       ],
     );
-    //
-
-    //
   }
 }
 /*

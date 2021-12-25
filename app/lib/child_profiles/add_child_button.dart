@@ -9,7 +9,7 @@ class AddChildButton extends StatelessWidget {
 
   const AddChildButton({
     Key? key,
-    required this.text,
+    this.text = "",
     // required this.screenName,
   }) : super(key: key);
 
@@ -74,16 +74,13 @@ class AddChildButton extends StatelessWidget {
                   actions: [
                     ElevatedButton(
                         child: Text("Submit"),
-                        onPressed: shuttleIDController.text.isNotEmpty
-                            ? () async {
-                                String childid = "dummyId";
-                                addChild(childid);
-                                createUser(childid, firstNameController.text,
-                                    lastNameController.text);
-                                subscribeToShuttle(
-                                    childid, shuttleIDController.text);
-                              }
-                            : null)
+                        onPressed: () async {
+                          String childid = await generateUserToken();
+                          addChild(childid);
+                          createUser(childid, firstNameController.text,
+                              lastNameController.text);
+                          subscribeToShuttle(childid, shuttleIDController.text);
+                        })
                   ],
                 );
               });

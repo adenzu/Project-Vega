@@ -85,17 +85,13 @@ Future<void> removeChild(String childId) async {
 }
 
 /// user için unique id/token oluşturur
-Future<int> generateUserToken() async {
+Future<String> generateUserToken() async {
   DatabaseReference tokenRef =
       FirebaseDatabase.instance.reference().child("userToken");
-  // if (!(await tokenRef.once()).exists) {
-  //   await tokenRef.set(0);
-  //   return 0;
-  // }
   await FirebaseDatabase.instance
       .reference()
       .update({"userToken": ServerValue.increment(1)});
-  return (await tokenRef.once()).value;
+  return "id" + (await tokenRef.once()).value.toString();
 }
 
 Future<List<String>> getChildrenIds() async {
