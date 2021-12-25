@@ -1,5 +1,6 @@
 //import 'dart:html';
 
+import 'package:app/database/functions.dart';
 import 'package:app/general/screens.dart';
 import 'package:app/general/titled_rect_widget_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,7 +39,7 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                   Map<String, bool> children =
                       Map<String, bool>.from(snapshot.data!.value);
                   List<String> childIds = children.keys.toList();
-                  print(childIds);
+
                   return ListView.builder(
                       itemCount: childIds.length,
                       itemBuilder: (context, i) {
@@ -95,7 +96,17 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                                                   ElevatedButton(
                                                       child:
                                                           Text("Delete Child"),
-                                                      onPressed: () async {})
+                                                      onPressed: () async {
+                                                        for (var shuttleId
+                                                            in childInfo[
+                                                                'shuttles']) {
+                                                          removeFromShuttle(
+                                                              childIds[i],
+                                                              shuttleId);
+                                                        }
+                                                        removeChild(
+                                                            childIds[i]);
+                                                      })
                                                 ],
                                               );
                                             });
