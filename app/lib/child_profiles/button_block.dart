@@ -43,10 +43,11 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                   return ListView.builder(
                     itemCount: childIds.length,
                     itemBuilder: (context, i) {
+                      String currChildId = childIds[i];
                       return FutureBuilder(
                         future: FirebaseDatabase.instance
                             .reference()
-                            .child("users/" + childIds[i])
+                            .child("users/" + currChildId)
                             .once(),
                         builder:
                             (context, AsyncSnapshot<DataSnapshot> snapshot) {
@@ -59,10 +60,20 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                                 padding: EdgeInsets.all(20),
                                 borderRadius: BorderRadius.circular(25),
                                 alignment: Alignment.centerLeft,
-                                title: Container(
-                                  child: Text(childInfo['name'],
-                                      style: TextStyle(fontSize: 50)),
-                                ),
+                                title: Text.rich(TextSpan(children: [
+                                  WidgetSpan(
+                                      child: Icon(Icons.account_box),
+                                      alignment: PlaceholderAlignment.middle),
+                                  WidgetSpan(
+                                      child: Text(
+                                        childInfo['name'],
+                                      ),
+                                      alignment: PlaceholderAlignment.middle)
+                                ])),
+                                //  Container(
+                                //   child: Text(childInfo['name'],
+                                //       style: TextStyle(fontSize: 50)),
+                                // ),
                                 child: Container(
                                   width: double.infinity,
                                   height: 150,
@@ -90,15 +101,21 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                                               child: Text("Edit"),
                                               onPressed: () async {}),
                                           ElevatedButton(
-                                              child: Text("Delete Child"),
-                                              onPressed: () async {
-                                                for (var shuttleId
-                                                    in childInfo['shuttles']) {
-                                                  removeFromShuttle(
-                                                      childIds[i], shuttleId);
-                                                }
-                                                removeChild(childIds[i]);
-                                              })
+                                            child: Text("Delete Child"),
+                                            onPressed: () async {
+                                              Navigator.of(context).pop();
+
+                                              for (var shuttleId
+                                                  in Map<String, bool>.from(
+                                                          childInfo['shuttles'])
+                                                      .keys
+                                                      .toList()) {
+                                                removeFromShuttle(
+                                                    currChildId, shuttleId);
+                                              }
+                                              removeChild(currChildId);
+                                            },
+                                          )
                                         ],
                                       );
                                     },
