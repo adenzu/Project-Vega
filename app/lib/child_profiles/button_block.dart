@@ -12,12 +12,17 @@ import '../child_profiles/enter_info.dart';
 import 'redirection_button.dart';
 import 'add_child_button.dart';
 
-class ButtonsBlock extends StatelessWidget {
+class ButtonsBlock extends StatefulWidget {
+  const ButtonsBlock({Key? key}) : super(key: key);
+
+  @override
+  _ButtonsBlockState createState() => _ButtonsBlockState();
+}
+
+class _ButtonsBlockState extends State<ButtonsBlock> {
   final childrenRef = FirebaseDatabase.instance
       .reference()
       .child("users/" + FirebaseAuth.instance.currentUser!.uid + "/children");
-
-  ButtonsBlock({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +69,37 @@ class ButtonsBlock extends StatelessWidget {
                                         height: 150,
                                         color: Colors.blue,
                                       ),
-                                      onTap: () {}));
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                scrollable: true,
+                                                title:
+                                                    Text("Child Information"),
+                                                content: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(2.0),
+                                                  child: Form(
+                                                    child: Column(
+                                                      children: <Widget>[
+                                                        Text(childInfo['name']),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  ElevatedButton(
+                                                      child: Text("Edit"),
+                                                      onPressed: () async {}),
+                                                  ElevatedButton(
+                                                      child:
+                                                          Text("Delete Child"),
+                                                      onPressed: () async {})
+                                                ],
+                                              );
+                                            });
+                                      }));
                             }
                             return SizedBox();
                           },
@@ -92,6 +127,7 @@ class ButtonsBlock extends StatelessWidget {
     );
   }
 }
+
 /*
 
 showDialog(
