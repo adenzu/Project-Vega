@@ -1,4 +1,5 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:app/database/functions.dart';
 import '../profile/button_widget.dart';
 import '../profile/redirection_button.dart';
 import '../profile/screen.dart';
@@ -21,7 +22,14 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   User user = UserPreferences.myUser;
-  late String temp;
+  final _controller = TextEditingController();
+  final _controller2 = TextEditingController();
+  final _controller3 = TextEditingController();
+  final _controller4 = TextEditingController();
+  String name = "";
+  String surname = "";
+  String email = "";
+  String password = "";
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -31,36 +39,46 @@ class _EditProfilePageState extends State<EditProfilePage> {
             body: ListView(
               padding: EdgeInsets.symmetric(horizontal: 32),
               physics: BouncingScrollPhysics(),
-              children: [
+              children: <Widget>[
                 ProfileWidget(
                   imagePath: user.imagePath,
                   isEdit: true,
                   onClicked: () async {},
                 ),
                 const SizedBox(height: 24),
-                TextFieldWidget(
-                  label: 'Name',
-                  text: user.name,
-                  onChanged: (name) {
-                    UserPreferences.myUser.name = name;
-                  },
+                Container(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Name',
+                    ),
+                    controller: _controller,
+                  ),
                 ),
                 const SizedBox(height: 24),
-                TextFieldWidget(
-                  label: 'Surname',
-                  text: user.surname,
-                  onChanged: (surname) {},
+                 Container(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Surname',
+                    ),
+                    controller: _controller2,
+                  ),
                 ),
                 const SizedBox(height: 24),
-                TextFieldWidget(
-                  label: 'Email',
-                  text: user.email,
-                  onChanged: (email) {},
+                Container(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: 'E-mail',
+                    ),
+                    controller: _controller3,
+                  ),
                 ),
-                TextFieldWidget(
-                  label: 'Password',
-                  text: user.password,
-                  onChanged: (password) {},
+                Container(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                    ),
+                    controller: _controller4,
+                  ),
                 ),
                 /*
                 ElevatedButton(
@@ -72,14 +90,34 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 child: Text('Save'),
               ),
               */
+              /*
                 ButtonWidget(
                   text: "Save",
                   onClicked: () {
-                    print("sdgsdgsdgsdgsdg\n\n");
+                   
                     //UserPreferences.myUser.name = temp;
                     Navigator.pop(context);
                   },
                 ),
+                */
+                Container(
+                  width: double.infinity,
+                  child: FlatButton(
+                    child: Text('Save'),
+                    color:Colors.blue,
+                    onPressed: () {
+                      setState(() {
+                         name = _controller.text;
+                         surname = _controller2.text;
+                         email = _controller3.text;
+                         password = _controller4.text;
+                      });
+                         updateUserInfo({'name':name});
+                         updateUserInfo({'surname':surname});
+                         Navigator.pop(context);
+                    }, ),
+                    padding: EdgeInsets.all(32),
+                    )
               ],
             ),
           ),
