@@ -69,7 +69,10 @@ Future<void> createUser(
 
 Future<void> updateUserInfo(Map<String, dynamic> newInfo) async {
   String userId = FirebaseAuth.instance.currentUser!.uid;
-  await FirebaseDatabase.instance.reference().child(userId).update(newInfo);
+  await FirebaseDatabase.instance
+      .reference()
+      .child("users/$userId")
+      .update(newInfo);
 }
 
 /// verilend id'yi kullanıcının bağlı (children) profillerinden siler
