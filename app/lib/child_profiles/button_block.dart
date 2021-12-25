@@ -54,51 +54,51 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                                       snapshot.data!.value);
 
                               return Container(
+                                padding: EdgeInsets.all(20),
+                                child: TitledRectWidgetButton(
                                   padding: EdgeInsets.all(20),
-                                  child: TitledRectWidgetButton(
-                                      padding: EdgeInsets.all(20),
-                                      borderRadius: BorderRadius.circular(25),
-                                      alignment: Alignment.centerLeft,
-                                      title: Container(
-                                        child: Text(childInfo['name'],
-                                            style: TextStyle(fontSize: 50)),
-                                      ),
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: 150,
-                                        color: Colors.blue,
-                                      ),
-                                      onTap: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                scrollable: true,
-                                                title:
-                                                    Text("Child Information"),
-                                                content: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(2.0),
-                                                  child: Form(
-                                                    child: Column(
-                                                      children: <Widget>[
-                                                        Text(childInfo['name']),
-                                                      ],
-                                                    ),
-                                                  ),
+                                  borderRadius: BorderRadius.circular(25),
+                                  alignment: Alignment.centerLeft,
+                                  title: Container(
+                                    child: Text(childInfo['name'],
+                                        style: TextStyle(fontSize: 50)),
+                                  ),
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 150,
+                                    color: Colors.blue,
+                                  ),
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            scrollable: true,
+                                            title: Text("Child Information"),
+                                            content: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(2.0),
+                                              child: Form(
+                                                child: Column(
+                                                  children: <Widget>[
+                                                    Text(childInfo['name']),
+                                                  ],
                                                 ),
-                                                actions: [
-                                                  ElevatedButton(
-                                                      child: Text("Edit"),
-                                                      onPressed: () async {}),
-                                                  ElevatedButton(
-                                                      child:
-                                                          Text("Delete Child"),
-                                                      onPressed: () async {})
-                                                ],
-                                              );
-                                            });
-                                      }));
+                                              ),
+                                            ),
+                                            actions: [
+                                              ElevatedButton(
+                                                  child: Text("Edit"),
+                                                  onPressed: () async {}),
+                                              ElevatedButton(
+                                                  child: Text("Delete Child"),
+                                                  onPressed: () async {})
+                                            ],
+                                          );
+                                        });
+                                  },
+                                ),
+                              );
                             }
                             return SizedBox();
                           },
