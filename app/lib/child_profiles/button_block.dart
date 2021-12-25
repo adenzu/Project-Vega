@@ -1,11 +1,11 @@
 //import 'dart:html';
 
+import 'package:app/general/screens.dart';
+import 'package:app/general/titled_rect_widget_button.dart';
 import '../child_profiles/add_child_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import '../child_profiles/update_info.dart';
-
-import '../child_profiles/screen.dart';
+import '../child_profiles/enter_info.dart';
 
 import 'redirection_button.dart';
 import 'add_child_button.dart';
@@ -18,14 +18,13 @@ class ButtonsBlock extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final screenHeight = size.height;
     return Stack(
-      // alignment: AlignmentDirectional.bottomStart,
+      //alignment: AlignmentDirectional.bottomStart,
       children: [
-        Column(
-          children: [
+        ListView(
+          children: const [
             //   const Expanded(child: SizedBox()),
             RedirectionButton(
               text: "Oğuz Acar",
-              builder: (context) => const ChildProfilesScreen(),
             ),
             SizedBox(
               height: 15,
@@ -33,7 +32,11 @@ class ButtonsBlock extends StatelessWidget {
             ),
             RedirectionButton(
               text: "Ahmet Mutlu",
-              builder: (context) => const ChildProfilesScreen(),
+//<<<<<<< HEAD
+              //builder: (context) => const ChildProfilesScreen(),
+//=======
+              //   screenName: ScreenNames.childProfiles,
+//>>>>>>> 077764b814720f6733d391430494881677788c3d
             ),
             SizedBox(
               height: 15,
@@ -41,16 +44,32 @@ class ButtonsBlock extends StatelessWidget {
             ),
             RedirectionButton(
               text: "Mehmet Yazıcı",
-              builder: (context) => const ChildProfilesScreen(),
+//<<<<<<< HEAD
+              //builder: (context) => const ChildProfilesScreen(),
+//=======
+              //           screenName: ScreenNames.childProfiles,
+//>>>>>>> 077764b814720f6733d391430494881677788c3d
             ),
           ],
         ),
         Padding(
           padding: EdgeInsets.fromLTRB(
-              size.width * 0.8, size.height * 0.1, 0.0, 0.0),
+//<<<<<<< HEAD
+              size.width * 0.8,
+              size.height * 0.2,
+              0.0,
+              0.0),
           child: AddChildButton(
             text: "",
-            builder: (context) => UpdateInfo(),
+/*
+              size.width * 0.8,
+              size.height * 0.1,
+              0.0,
+              0.0),
+          child: const AddChildButton(
+            text: "",
+            screenName: ScreenNames.childUpdate,
+>>>>>>> 077764b814720f6733d391430494881677788c3d*/
           ),
         )
       ],

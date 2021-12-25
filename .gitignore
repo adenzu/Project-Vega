@@ -27,3 +27,5 @@
 !AndroidManifest.xml
 !app/android/app/src/profile/AndroidManifest.xml
 !app/android/app/build.gradle
+
+!google-services.json

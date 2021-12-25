@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import '../util.dart';
+import '../general/util.dart';
 
 class RedirectionButton extends StatelessWidget {
   final String text;
-  final Widget Function(BuildContext) builder;
 
   const RedirectionButton({
     Key? key,
     String name = "",
     String shuttleNumber = "",
     required this.text,
-    required this.builder,
   }) : super(key: key);
 
   @override
@@ -19,7 +17,41 @@ class RedirectionButton extends StatelessWidget {
       width: double.infinity,
       height: 100,
       child: ElevatedButton(
-        onPressed: () => redirectionTo(builder)(context),
+        onPressed: () {
+          //burdan
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  scrollable: true,
+                  title: Text("Child Info"),
+                  content: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Form(
+                      child: Column(
+                        children: <Widget>[
+                          Text("Oğuz Acar"),
+                          Text(
+                            //decoration: InputDecoration(
+                            'Shuttle Code',
+                            textAlign: TextAlign.left,
+                            // icon: Icon(Icons.car_rental),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  actions: [
+                    ElevatedButton(
+                        child: Text("Edit"),
+                        onPressed: () {
+                          // your code
+                        })
+                  ],
+                );
+              });
+          //buraya
+        },
         child: Row(children: [
           const SizedBox(
             height: 90,

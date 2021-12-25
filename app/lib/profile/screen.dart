@@ -1,4 +1,6 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:app/general/screens.dart';
+import 'package:app/general/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../profile/user.dart';
@@ -30,20 +32,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               ProfileWidget(
                 imagePath: user.imagePath,
-                onClicked: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => EditProfilePage()),
-                  );
-                },
+                onClicked: () =>
+                    redirectionTo(ScreenNames.editProfile)(context),
               ),
               const SizedBox(height: 24),
               buildName(user),
               const SizedBox(height: 24),
               Center(child: buildUpgradeButton()),
               const SizedBox(height: 48),
-              RedirectionButton(
+              const RedirectionButton(
                 text: "Update Info",
-                builder: (context) => EditProfilePage(),
+                screenName: ScreenNames.editProfile,
               ),
             ],
           ),

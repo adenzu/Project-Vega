@@ -10,9 +10,11 @@ import '../profile/appbar_widget.dart';
 import '../profile/profile_widget.dart';
 import '../profile/textfield_widget.dart';
 
-import '../util.dart';
+import '../general/util.dart';
 
 class EditProfilePage extends StatefulWidget {
+  const EditProfilePage({Key? key}) : super(key: key);
+
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
 }

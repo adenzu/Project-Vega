@@ -1,3 +1,5 @@
+import 'package:app/database/functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../child_profiles/screen.dart';
@@ -13,7 +15,8 @@ class MainBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double seperation = 20;
+    double seperation = 15;
+    double buttonHeight = 130;
     SizedBox seperator = SizedBox(height: seperation);
     return Container(
       margin: EdgeInsets.fromLTRB(seperation, 0, seperation, 0),
@@ -21,42 +24,42 @@ class MainBody extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             seperator,
-            const MainPageRedirectionButton(
+            MainPageRedirectionButton(
               icon: Icons.account_circle,
               iconBackgroundColor: Colors.purple,
               text: "Profil",
               imageName: "assets/images/profiles.jpeg",
               screenName: ScreenNames.profile,
-              height: 150,
+              height: buttonHeight,
               navigateTo: ProfileScreen(),
             ),
             seperator,
-            const MainPageRedirectionButton(
+            MainPageRedirectionButton(
               icon: Icons.account_tree,
               iconBackgroundColor: Colors.blue,
               text: "Bağlı Profiller",
               imageName: "assets/images/branch.jpeg",
               screenName: ScreenNames.childProfiles,
-              height: 150,
+              height: buttonHeight,
               navigateTo: ChildProfilesScreen(),
             ),
             seperator,
-            const MainPageRedirectionButton(
+            MainPageRedirectionButton(
               icon: Icons.directions_bus,
               iconBackgroundColor: Colors.green,
               text: "Servisler",
-              height: 150,
+              height: buttonHeight,
               imageName: "assets/images/shuttleservice.jpeg",
               screenName: ScreenNames.myShuttle,
               navigateTo: MyShuttleScreen(),
             ),
             seperator,
-            const MainPageRedirectionButton(
+            MainPageRedirectionButton(
               icon: Icons.map,
               iconBackgroundColor: Colors.pink,
               text: "Harita",
               imageName: "assets/images/mapimage.jpeg",
-              height: 150,
+              height: buttonHeight,
               screenName: ScreenNames.map,
               navigateTo: MyShuttleMap(),
             ),
