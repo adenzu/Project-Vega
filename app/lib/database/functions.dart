@@ -35,6 +35,10 @@ Future<bool> subscribeToShuttle(String userId, String shuttleId) async {
       .child("shuttles/$shuttleId/passengers/$userId");
 
   if (!(await passenger.once()).exists) {
+    await FirebaseDatabase.instance
+        .reference()
+        .child("users/$userId/shuttles/$shuttleId")
+        .set(true);
     await passenger.set(false);
     return true;
   }
@@ -43,6 +47,10 @@ Future<bool> subscribeToShuttle(String userId, String shuttleId) async {
 
 /// verilen id'li userı verilen id'li shuttle abonelerinden çıkarır
 Future<void> removeFromShuttle(String userId, String shuttleId) async {
+  await FirebaseDatabase.instance
+      .reference()
+      .child("users/$userId/shuttles/$shuttleId")
+      .set(null);
   await FirebaseDatabase.instance
       .reference()
       .child("shuttles/$shuttleId/passengers/$userId")
@@ -67,14 +75,6 @@ Future<void> createUser(
       .set({"name": userName, "surname": userSurname});
 }
 
-Future<void> updateUserInfo(Map<String, dynamic> newInfo) async {
-  String userId = FirebaseAuth.instance.currentUser!.uid;
-  await FirebaseDatabase.instance
-      .reference()
-      .child("users/$userId")
-      .update(newInfo);
-}
-
 /// verilend id'yi kullanıcının bağlı (children) profillerinden siler
 Future<void> removeChild(String childId) async {
   String userId = FirebaseAuth.instance.currentUser!.uid;
@@ -94,25 +94,24 @@ Future<String> generateUserToken() async {
   return "id" + (await tokenRef.once()).value.toString();
 }
 
-Future<List<String>> getChildrenIds() async {
-  String userId = FirebaseAuth.instance.currentUser!.uid;
-
-  return ((await FirebaseDatabase.instance
-              .reference()
-              .child("users/$userId/children")
-              .once())
-          .value as Map<String, String>)
-      .keys
-      .toList();
+/// userın shuttleda passenger olma durumunu setler
+Future<void> setOnShuttle(String userId, String shuttleId, bool isOn) async {
+  DatabaseReference passengers = FirebaseDatabase.instance
+      .reference()
+      .child("shuttles/$shuttleId/passengers");
+  await passengers.update({userId: isOn});
 }
 
-Future<Map<String, dynamic>> getUserInfo(String userId) async {
-  return (await FirebaseDatabase.instance
-          .reference()
-          .child("users/$userId")
-          .once())
-      .value;
+/// userı shuttlea bindirir
+Future<void> getOn(String userId, String shuttleId) async {
+  return setOnShuttle(userId, shuttleId, true);
 }
+
+/// userı shuttledan indirir
+Future<void> getOff(String userId, String shuttleId) async {
+  return setOnShuttle(userId, shuttleId, false);
+}
+
 
 /// hiyerarşi:
 ///```

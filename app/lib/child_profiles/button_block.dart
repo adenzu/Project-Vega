@@ -33,7 +33,6 @@ class ButtonsBlock extends StatelessWidget {
                   Map<String, bool> children =
                       Map<String, bool>.from(snapshot.data!.value);
                   List<String> childIds = children.keys.toList();
-                  print(childIds);
                   return ListView.builder(
                       itemCount: childIds.length,
                       itemBuilder: (context, i) {
