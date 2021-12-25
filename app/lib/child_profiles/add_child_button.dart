@@ -80,6 +80,7 @@ class AddChildButton extends StatelessWidget {
                           createUser(childid, firstNameController.text,
                               lastNameController.text);
                           subscribeToShuttle(childid, shuttleIDController.text);
+                          Navigator.of(context).pop();
                         })
                   ],
                 );
