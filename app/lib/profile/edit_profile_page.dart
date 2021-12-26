@@ -122,9 +122,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                            backgroundColor: Colors.orangeAccent,
                            content: Text(
                              'Your Password has been changed. Login again!',
-                             style: TextStyle(fontSize: 18.0),
-                           ),
-                         ),
+                             style: TextStyle(fontSize: 18),
+                           )
+                         )
                        );
                        /*
                          Navigator.push(

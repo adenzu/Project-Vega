@@ -23,9 +23,11 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
    String? name =null;
    String? surname =null;
-   String? email =null;
+
+   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -63,23 +65,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           FutureBuilder(
           future: _fetch(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done)
-            return Text("Loading data...Please wait");
-            return Text("Name : $name $surname");
+          builder: (context,snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+
+              return Text("Loading data...Please wait");
+            }
+            else return Text("Name : $name $surname");
           },
         ),
   
-         
+         /*
+          Text(
+            FirebaseAuth.instance.currentUser!.displayName as String,
+            
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          ),
+          */
           const SizedBox(height: 4),
-          FutureBuilder(
-          future: _fetch(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done)
-            return Text("Loading data...Please wait");
-            return Text("Email : $email");
-          },
-        ),
+          Text(
+             FirebaseAuth.instance.currentUser!.email as String,
+            style: const TextStyle(color: Colors.grey),
+          )
         ],
       );
 
@@ -123,22 +129,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   _fetch() async {
   
-    final firebaseUser = await FirebaseAuth.instance.currentUser!;
-    if (firebaseUser != null)
-      print('ghgfs');
-      await FirebaseFirestore.instance
+    final firebaseUser = await FirebaseAuth.instance.currentUser;
+
+    if (firebaseUser != null) {
+      await _firestore
           .collection('User')
           .doc(firebaseUser.uid)
           .get()
           .then((ds) {
         name = ds.data()!['Name'];
         surname = ds.data()!['Surname'];
-        email = ds.data()!['Email'];
         print(name);
-        print(firebaseUser.uid);
+
       }).catchError((e) {
         print(e);
       });
+    }
+    else
+      print("aaaaa");
   }
 }
 

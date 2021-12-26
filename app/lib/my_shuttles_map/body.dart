@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 //import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -21,7 +23,12 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
   StreamSubscription? _locationSubscriber;
   Marker? _shuttleMarker;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
- // Geoflutterfire geo = Geoflutterfire();
+  final database = FirebaseDatabase.instance.reference(); // path to location
+  late double lat;
+  late double long;
+
+
+  // Geoflutterfire geo = Geoflutterfire();
 
   static const _initialCamera = CameraPosition(
     target: LatLng(40.806298, 29.355541),
@@ -42,13 +49,16 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
 
   Future<Uint8List> getMarker() async {
     ByteData byteData =
-        await DefaultAssetBundle.of(context).load("assets/images/car_icon.png");
+    await DefaultAssetBundle.of(context).load("assets/images/car_icon.png");
     return byteData.buffer.asUint8List();
   }
 
 
   void refreshmarker(LocationData newData, Uint8List imagedat) {
     LatLng latitudelongitude = LatLng(newData.latitude!, newData.longitude!);
+    lat = newData.latitude!;
+    long = newData.longitude!;
+
     setState(() {
       _shuttleMarker = Marker(
         markerId: MarkerId("Home"),
@@ -62,6 +72,7 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
       );
     });
   }
+
   // Future<DocumentReference> _addGeoPoint() async {
   //   var pos = await _location.getLocation();
   //   GeoFirePoint point = geo.point(latitude: pos.latitude!, longitude: pos.longitude!);
@@ -90,7 +101,7 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
             target: LatLng(newData.latitude!, newData.longitude!),
             zoom: 14.5,
             bearing: 192.8334901395799,
-            tilt:0,
+            tilt: 0,
           )));
           refreshmarker(newData, imagedata);
         }
@@ -101,6 +112,7 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
       }
     }
   }
+
   @override
   void dispose() {
     if (_locationSubscriber != null) {
@@ -111,14 +123,19 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
+    final shuttlesRef = database.child('shuttles/shuttleId/location');
+
 
     return Scaffold(
       body: Stack(
         children: [
           Container(
             child: GoogleMap(
-              markers: Set.of((_shuttleMarker != null) ? [_shuttleMarker!] : []),
+              markers: Set.of(
+                  (_shuttleMarker != null) ? [_shuttleMarker!] : []),
               mapType: MapType.normal,
               initialCameraPosition: _initialCamera,
               onMapCreated: _onMapCreated,
@@ -131,12 +148,18 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
                 size.width * 0.83, size.height * 0.4, 0.0, 0.0),
             child: Container(
               child:
-                FloatingActionButton(
-                    child: Icon(Icons.location_searching),
-                    onPressed: () {
-                      _getcurrentLoc();
-                      //_addGeoPoint();
-                    }),
+              FloatingActionButton(
+                child: const Icon(Icons.location_searching),
+                onPressed: () {
+                  _getcurrentLoc();
+                  try{
+                    shuttlesRef.set({'latitude': lat,'longitude': long });
+                    print('WRITE SUCCESFULLY');
+                  }catch(e){
+                    print('You got an database error');
+                  }
+                },
+              ),
             ),
           ),
         ],
