@@ -1,6 +1,8 @@
+
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:app/general/screens.dart';
 import 'package:app/general/util.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import '../profile/button_widget.dart';
 import '../profile/profile_widget.dart';
 import '../profile/redirection_button.dart';
 
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -20,6 +23,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+   String? name =null;
+   String? surname =null;
+   String? email =null;
+
   @override
   Widget build(BuildContext context) {
     final user = UserPreferences.myUser;
@@ -54,15 +61,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget buildName() => Column(
         children: [
-          Text(
-            'Mehmet',
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-          ),
+          FutureBuilder(
+          future: _fetch(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done)
+            return Text("Loading data...Please wait");
+            return Text("Name : $name $surname");
+          },
+        ),
+  
+         
           const SizedBox(height: 4),
-          Text(
-             FirebaseAuth.instance.currentUser!.email as String,
-            style: const TextStyle(color: Colors.grey),
-          )
+          FutureBuilder(
+          future: _fetch(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done)
+            return Text("Loading data...Please wait");
+            return Text("Email : $email");
+          },
+        ),
         ],
       );
 
@@ -70,4 +87,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
         text: 'Upgrade To Shuttle Employee',
         onClicked: () {},
       );
+
+/*
+    _fetch() async {
+         final firebaseUser = await FirebaseAuth.instance.currentUser!;
+         if(firebaseUser!=null) 
+            await FirebaseFirestore.instance.collection('User').doc(firebaseUser.uid).get().then((ds){
+              name = ds.data['Name'];
+              print(name);
+            } ).catchError((e){
+              print(e);
+            }
+            
+    }
+    */
+/*
+  void getData()async{ //use a Async-await function to get the data
+    DocumentSnapshot snapshot;
+    final data =  await FirebaseFirestore.instance.collection("User").doc(uid).get(); //get the data
+     snapshot = data;
+  }
+
+  Future getCurrentUserData() async{
+    try {
+      DocumentSnapshot ds = await userCollection.doc(uid).get();
+      String  firstname = ds.get('FirstName');
+      String lastname = ds.get('LastName');
+      return [firstname,lastname];
+    }catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
+  */
+
+  _fetch() async {
+  
+    final firebaseUser = await FirebaseAuth.instance.currentUser!;
+    if (firebaseUser != null)
+      print('ghgfs');
+      await FirebaseFirestore.instance
+          .collection('User')
+          .doc(firebaseUser.uid)
+          .get()
+          .then((ds) {
+        name = ds.data()!['Name'];
+        surname = ds.data()!['Surname'];
+        email = ds.data()!['Email'];
+        print(name);
+        print(firebaseUser.uid);
+      }).catchError((e) {
+        print(e);
+      });
+  }
 }
+
+  

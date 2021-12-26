@@ -1,4 +1,8 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:app/database/functions.dart';
+import 'package:app/login/screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../profile/button_widget.dart';
 import '../profile/redirection_button.dart';
 import '../profile/screen.dart';
@@ -20,8 +24,13 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  User user = UserPreferences.myUser;
-  late String temp;
+  
+  final _controller = TextEditingController();
+  final _controller2 = TextEditingController();
+  final _controller3 = TextEditingController();
+  String name = "";
+  String surname = "";
+  String password = "";
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -31,36 +40,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
             body: ListView(
               padding: EdgeInsets.symmetric(horizontal: 32),
               physics: BouncingScrollPhysics(),
-              children: [
-                ProfileWidget(
-                  imagePath: user.imagePath,
-                  isEdit: true,
-                  onClicked: () async {},
+              children: <Widget>[
+                
+                const SizedBox(height: 24),
+                Container(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Name',
+                    ),
+                    controller: _controller,
+                  ),
                 ),
                 const SizedBox(height: 24),
-                TextFieldWidget(
-                  label: 'Name',
-                  text: user.name,
-                  onChanged: (name) {
-                    UserPreferences.myUser.name = name;
-                  },
+                 Container(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Surname',
+                    ),
+                    controller: _controller2,
+                  ),
                 ),
                 const SizedBox(height: 24),
-                TextFieldWidget(
-                  label: 'Surname',
-                  text: user.surname,
-                  onChanged: (surname) {},
-                ),
-                const SizedBox(height: 24),
-                TextFieldWidget(
-                  label: 'Email',
-                  text: user.email,
-                  onChanged: (email) {},
-                ),
-                TextFieldWidget(
-                  label: 'Password',
-                  text: user.password,
-                  onChanged: (password) {},
+                
+                Container(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                    ),
+                    controller: _controller3,
+                  ),
                 ),
                 /*
                 ElevatedButton(
@@ -72,14 +80,61 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 child: Text('Save'),
               ),
               */
+              /*
                 ButtonWidget(
                   text: "Save",
                   onClicked: () {
-                    print("sdgsdgsdgsdgsdg\n\n");
+                   
                     //UserPreferences.myUser.name = temp;
                     Navigator.pop(context);
                   },
                 ),
+                */
+                Container(
+                  width: double.infinity,
+                  child: FlatButton(
+                    child: Text('Save'),
+                    color:Colors.blue,
+                    onPressed: () async {
+                      setState(() {
+                         name = _controller.text;
+                         surname = _controller2.text;
+                         password = _controller3.text;
+                      });
+                      
+                      final FirebaseAuth _auth = FirebaseAuth.instance;
+                      final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+                         await _firestore.collection('User').doc(_auth.currentUser!.uid)
+                        .update({
+                        'Name': name,
+                        'Surname':surname,
+                       });
+
+                       final currentUser = FirebaseAuth.instance.currentUser;
+                       await currentUser!.updatePassword(password);
+                       FirebaseAuth.instance.signOut();
+                       Navigator.pushReplacement(
+                         context,
+                         MaterialPageRoute(builder: (context) => LoginScreen()),
+                       );
+                       ScaffoldMessenger.of(context).showSnackBar(
+                         SnackBar(
+                           backgroundColor: Colors.orangeAccent,
+                           content: Text(
+                             'Your Password has been changed. Login again!',
+                             style: TextStyle(fontSize: 18.0),
+                           ),
+                         ),
+                       );
+                       /*
+                         Navigator.push(
+                           context,
+                           MaterialPageRoute(builder: (context) => abc()),
+                         );
+                         */
+                    }, ),
+                    padding: EdgeInsets.all(32),
+                    )
               ],
             ),
           ),
