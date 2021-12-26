@@ -3,19 +3,13 @@ import 'package:app/general/screens.dart';
 import 'package:flutter/material.dart';
 import '../general/util.dart';
 
-class AddChildButton extends StatefulWidget {
-  const AddChildButton({Key? key}) : super(key: key);
-
-  @override
-  _AddChildButtonState createState() => _AddChildButtonState();
-}
-
-class _AddChildButtonState extends State<AddChildButton> {
+class AddChildButton extends StatelessWidget {
   final String text;
 
-  _AddChildButtonState({
+  const AddChildButton({
+    Key? key,
     this.text = "",
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -79,11 +73,13 @@ class _AddChildButtonState extends State<AddChildButton> {
                     child: Text("Submit"),
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      String childid = await generateUserToken();
-
+                      String childid = await generateChildId();
+                      createUser(childid, {
+                        'name': firstNameController.text,
+                        'surname': lastNameController.text,
+                        'shuttles': {shuttleIDController.text: true},
+                      });
                       addChild(childid);
-                      createUser(childid, firstNameController.text,
-                          lastNameController.text);
                       subscribeToShuttle(childid, shuttleIDController.text);
                     },
                   ),
