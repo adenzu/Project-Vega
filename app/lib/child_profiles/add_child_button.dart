@@ -25,7 +25,7 @@ class _AddChildButtonState extends State<AddChildButton> {
     return Align(
       // width:300,
       // height: 100,
-      //alignment: Alignment.bottomRight,
+      alignment: Alignment.bottomRight,
       child: ElevatedButton(
         child: Icon(
           Icons.add,
@@ -34,7 +34,7 @@ class _AddChildButtonState extends State<AddChildButton> {
         style: ElevatedButton.styleFrom(
           shape: CircleBorder(),
           padding: EdgeInsets.all(15),
-          primary: Colors.blue, // <-- Button color
+          primary: Colors.orange, // <-- Button color
           onPrimary: Colors.white, // <-- Splash color
         ),
         onPressed: () {

@@ -55,18 +55,37 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                             Map<String, dynamic> childInfo =
                                 Map<String, dynamic>.from(snapshot.data!.value);
                             return Container(
-                              padding: EdgeInsets.all(20),
+                              padding: EdgeInsets.all(15),
                               child: TitledRectWidgetButton(
-                                padding: EdgeInsets.all(20),
+                                padding: EdgeInsets.all(15),
                                 borderRadius: BorderRadius.circular(25),
                                 alignment: Alignment.centerLeft,
                                 title: Text.rich(TextSpan(children: [
                                   WidgetSpan(
-                                      child: Icon(Icons.account_box),
+                                      child: Icon(
+                                        Icons.person,
+                                        color: Colors.white54,
+                                        size: 100.0,
+                                      ),
                                       alignment: PlaceholderAlignment.middle),
                                   WidgetSpan(
                                       child: Text(
-                                        childInfo['name'],
+                                        childInfo['name'] + " \n",
+                                        style: DefaultTextStyle.of(context)
+                                            .style
+                                            .apply(
+                                                fontSizeFactor: 2.0,
+                                                color: Colors.white),
+                                      ),
+                                      alignment: PlaceholderAlignment.middle),
+                                  WidgetSpan(
+                                      child: Text(
+                                        childInfo['surname'],
+                                        style: DefaultTextStyle.of(context)
+                                            .style
+                                            .apply(
+                                                fontSizeFactor: 1.0,
+                                                color: Colors.white70),
                                       ),
                                       alignment: PlaceholderAlignment.middle)
                                 ])),
@@ -91,7 +110,27 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                                           child: Form(
                                             child: Column(
                                               children: <Widget>[
-                                                Text(childInfo['name']),
+                                                Text.rich(TextSpan(children: [
+                                                  WidgetSpan(
+                                                      child: Text(
+                                                        childInfo['name'] +
+                                                            " " +
+                                                            childInfo[
+                                                                'surname'] +
+                                                            "\n",
+                                                        style: DefaultTextStyle
+                                                                .of(context)
+                                                            .style
+                                                            .apply(
+                                                                fontSizeFactor:
+                                                                    1.0,
+                                                                color: Colors
+                                                                    .black),
+                                                      ),
+                                                      alignment:
+                                                          PlaceholderAlignment
+                                                              .middle),
+                                                ])),
                                               ],
                                             ),
                                           ),
@@ -144,7 +183,7 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
             }),
         Padding(
           padding: EdgeInsets.fromLTRB(
-              size.width * 0.8, size.height * 0.2, 0.0, 0.0),
+              size.width * 0.7, size.height * 0.2, 0.0, 0.0),
           child: const AddChildButton(),
         )
       ],
