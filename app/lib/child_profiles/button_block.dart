@@ -24,6 +24,23 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
   final childrenRef = FirebaseDatabase.instance
       .reference()
       .child("users/" + FirebaseAuth.instance.currentUser!.uid + "/children");
+  List<String> childrenIds = [];
+
+  @override
+  void initState() {
+    super.initState();
+    childrenRef.onChildRemoved.listen((event) {
+      setState(() {
+        childrenIds.clear();
+      });
+    });
+    childrenRef.onValue.listen((event) {
+      setState(() {
+        childrenIds =
+            Map<String, bool>.from(event.snapshot.value).keys.toList();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,117 +48,107 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
     // final screenHeight = size.height;
     return Stack(
       children: [
-        FutureBuilder(
-            future: childrenRef.once(),
-            builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data!.exists) {
-                  Map<String, bool> children =
-                      Map<String, bool>.from(snapshot.data!.value);
-                  List<String> childIds = children.keys.toList();
-
-                  return ListView.builder(
-                    itemCount: childIds.length,
-                    itemBuilder: (context, i) {
-                      String currChildId = childIds[i];
-                      return FutureBuilder(
-                        future: FirebaseDatabase.instance
-                            .reference()
-                            .child("users/" + currChildId)
-                            .once(),
-                        builder:
-                            (context, AsyncSnapshot<DataSnapshot> snapshot) {
-                          if (snapshot.hasData && snapshot.data!.exists) {
-                            Map<String, dynamic> childInfo =
-                                Map<String, dynamic>.from(snapshot.data!.value);
-                            return Container(
-                              padding: EdgeInsets.all(20),
-                              child: TitledRectWidgetButton(
-                                padding: EdgeInsets.all(20),
-                                borderRadius: BorderRadius.circular(25),
-                                alignment: Alignment.centerLeft,
-                                title: Text.rich(TextSpan(children: [
-                                  WidgetSpan(
-                                      child: Icon(Icons.account_box),
-                                      alignment: PlaceholderAlignment.middle),
-                                  WidgetSpan(
-                                      child: Text(
-                                        childInfo['name'],
-                                      ),
-                                      alignment: PlaceholderAlignment.middle)
-                                ])),
-                                //  Container(
-                                //   child: Text(childInfo['name'],
-                                //       style: TextStyle(fontSize: 50)),
-                                // ),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 150,
-                                  color: Colors.blue,
+        ListView.builder(
+          itemCount: childrenIds.length,
+          itemBuilder: (context, i) {
+            String currChildId = childrenIds[i];
+            return FutureBuilder(
+              future: FirebaseDatabase.instance
+                  .reference()
+                  .child("users/" + currChildId)
+                  .once(),
+              builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+                if (snapshot.hasData && snapshot.data!.exists) {
+                  Map<String, dynamic> childInfo =
+                      Map<String, dynamic>.from(snapshot.data!.value);
+                  return Container(
+                    padding: EdgeInsets.all(20),
+                    child: TitledRectWidgetButton(
+                      padding: EdgeInsets.all(20),
+                      borderRadius: BorderRadius.circular(25),
+                      alignment: Alignment.centerLeft,
+                      title: Text.rich(
+                        TextSpan(
+                          children: [
+                            WidgetSpan(
+                                child: Icon(
+                                  Icons.account_circle,
+                                  size: 20,
                                 ),
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        scrollable: true,
-                                        title: Text("Child Information"),
-                                        content: Padding(
-                                          padding: const EdgeInsets.all(2.0),
-                                          child: Form(
-                                            child: Column(
-                                              children: <Widget>[
-                                                Text(childInfo['name']),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        actions: [
-                                          ElevatedButton(
-                                              child: Text("Edit"),
-                                              onPressed: () async {}),
-                                          ElevatedButton(
-                                            child: Text("Delete Child"),
-                                            onPressed: () async {
-                                              Navigator.of(context).pop();
-
-                                              for (var shuttleId
-                                                  in Map<String, bool>.from(
-                                                          childInfo['shuttles'])
-                                                      .keys
-                                                      .toList()) {
-                                                removeFromShuttle(
-                                                    currChildId, shuttleId);
-                                              }
-                                              removeChild(currChildId);
-                                            },
-                                          )
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
+                                alignment: PlaceholderAlignment.middle),
+                            WidgetSpan(
+                                child: Text(
+                                  childInfo['name'],
+                                  style: TextStyle(fontSize: 24),
+                                ),
+                                alignment: PlaceholderAlignment.middle)
+                          ],
+                        ),
+                      ),
+                      child: Container(
+                        width: double.infinity,
+                        height: 150,
+                        color: Colors.blue,
+                      ),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              scrollable: true,
+                              title: Text("Child Information"),
+                              content: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Form(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text(childInfo['name']),
+                                    ],
+                                  ),
+                                ),
                               ),
+                              actions: [
+                                ElevatedButton(
+                                    child: Text("Edit"),
+                                    onPressed: () async {}),
+                                ElevatedButton(
+                                  child: Text("Delete Child"),
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+
+                                    for (var shuttleId
+                                        in Map<String, bool>.from(
+                                                childInfo['shuttles'])
+                                            .keys
+                                            .toList()) {
+                                      removeFromShuttle(currChildId, shuttleId);
+                                    }
+                                    removeChild(currChildId);
+                                    deleteUser(currChildId);
+                                  },
+                                )
+                              ],
                             );
-                          }
-                          return SizedBox();
-                        },
-                      );
-                    },
+                          },
+                        );
+                      },
+                    ),
                   );
                 }
-                return const Expanded(
-                  child: Center(
-                    child: Text(
-                      "Bağlı profiliniz bulunmamaktadır.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 30),
-                    ),
-                  ),
-                );
-              }
-              return const Center(child: CircularProgressIndicator());
-            }),
+                return const CircularProgressIndicator();
+              },
+            );
+          },
+        ),
+        childrenIds.isNotEmpty
+            ? const SizedBox()
+            : const Center(
+                child: Text(
+                  "Bağlı profiliniz bulunmamaktadır.",
+                  style: TextStyle(fontSize: 30),
+                  textAlign: TextAlign.center,
+                ),
+              ),
         Padding(
           padding: EdgeInsets.fromLTRB(
               size.width * 0.8, size.height * 0.2, 0.0, 0.0),

@@ -67,12 +67,12 @@ Future<void> addChild(String childId) async {
 }
 
 /// verilen id ve isim ve soy isim ile user oluşturur
-Future<void> createUser(
-    String userId, String userName, String userSurname) async {
-  FirebaseDatabase.instance
-      .reference()
-      .child("users/$userId")
-      .set({"name": userName, "surname": userSurname});
+Future<void> createUser(String userId, dynamic value) async {
+  FirebaseDatabase.instance.reference().child("users/$userId").set(value);
+}
+
+Future<void> deleteUser(String userId) async {
+  FirebaseDatabase.instance.reference().child("users/$userId").set(null);
 }
 
 /// verilend id'yi kullanıcının bağlı (children) profillerinden siler
@@ -84,14 +84,24 @@ Future<void> removeChild(String childId) async {
       .set(null);
 }
 
-/// user için unique id/token oluşturur
-Future<String> generateUserToken() async {
+/// child için unique id/token oluşturur
+Future<String> generateChildId() async {
   DatabaseReference tokenRef =
-      FirebaseDatabase.instance.reference().child("userToken");
+      FirebaseDatabase.instance.reference().child("childId");
   await FirebaseDatabase.instance
       .reference()
-      .update({"userToken": ServerValue.increment(1)});
-  return "id" + (await tokenRef.once()).value.toString();
+      .update({"childId": ServerValue.increment(1)});
+  return "C" + (await tokenRef.once()).value.toString();
+}
+
+/// shuttle için unique id/token oluşturur
+Future<String> generateShuttleId() async {
+  DatabaseReference tokenRef =
+      FirebaseDatabase.instance.reference().child("shuttleId");
+  await FirebaseDatabase.instance
+      .reference()
+      .update({"shuttleId": ServerValue.increment(1)});
+  return "S" + (await tokenRef.once()).value.toString();
 }
 
 /// userın shuttleda passenger olma durumunu setler

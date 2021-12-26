@@ -55,7 +55,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                 Container(
+                Container(
                   child: TextField(
                     decoration: InputDecoration(
                       labelText: 'Surname',
@@ -90,7 +90,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 child: Text('Save'),
               ),
               */
-              /*
+                /*
                 ButtonWidget(
                   text: "Save",
                   onClicked: () {
@@ -102,22 +102,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 */
                 Container(
                   width: double.infinity,
-                  child: FlatButton(
+                  child: TextButton(
                     child: Text('Save'),
-                    color:Colors.blue,
+                    style: const ButtonStyle(
+                        // backgroundColor: MaterialStateProperty.all(Color: Colors.blue),
+                        ),
                     onPressed: () {
                       setState(() {
-                         name = _controller.text;
-                         surname = _controller2.text;
-                         email = _controller3.text;
-                         password = _controller4.text;
+                        name = _controller.text;
+                        surname = _controller2.text;
+                        email = _controller3.text;
+                        password = _controller4.text;
                       });
-                         updateUserInfo({'name':name});
-                         updateUserInfo({'surname':surname});
-                         Navigator.pop(context);
-                    }, ),
-                    padding: EdgeInsets.all(32),
-                    )
+
+                      /// Firestore database için fonksiyon
+                      /// yazılmadı daha
+                      //  updateUserInfo({'name':name});
+                      //  updateUserInfo({'surname':surname});
+                      Navigator.pop(context);
+                    },
+                  ),
+                  padding: EdgeInsets.all(32),
+                )
               ],
             ),
           ),
