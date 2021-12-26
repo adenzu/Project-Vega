@@ -1,6 +1,9 @@
+
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:app/general/screens.dart';
 import 'package:app/general/util.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../profile/user.dart';
@@ -11,6 +14,7 @@ import '../profile/button_widget.dart';
 import '../profile/profile_widget.dart';
 import '../profile/redirection_button.dart';
 
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -19,6 +23,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+   String? name ;
+   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
     final user = UserPreferences.myUser;
@@ -36,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     redirectionTo(ScreenNames.editProfile)(context),
               ),
               const SizedBox(height: 24),
-              buildName(user),
+              buildName(),
               const SizedBox(height: 24),
               Center(child: buildUpgradeButton()),
               const SizedBox(height: 48),
@@ -51,15 +58,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget buildName(User user) => Column(
+  Widget buildName() => Column(
         children: [
+          FutureBuilder(
+          future: _fetch(),
+          builder: (context,snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+
+              return Text("Loading data...Please wait");
+            }
+            else return Text("Name : $name");
+          },
+        ),
+  
+         /*
           Text(
-            user.name,
+            FirebaseAuth.instance.currentUser!.displayName as String,
+            
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
+          */
           const SizedBox(height: 4),
           Text(
-            user.email,
+             FirebaseAuth.instance.currentUser!.email as String,
             style: const TextStyle(color: Colors.grey),
           )
         ],
@@ -69,4 +90,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
         text: 'Upgrade To Shuttle Employee',
         onClicked: () {},
       );
+
+/*
+    _fetch() async {
+         final firebaseUser = await FirebaseAuth.instance.currentUser!;
+         if(firebaseUser!=null) 
+            await FirebaseFirestore.instance.collection('User').doc(firebaseUser.uid).get().then((ds){
+              name = ds.data['Name'];
+              print(name);
+            } ).catchError((e){
+              print(e);
+            }
+            
+    }
+    */
+/*
+  void getData()async{ //use a Async-await function to get the data
+    DocumentSnapshot snapshot;
+    final data =  await FirebaseFirestore.instance.collection("User").doc(uid).get(); //get the data
+     snapshot = data;
+  }
+
+  Future getCurrentUserData() async{
+    try {
+      DocumentSnapshot ds = await userCollection.doc(uid).get();
+      String  firstname = ds.get('FirstName');
+      String lastname = ds.get('LastName');
+      return [firstname,lastname];
+    }catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
+  */
+
+  _fetch() async {
+  
+    final firebaseUser = await FirebaseAuth.instance.currentUser;
+
+    if (firebaseUser != null) {
+      await _firestore
+          .collection('User')
+          .doc(firebaseUser.uid)
+          .get()
+          .then((ds) {
+        name = ds.data()!['Name'];
+        print(name);
+
+      }).catchError((e) {
+        print(e);
+      });
+    }
+    else
+      print("aaaaa");
+  }
 }
+
+  

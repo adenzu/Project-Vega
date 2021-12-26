@@ -78,17 +78,13 @@ class _AddChildButtonState extends State<AddChildButton> {
                   ElevatedButton(
                     child: Text("Submit"),
                     onPressed: () async {
+                      Navigator.of(context).pop();
                       String childid = await generateUserToken();
 
-                      setState(
-                        () {
-                          addChild(childid);
-                          createUser(childid, firstNameController.text,
-                              lastNameController.text);
-                          subscribeToShuttle(childid, shuttleIDController.text);
-                          Navigator.of(context).pop();
-                        },
-                      );
+                      addChild(childid);
+                      createUser(childid, firstNameController.text,
+                          lastNameController.text);
+                      subscribeToShuttle(childid, shuttleIDController.text);
                     },
                   ),
                 ],

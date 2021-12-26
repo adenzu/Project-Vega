@@ -1,5 +1,6 @@
 //import 'dart:html';
 
+import 'package:app/database/functions.dart';
 import 'package:app/general/screens.dart';
 import 'package:app/general/titled_rect_widget_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,72 +39,96 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                   Map<String, bool> children =
                       Map<String, bool>.from(snapshot.data!.value);
                   List<String> childIds = children.keys.toList();
-                  return ListView.builder(
-                      itemCount: childIds.length,
-                      itemBuilder: (context, i) {
-                        return FutureBuilder(
-                          future: FirebaseDatabase.instance
-                              .reference()
-                              .child("users/" + childIds[i])
-                              .once(),
-                          builder:
-                              (context, AsyncSnapshot<DataSnapshot> snapshot) {
-                            if (snapshot.hasData && snapshot.data!.exists) {
-                              Map<String, dynamic> childInfo =
-                                  Map<String, dynamic>.from(
-                                      snapshot.data!.value);
 
-                              return Container(
+                  return ListView.builder(
+                    itemCount: childIds.length,
+                    itemBuilder: (context, i) {
+                      String currChildId = childIds[i];
+                      return FutureBuilder(
+                        future: FirebaseDatabase.instance
+                            .reference()
+                            .child("users/" + currChildId)
+                            .once(),
+                        builder:
+                            (context, AsyncSnapshot<DataSnapshot> snapshot) {
+                          if (snapshot.hasData && snapshot.data!.exists) {
+                            Map<String, dynamic> childInfo =
+                                Map<String, dynamic>.from(snapshot.data!.value);
+                            return Container(
+                              padding: EdgeInsets.all(20),
+                              child: TitledRectWidgetButton(
                                 padding: EdgeInsets.all(20),
-                                child: TitledRectWidgetButton(
-                                  padding: EdgeInsets.all(20),
-                                  borderRadius: BorderRadius.circular(25),
-                                  alignment: Alignment.centerLeft,
-                                  title: Container(
-                                    child: Text(childInfo['name'],
-                                        style: TextStyle(fontSize: 50)),
-                                  ),
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: 150,
-                                    color: Colors.blue,
-                                  ),
-                                  onTap: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            scrollable: true,
-                                            title: Text("Child Information"),
-                                            content: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(2.0),
-                                              child: Form(
-                                                child: Column(
-                                                  children: <Widget>[
-                                                    Text(childInfo['name']),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            actions: [
-                                              ElevatedButton(
-                                                  child: Text("Edit"),
-                                                  onPressed: () async {}),
-                                              ElevatedButton(
-                                                  child: Text("Delete Child"),
-                                                  onPressed: () async {})
-                                            ],
-                                          );
-                                        });
-                                  },
+                                borderRadius: BorderRadius.circular(25),
+                                alignment: Alignment.centerLeft,
+                                title: Text.rich(TextSpan(children: [
+                                  WidgetSpan(
+                                      child: Icon(Icons.account_box),
+                                      alignment: PlaceholderAlignment.middle),
+                                  WidgetSpan(
+                                      child: Text(
+                                        childInfo['name'],
+                                      ),
+                                      alignment: PlaceholderAlignment.middle)
+                                ])),
+                                //  Container(
+                                //   child: Text(childInfo['name'],
+                                //       style: TextStyle(fontSize: 50)),
+                                // ),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 150,
+                                  color: Colors.blue,
                                 ),
-                              );
-                            }
-                            return SizedBox();
-                          },
-                        );
-                      });
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        scrollable: true,
+                                        title: Text("Child Information"),
+                                        content: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Form(
+                                            child: Column(
+                                              children: <Widget>[
+                                                Text(childInfo['name']),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        actions: [
+                                          ElevatedButton(
+                                              child: Text("Edit"),
+                                              onPressed: () async {}),
+                                          ElevatedButton(
+                                            child: Text("Delete Child"),
+                                            onPressed: () async {
+                                              Navigator.of(context).pop();
+
+                                              for (var shuttleId
+                                                  in Map<String, bool>.from(
+                                                          childInfo['shuttles'])
+                                                      .keys
+                                                      .toList()) {
+                                                removeFromShuttle(
+                                                    currChildId, shuttleId);
+                                              }
+                                              removeChild(currChildId);
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                          return SizedBox();
+                        },
+                      );
+                    },
+                  );
                 }
                 return const Expanded(
                   child: Center(
