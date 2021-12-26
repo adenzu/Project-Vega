@@ -1,5 +1,8 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:app/database/functions.dart';
+import 'package:app/login/screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../profile/button_widget.dart';
 import '../profile/redirection_button.dart';
 import '../profile/screen.dart';
@@ -21,14 +24,11 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  User user = UserPreferences.myUser;
   final _controller = TextEditingController();
   final _controller2 = TextEditingController();
   final _controller3 = TextEditingController();
-  final _controller4 = TextEditingController();
   String name = "";
   String surname = "";
-  String email = "";
   String password = "";
 
   @override
@@ -40,11 +40,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               padding: EdgeInsets.symmetric(horizontal: 32),
               physics: BouncingScrollPhysics(),
               children: <Widget>[
-                ProfileWidget(
-                  imagePath: user.imagePath,
-                  isEdit: true,
-                  onClicked: () async {},
-                ),
                 const SizedBox(height: 24),
                 Container(
                   child: TextField(
@@ -67,17 +62,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 Container(
                   child: TextField(
                     decoration: InputDecoration(
-                      labelText: 'E-mail',
-                    ),
-                    controller: _controller3,
-                  ),
-                ),
-                Container(
-                  child: TextField(
-                    decoration: InputDecoration(
                       labelText: 'Password',
                     ),
-                    controller: _controller4,
+                    controller: _controller3,
                   ),
                 ),
                 /*
@@ -104,22 +91,44 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   width: double.infinity,
                   child: TextButton(
                     child: Text('Save'),
-                    style: const ButtonStyle(
-                        // backgroundColor: MaterialStateProperty.all(Color: Colors.blue),
-                        ),
-                    onPressed: () {
+                    style: TextButton.styleFrom(primary: Colors.blue),
+                    onPressed: () async {
                       setState(() {
                         name = _controller.text;
                         surname = _controller2.text;
-                        email = _controller3.text;
-                        password = _controller4.text;
+                        password = _controller3.text;
                       });
 
-                      /// Firestore database için fonksiyon
-                      /// yazılmadı daha
-                      //  updateUserInfo({'name':name});
-                      //  updateUserInfo({'surname':surname});
-                      Navigator.pop(context);
+                      final FirebaseAuth _auth = FirebaseAuth.instance;
+                      final FirebaseFirestore _firestore =
+                          FirebaseFirestore.instance;
+                      await _firestore
+                          .collection('User')
+                          .doc(_auth.currentUser!.uid)
+                          .update({
+                        'Name': name,
+                        'Surname': surname,
+                      });
+
+                      final currentUser = FirebaseAuth.instance.currentUser;
+                      await currentUser!.updatePassword(password);
+                      FirebaseAuth.instance.signOut();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: Colors.orangeAccent,
+                          content: Text(
+                            'Your Password has been changed. Login again!',
+                            style: TextStyle(fontSize: 18),
+                          )));
+                      /*
+                         Navigator.push(
+                           context,
+                           MaterialPageRoute(builder: (context) => abc()),
+                         );
+                         */
                     },
                   ),
                   padding: EdgeInsets.all(32),

@@ -23,7 +23,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-   String? name ;
+
+   String? name =null;
+   String? surname =null;
+
    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
@@ -67,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               return Text("Loading data...Please wait");
             }
-            else return Text("Name : $name");
+            else return Text("Name : $name $surname");
           },
         ),
   
@@ -135,6 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .get()
           .then((ds) {
         name = ds.data()!['Name'];
+        surname = ds.data()!['Surname'];
         print(name);
 
       }).catchError((e) {
