@@ -1,5 +1,7 @@
 import 'package:app/database/functions.dart';
 import 'package:app/general/screens.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../general/util.dart';
 
@@ -72,12 +74,15 @@ class AddChildButton extends StatelessWidget {
                   ElevatedButton(
                     child: Text("Submit"),
                     onPressed: () async {
-                      Navigator.of(context).pop();
+                      Navigator.pop(context);
                       String childid = await generateChildId();
                       createUser(childid, {
                         'name': firstNameController.text,
                         'surname': lastNameController.text,
                         'shuttles': {shuttleIDController.text: true},
+                        'parents': {
+                          FirebaseAuth.instance.currentUser!.uid: true
+                        },
                       });
                       addChild(childid);
                       subscribeToShuttle(childid, shuttleIDController.text);

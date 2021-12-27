@@ -1,4 +1,6 @@
+import 'package:app/login/screen.dart';
 import 'package:app/profile/edit_profile_page.dart';
+import 'package:app/signup/screen.dart';
 
 import '../child_profiles/enter_info.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,6 +33,8 @@ class ScreenNames {
   static const settings = 'settings';
   static const childUpdate = 'childUpdate';
   static const editProfile = 'editProfile';
+  static const login = 'login';
+  static const signup = 'signup';
 }
 
 /// Yeni bir sayfa oluşturduğunuzda buraya ilişkin değişkeni ekleyin
@@ -56,6 +60,8 @@ class Screens {
   static const feedback = FeedbackScreen();
   static const settings = SettingsScreen();
   static const editProfile = EditProfilePage();
+  static const login = LoginScreen();
+  static const signup = SignUp();
 
   static const Map<String, Widget> screenMap = {
     ScreenNames.main: Screens.main,
@@ -67,5 +73,7 @@ class Screens {
     ScreenNames.feedback: Screens.feedback,
     ScreenNames.settings: Screens.settings,
     ScreenNames.editProfile: Screens.editProfile,
+    ScreenNames.login: Screens.login,
+    ScreenNames.signup: Screens.signup,
   };
 }

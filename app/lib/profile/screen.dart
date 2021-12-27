@@ -1,4 +1,3 @@
-
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:app/general/screens.dart';
 import 'package:app/general/util.dart';
@@ -14,7 +13,6 @@ import '../profile/button_widget.dart';
 import '../profile/profile_widget.dart';
 import '../profile/redirection_button.dart';
 
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -23,11 +21,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String? name = null;
+  String? surname = null;
 
-   String? name =null;
-   String? surname =null;
-
-   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -64,17 +61,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buildName() => Column(
         children: [
           FutureBuilder(
-          future: _fetch(),
-          builder: (context,snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
+            future: _fetch(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return Text("Loading data...Please wait");
+              }
+              return Text("$name $surname");
+            },
+          ),
 
-              return Text("Loading data...Please wait");
-            }
-            else return Text("Name : $name $surname");
-          },
-        ),
-  
-         /*
+          /*
           Text(
             FirebaseAuth.instance.currentUser!.displayName as String,
             
@@ -83,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           */
           const SizedBox(height: 4),
           Text(
-             FirebaseAuth.instance.currentUser!.email as String,
+            FirebaseAuth.instance.currentUser!.email as String,
             style: const TextStyle(color: Colors.grey),
           )
         ],
@@ -128,7 +124,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   */
 
   _fetch() async {
-  
     final firebaseUser = await FirebaseAuth.instance.currentUser;
 
     if (firebaseUser != null) {
@@ -140,14 +135,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         name = ds.data()!['Name'];
         surname = ds.data()!['Surname'];
         print(name);
-
       }).catchError((e) {
         print(e);
       });
-    }
-    else
+    } else
       print("aaaaa");
   }
 }
-
-  

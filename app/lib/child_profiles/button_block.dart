@@ -67,29 +67,39 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                       padding: EdgeInsets.all(20),
                       borderRadius: BorderRadius.circular(25),
                       alignment: Alignment.centerLeft,
-                      title: Text.rich(TextSpan(children: [
-                        WidgetSpan(
-                            child: Icon(
-                              Icons.person,
-                              color: Colors.white54,
-                              size: 100.0,
-                            ),
-                            alignment: PlaceholderAlignment.middle),
-                        WidgetSpan(
-                            child: Text(
-                              childInfo['name'] + " \n",
-                              style: DefaultTextStyle.of(context).style.apply(
-                                  fontSizeFactor: 2.0, color: Colors.white),
-                            ),
-                            alignment: PlaceholderAlignment.middle),
-                        WidgetSpan(
-                            child: Text(
-                              childInfo['surname'],
-                              style: DefaultTextStyle.of(context).style.apply(
-                                  fontSizeFactor: 1.0, color: Colors.white70),
-                            ),
-                            alignment: PlaceholderAlignment.middle)
-                      ])),
+                      title: Text.rich(
+                        TextSpan(
+                          children: [
+                            WidgetSpan(
+                                child: Icon(
+                                  Icons.person,
+                                  color: Colors.white54,
+                                  size: 100.0,
+                                ),
+                                alignment: PlaceholderAlignment.middle),
+                            WidgetSpan(
+                                child: Text(
+                                  childInfo['name'] + " \n",
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .apply(
+                                          fontSizeFactor: 2.0,
+                                          color: Colors.white),
+                                ),
+                                alignment: PlaceholderAlignment.middle),
+                            WidgetSpan(
+                                child: Text(
+                                  childInfo['surname'],
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .apply(
+                                          fontSizeFactor: 1.0,
+                                          color: Colors.white70),
+                                ),
+                                alignment: PlaceholderAlignment.middle)
+                          ],
+                        ),
+                      ),
                       child: Container(
                         width: double.infinity,
                         height: 150,
@@ -107,23 +117,27 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                                 child: Form(
                                   child: Column(
                                     children: <Widget>[
-                                      Text.rich(TextSpan(children: [
-                                        WidgetSpan(
-                                            child: Text(
-                                              childInfo['name'] +
-                                                  " " +
-                                                  childInfo['surname'] +
-                                                  "\n",
-                                              style:
-                                                  DefaultTextStyle.of(context)
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            WidgetSpan(
+                                                child: Text(
+                                                  childInfo['name'] +
+                                                      " " +
+                                                      childInfo['surname'] +
+                                                      "\n",
+                                                  style: DefaultTextStyle.of(
+                                                          context)
                                                       .style
                                                       .apply(
                                                           fontSizeFactor: 1.0,
                                                           color: Colors.black),
-                                            ),
-                                            alignment:
-                                                PlaceholderAlignment.middle),
-                                      ])),
+                                                ),
+                                                alignment: PlaceholderAlignment
+                                                    .middle),
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -145,6 +159,10 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                                       removeFromShuttle(currChildId, shuttleId);
                                     }
                                     removeChild(currChildId);
+
+                                    /// başka parent kullanıcıları varsa silmek
+                                    /// mantıklıca olmayacaktır
+                                    // deleteUser(currChildId);
                                   },
                                 )
                               ],
@@ -155,7 +173,14 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                     ),
                   );
                 }
-                return const CircularProgressIndicator();
+                return Center(
+                  child: Container(
+                    padding: EdgeInsets.all(40),
+                    height: 190,
+                    width: 190,
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               },
             );
           },

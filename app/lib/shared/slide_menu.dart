@@ -1,7 +1,15 @@
+import 'package:app/general/util.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../general/screens.dart';
 import 'slide_menu_tile.dart';
+
+void Function(BuildContext) redirectOrPop(String screenName) {
+  return (context) => isScreenName(screenName)(context)
+      ? Navigator.pop(context)
+      : redirectionTo(screenName)(context);
+}
 
 class SlideMenu extends StatelessWidget {
   final List<Map<String, Object>> menuTiles = [
@@ -18,28 +26,25 @@ class SlideMenu extends StatelessWidget {
       "isDivider": false,
       "title": "Ana Sayfa",
       "iconData": Icons.house,
-      "onTap": (context) => Navigator.of(context).pushNamed(ScreenNames.main),
+      "onTap": redirectOrPop(ScreenNames.main),
     },
     {
       "isDivider": false,
       "title": "Profilim",
       "iconData": Icons.account_circle,
-      "onTap": (context) =>
-          Navigator.of(context).pushNamed(ScreenNames.profile),
+      "onTap": redirectOrPop(ScreenNames.profile),
     },
     {
       "isDivider": false,
       "title": "Servislerim",
       "iconData": Icons.directions_bus,
-      "onTap": (context) =>
-          Navigator.of(context).pushNamed(ScreenNames.myShuttle),
+      "onTap": redirectOrPop(ScreenNames.myShuttle),
     },
     {
       "isDivider": false,
       "title": "Bağlı Profiller",
       "iconData": Icons.account_tree,
-      "onTap": (context) =>
-          Navigator.of(context).pushNamed(ScreenNames.childProfiles),
+      "onTap": redirectOrPop(ScreenNames.childProfiles),
     },
     {
       "isDivider": true,
@@ -48,7 +53,7 @@ class SlideMenu extends StatelessWidget {
       "isDivider": false,
       "title": "Servis ekle",
       "iconData": Icons.add,
-      "onTap": () {},
+      "onTap": (context) {},
     },
     {
       "isDivider": true,
@@ -57,28 +62,29 @@ class SlideMenu extends StatelessWidget {
       "isDivider": false,
       "title": "Bildir",
       "iconData": Icons.mail,
-      "onTap": ((context) =>
-          Navigator.of(context).pushNamed(ScreenNames.feedback)),
+      "onTap": redirectOrPop(ScreenNames.feedback),
     },
     {
       "isDivider": false,
       "title": "Hakkında",
       "iconData": Icons.info,
-      "onTap": ((context) =>
-          Navigator.of(context).pushNamed(ScreenNames.about)),
+      "onTap": redirectOrPop(ScreenNames.about),
     },
     {
       "isDivider": false,
       "title": "Ayarlar",
       "iconData": Icons.settings,
-      "onTap": ((context) =>
-          Navigator.of(context).pushNamed(ScreenNames.settings)),
+      "onTap": redirectOrPop(ScreenNames.settings),
     },
     {
       "isDivider": false,
       "title": "Çıkış",
       "iconData": Icons.logout,
-      "onTap": (context) {},
+      "onTap": (context) {
+        FirebaseAuth.instance.signOut();
+        Navigator.pushNamedAndRemoveUntil(
+            context, ScreenNames.login, (route) => false);
+      },
     },
   ];
 
