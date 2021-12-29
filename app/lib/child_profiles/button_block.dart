@@ -162,7 +162,7 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
 
                                     /// başka parent kullanıcıları varsa silmek
                                     /// mantıklıca olmayacaktır
-                                    // deleteUser(currChildId);
+                                    deleteChild(currChildId);
                                   },
                                 )
                               ],

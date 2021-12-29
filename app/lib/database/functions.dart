@@ -84,16 +84,23 @@ Future<void> deleteChild(String childId) async {
 
 /// child için unique id oluşturur
 Future<String> generateChildId() async {
-  DatabaseReference childCounterRef = _getChildCounter();
+  DataSnapshot snap = await _getChildCounter().once();
   await _increaseChildCounter();
-  return "C" + (await childCounterRef.once()).value.toString();
+  return "C" + snap.value.toString();
 }
 
 /// shuttle için unique id oluşturur
 Future<String> generateShuttleId() async {
-  DatabaseReference shuttleCounterRef = _getShuttleCounter();
+  DataSnapshot snap = await _getShuttleCounter().once();
   await _increaseShuttleCounter();
-  return "S" + (await shuttleCounterRef.once()).value.toString();
+  return "S" + snap.value.toString();
+}
+
+/// route için unique id oluşturur
+Future<String> generateRouteId() async {
+  DataSnapshot snap = await _getRouteCounter().once();
+  await _increaseRouteCounter();
+  return "R" + snap.value.toString();
 }
 
 /// userı bindirir
