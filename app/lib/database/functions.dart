@@ -84,14 +84,14 @@ Future<void> deleteChild(String childId) async {
 
 /// child için unique id oluşturur
 Future<String> generateChildId() async {
-  DatabaseReference childCounterRef = await _getChildCounter();
+  DatabaseReference childCounterRef = _getChildCounter();
   await _increaseChildCounter();
   return "C" + (await childCounterRef.once()).value.toString();
 }
 
 /// shuttle için unique id oluşturur
 Future<String> generateShuttleId() async {
-  DatabaseReference shuttleCounterRef = await _getShuttleCounter();
+  DatabaseReference shuttleCounterRef = _getShuttleCounter();
   await _increaseShuttleCounter();
   return "S" + (await shuttleCounterRef.once()).value.toString();
 }
@@ -236,7 +236,7 @@ Future<void> _increaseChildCounter() async {
       .update({"childCounter": ServerValue.increment(1)});
 }
 
-Future<DatabaseReference> _getChildCounter() async {
+DatabaseReference _getChildCounter() {
   return FirebaseDatabase.instance.reference().child("childCounter");
 }
 
@@ -246,7 +246,7 @@ Future<void> _increaseShuttleCounter() async {
       .update({"shuttleCounter": ServerValue.increment(1)});
 }
 
-Future<DatabaseReference> _getShuttleCounter() async {
+DatabaseReference _getShuttleCounter() {
   return FirebaseDatabase.instance.reference().child("shuttleCounter");
 }
 
@@ -256,7 +256,7 @@ Future<void> _increaseRouteCounter() async {
       .update({"routeCounter": ServerValue.increment(1)});
 }
 
-Future<DatabaseReference> _getRouteCounter() async {
+DatabaseReference _getRouteCounter() {
   return FirebaseDatabase.instance.reference().child("routeCounter");
 }
 
