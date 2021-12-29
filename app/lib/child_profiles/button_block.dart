@@ -153,7 +153,7 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                                     // shuttle id yerine route id'ye dönüş yapılması gerekiyor
                                     for (var shuttleId
                                         in Map<String, bool>.from(
-                                                childInfo['shuttles'])
+                                                childInfo['routes'])
                                             .keys
                                             .toList()) {
                                       childUnsubRoute(currChildId, shuttleId);
