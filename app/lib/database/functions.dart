@@ -122,6 +122,14 @@ Future<void> getOff(String userId, String shuttleId) async {
   return setOnShuttle(userId, shuttleId, false);
 }
 
+Future<void> setFCMToken(String token) async {
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+  FirebaseDatabase.instance
+      .reference()
+      .child("users/$userId/fcmToken")
+      .set(token);
+}
+
 
 /// hiyerarşi:
 ///```
@@ -129,13 +137,52 @@ Future<void> getOff(String userId, String shuttleId) async {
 ///   shuttleEmployees
 ///     employeeId
 ///       shuttles
-///         shuttleId
+///         shuttleId1
+///         shuttleId2
+///         ...
 ///   users
 ///     userId
+///       name
+///       surname
+///       parents
+///         parentId1
+///         parentId2
+///         ...
 ///       children
-///         childId
+///         childId1
+///         childId2
+///         ...
+///       fcmTokens                 // needed for notification
+///         token1
+///         token2
+///         ...
+///       routes
+///         routeId1
+///         routeId2
+///         ...
 ///   shuttles
 ///     shuttleId
+///       routes
+///         routeId1: false         // is the route current route
+///         routeId2: true          // current route
+///         routeId3: false
+///         ...
+///       employees
+///         employeeId1
+///         epmloyeeId2
+///         ...
+///   routes
+///     routeId
 ///       passengers
-///         userId
-/// ```
+///         passengerId1
+///           isOn: true            // is on the shuttle currently
+///           status: 1             // will passenger be there, 1 for yes 
+///         passengerId2
+///           isOn: false
+///           status: 0             // 0 for won't use 
+///         passengerId3
+///           isOn: false
+///           status: 2             // 2 for late
+///         ...
+///```
+///
