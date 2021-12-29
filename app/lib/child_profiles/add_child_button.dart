@@ -76,16 +76,17 @@ class AddChildButton extends StatelessWidget {
                     onPressed: () async {
                       Navigator.pop(context);
                       String childid = await generateChildId();
-                      createUser(childid, {
+                      // shuttle id yerine route id'ye dönüş yapılması gerekiyor
+                      createChild(childid, {
                         'name': firstNameController.text,
                         'surname': lastNameController.text,
-                        'shuttles': {shuttleIDController.text: true},
+                        'routes': {shuttleIDController.text: true},
                         'parents': {
                           FirebaseAuth.instance.currentUser!.uid: true
                         },
                       });
                       addChild(childid);
-                      subscribeToShuttle(childid, shuttleIDController.text);
+                      childSubRoute(childid, shuttleIDController.text);
                     },
                   ),
                 ],

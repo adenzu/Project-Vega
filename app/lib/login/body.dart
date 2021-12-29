@@ -1,3 +1,6 @@
+import 'package:app/database/functions.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 import '../components/circular_button.dart';
 import '../components/not_visible_text_field_container.dart';
 import '../components/visible_text_field_container.dart';
@@ -90,6 +93,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                           builder: (context) => const VerifyScreen()),
                     );
                   } else {
+                    addFCMToken();
                     Navigator.push(
                       context,
                       MaterialPageRoute(

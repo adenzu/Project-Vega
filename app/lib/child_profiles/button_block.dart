@@ -150,13 +150,13 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                                   child: Text("Delete Child"),
                                   onPressed: () async {
                                     Navigator.of(context).pop();
-
+                                    // shuttle id yerine route id'ye dönüş yapılması gerekiyor
                                     for (var shuttleId
                                         in Map<String, bool>.from(
                                                 childInfo['shuttles'])
                                             .keys
                                             .toList()) {
-                                      removeFromShuttle(currChildId, shuttleId);
+                                      childUnsubRoute(currChildId, shuttleId);
                                     }
                                     removeChild(currChildId);
 
