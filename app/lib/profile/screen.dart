@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:app/general/screens.dart';
 import 'package:app/general/util.dart';
@@ -13,6 +15,7 @@ import '../profile/appbar_widget.dart';
 import '../profile/button_widget.dart';
 import '../profile/profile_widget.dart';
 import '../profile/redirection_button.dart';
+import 'package:image_picker/image_picker.dart';
 
 
 class ProfileScreen extends StatefulWidget {
@@ -28,6 +31,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
    String? surname =null;
 
    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+   final imagePicker = ImagePicker();
+   File? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -40,19 +45,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
           body: ListView(
             physics: const BouncingScrollPhysics(),
             children: [
-              ProfileWidget(
-                imagePath: user.imagePath,
-                onClicked: () =>
-                    redirectionTo(ScreenNames.editProfile)(context),
-              ),
+              imageProfile(),
               const SizedBox(height: 24),
               buildName(),
               const SizedBox(height: 24),
               Center(child: buildUpgradeButton()),
               const SizedBox(height: 48),
-              const RedirectionButton(
-                text: "Update Info",
-                screenName: ScreenNames.editProfile,
+              FlatButton(
+                child: Text("Update Info"),
+                color: Colors.blue, 
+                textColor: Colors.white,
+                onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const EditProfilePage()),
+                  );  },
               ),
             ],
           ),
@@ -60,6 +67,87 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+  Widget imageProfile() {
+    return Center(
+      child: GestureDetector(
+            onTap: () {
+              _showPicker(context);
+            },
+            child: CircleAvatar(
+              radius: 55,
+              backgroundColor: Color(0xffFDCF09),
+              child: _image != null
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: Image.file(
+                        _image!,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.fitHeight,
+                      ),
+                    )
+                  : Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(50)),
+                      width: 100,
+                      height: 100,
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: Colors.grey[800],
+                      ),
+                    ),
+            ),
+          ),
+      
+    );
+  }
+
+  void _showPicker(context) {
+  showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Container(
+            child: new Wrap(
+              children: <Widget>[
+                new ListTile(
+                    leading: new Icon(Icons.photo_library),
+                    title: new Text('Photo Library'),
+                    onTap: () {
+                      _imgFromGallery();
+                      Navigator.of(context).pop();
+                    }),
+                new ListTile(
+                  leading: new Icon(Icons.photo_camera),
+                  title: new Text('Camera'),
+                  onTap: () {
+                    _imgFromCamera();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    );
+}
+
+Future _imgFromCamera() async {
+  final image = await imagePicker.getImage(source: ImageSource.camera);
+    setState(() {
+      _image = File(image!.path);
+    });
+}
+
+Future _imgFromGallery() async {
+  final image = await imagePicker.getImage(source: ImageSource.gallery);
+    setState(() {
+      _image = File(image!.path);
+    });
+}
 
   Widget buildName() => Column(
         children: [
