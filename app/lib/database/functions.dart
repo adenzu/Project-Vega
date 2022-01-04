@@ -1,5 +1,5 @@
 import 'package:app/database/request.dart';
-import 'package:app/database/userUseRoute.dart';
+import 'package:app/database/user_use_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -61,13 +61,11 @@ Future<void> childSubRoute(String childId, String routeId) async {
 Future<void> requestRouteSub(String routeId) async {
   String userId = FirebaseAuth.instance.currentUser!.uid;
   _setSentRoute(userId, routeId, Request.pending);
-  // _setRoutePending(routeId, userId, Request.pending);
 }
 
 /// rotaya abone olma isteği yollar
 Future<void> requestChildRouteSub(String childId, String routeId) async {
   _setSentRoute(childId, routeId, Request.pending);
-  // _setRoutePending(routeId, childId, Request.pending);
 }
 
 /// rotaya abonelikten çıkar
@@ -86,8 +84,12 @@ Future<void> childUnsubRoute(String childId, String routeId) async {
 /// `userId` id'li kullanıcıya onu "çocuk" profili olarak ekleme isteği yollar
 Future<void> requestConnection(String userId) async {
   String currentUserId = FirebaseAuth.instance.currentUser!.uid;
-  _setUserPending(userId, currentUserId, Request.pending);
   _setSentUser(currentUserId, userId, Request.pending);
+}
+
+Future<void> respondToConnectionRequest(String userId, Request req) async {
+  String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+  _setUserPending(currentUserId, userId, req);
 }
 
 /// verilen id'yi kullanıcının bağlı (children) profillerine ekler

@@ -1,4 +1,5 @@
 import 'package:app/login/screen.dart';
+import 'package:app/pending_profiles/screen.dart';
 import 'package:app/profile/edit_profile_page.dart';
 import 'package:app/signup/screen.dart';
 
@@ -35,6 +36,7 @@ class ScreenNames {
   static const editProfile = 'editProfile';
   static const login = 'login';
   static const signup = 'signup';
+  static const pendingUsers = 'pendingUsers';
 }
 
 /// Yeni bir sayfa oluşturduğunuzda buraya ilişkin değişkeni ekleyin
@@ -62,6 +64,7 @@ class Screens {
   static const editProfile = EditProfilePage();
   static const login = LoginScreen();
   static const signup = SignUp();
+  static const pendingUsers = PendingUsersScreen();
 
   static const Map<String, Widget> screenMap = {
     ScreenNames.main: Screens.main,
@@ -75,5 +78,6 @@ class Screens {
     ScreenNames.editProfile: Screens.editProfile,
     ScreenNames.login: Screens.login,
     ScreenNames.signup: Screens.signup,
+    ScreenNames.pendingUsers: Screens.pendingUsers,
   };
 }

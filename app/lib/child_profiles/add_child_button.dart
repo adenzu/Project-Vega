@@ -2,7 +2,9 @@ import 'package:app/database/functions.dart';
 import 'package:app/general/screens.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../general/util.dart';
 
 class AddChildButton extends StatelessWidget {
@@ -17,7 +19,8 @@ class AddChildButton extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController lastNameController = TextEditingController();
     TextEditingController firstNameController = TextEditingController();
-    TextEditingController shuttleIDController = TextEditingController();
+    TextEditingController routeIDController = TextEditingController();
+    TextEditingController userIdController = TextEditingController();
     return Align(
       // width:300,
       // height: 100,
@@ -37,58 +40,113 @@ class AddChildButton extends StatelessWidget {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AlertDialog(
-                scrollable: true,
-                title: Text("Add Child"),
-                content: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Form(
-                    child: Column(
-                      children: <Widget>[
-                        TextFormField(
-                          controller: firstNameController,
-                          decoration: InputDecoration(
-                            labelText: "Child's Name",
-                            icon: Icon(Icons.person),
-                          ),
+              return PageView(
+                children: [
+                  AlertDialog(
+                    scrollable: true,
+                    title: const Text("Yeni Oluştur"),
+                    content: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Form(
+                        child: Column(
+                          children: <Widget>[
+                            TextFormField(
+                              controller: firstNameController,
+                              decoration: const InputDecoration(
+                                labelText: "Ad",
+                                icon: Icon(Icons.person),
+                              ),
+                            ),
+                            TextFormField(
+                              controller: lastNameController,
+                              decoration: const InputDecoration(
+                                labelText: "Soyad",
+                                icon: Icon(Icons.person),
+                              ),
+                            ),
+                            TextFormField(
+                              controller: routeIDController,
+                              decoration: const InputDecoration(
+                                labelText: 'Rota Kodu',
+                                icon: Icon(Icons.car_rental),
+                              ),
+                            ),
+                          ],
                         ),
-                        TextFormField(
-                          controller: lastNameController,
-                          decoration: InputDecoration(
-                            labelText: "Child's Surname",
-                            icon: Icon(Icons.person),
-                          ),
-                        ),
-                        TextFormField(
-                          controller: shuttleIDController,
-                          decoration: InputDecoration(
-                            labelText: 'Shuttle Code',
-                            icon: Icon(Icons.car_rental),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                actions: [
-                  ElevatedButton(
-                    child: Text("Submit"),
-                    onPressed: () async {
-                      Navigator.pop(context);
-                      String childId = await generateChildId();
-                      print(childId);
-                      // shuttle id yerine route id'ye dönüş yapılması gerekiyor
-                      createChild(childId, {
-                        'name': firstNameController.text,
-                        'surname': lastNameController.text,
-                        'routes': {shuttleIDController.text: true},
-                        'parents': {
-                          FirebaseAuth.instance.currentUser!.uid: true
+                    actions: [
+                      ElevatedButton(
+                        child: const Text("Ekle"),
+                        onPressed: () async {
+                          if (firstNameController.text.isEmpty ||
+                              lastNameController.text.isEmpty ||
+                              routeIDController.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: "Alanlar boş bırakılamaz");
+                          } else if (!routeIDController.text
+                              .contains(RegExp(r'^[R0-9]+$'))) {
+                            Fluttertoast.showToast(
+                                msg: "Hatalı rota kodu girdiniz");
+                          } else if ((await FirebaseDatabase.instance
+                                  .reference()
+                                  .child("routes/${routeIDController.text}")
+                                  .once())
+                              .exists) {
+                            Navigator.pop(context);
+                            String childId = await generateChildId();
+                            createChild(childId, {
+                              'isReal': false,
+                              'name': firstNameController.text,
+                              'surname': lastNameController.text,
+                              'parents': {
+                                FirebaseAuth.instance.currentUser!.uid: true
+                              },
+                            });
+                            addChild(childId);
+                            requestChildRouteSub(
+                                childId, routeIDController.text);
+                            Fluttertoast.showToast(
+                                msg: "Rota için abonelik isteği yollandı");
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "Bu kodla bir rota bulunmuyor");
+                          }
                         },
-                      });
-                      addChild(childId);
-                      childSubRoute(childId, shuttleIDController.text);
-                    },
+                      ),
+                    ],
+                  ),
+                  AlertDialog(
+                    title: const Text("Bağlan"),
+                    content: TextFormField(
+                      controller: userIdController,
+                      decoration: const InputDecoration(
+                        labelText: "Bağlantı kodu",
+                        icon: Icon(Icons.vpn_key),
+                      ),
+                    ),
+                    actions: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (userIdController.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: "Alanlar boş bırakılamaz");
+                          } else if ((await FirebaseDatabase.instance
+                                  .reference()
+                                  .child(
+                                      "publicUserIds/${userIdController.text}")
+                                  .once())
+                              .exists) {
+                            Navigator.pop(context);
+                            requestConnection(userIdController.text);
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "Böyle bir kullanıcı bulunmamakta");
+                          }
+                        },
+                        child: const Text("Bağlan"),
+                      ),
+                    ],
                   ),
                 ],
               );
