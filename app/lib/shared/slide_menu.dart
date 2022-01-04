@@ -51,12 +51,18 @@ class SlideMenu extends StatelessWidget {
     },
     {
       "isDivider": false,
-      "title": "Servis ekle",
+      "title": "Servis oluştur",
       "iconData": Icons.add,
       "onTap": (context) {},
     },
     {
       "isDivider": true,
+    },
+    {
+      "isDivider": false,
+      "title": "Bağlantı istekleri",
+      "iconData": Icons.pending_actions,
+      "onTap": redirectOrPop(ScreenNames.pendingUsers),
     },
     {
       "isDivider": false,

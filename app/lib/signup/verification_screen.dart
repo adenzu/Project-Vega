@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:app/database/functions.dart';
+
 import '../main/screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -36,8 +38,9 @@ class _VerifyScreenState extends State<VerifyScreen> {
     await user.reload();
     if (user.emailVerified) {
       timer.cancel();
+      addFCMToken();
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => MainScreen()));
+          MaterialPageRoute(builder: (context) => const MainScreen()));
     }
   }
 

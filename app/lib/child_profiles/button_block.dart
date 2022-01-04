@@ -23,7 +23,7 @@ class ButtonsBlock extends StatefulWidget {
 class _ButtonsBlockState extends State<ButtonsBlock> {
   final childrenRef = FirebaseDatabase.instance
       .reference()
-      .child("users/" + FirebaseAuth.instance.currentUser!.uid + "/children");
+      .child("users/${FirebaseAuth.instance.currentUser!.uid}/children");
   List<String> childrenIds = [];
 
   @override
@@ -111,7 +111,7 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               scrollable: true,
-                              title: Text("Child Information"),
+                              title: Text("Bilgi"),
                               content: Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: Form(
@@ -144,20 +144,22 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                               ),
                               actions: [
                                 ElevatedButton(
-                                    child: Text("Edit"),
+                                    child: Text("Düzenle"),
                                     onPressed: () async {}),
                                 ElevatedButton(
-                                  child: Text("Delete Child"),
+                                  child: Text("Sil"),
                                   onPressed: () async {
                                     Navigator.of(context).pop();
-                                    // shuttle id yerine route id'ye dönüş yapılması gerekiyor
-                                    for (var shuttleId
-                                        in Map<String, bool>.from(
-                                                childInfo['routes'])
-                                            .keys
-                                            .toList()) {
-                                      childUnsubRoute(currChildId, shuttleId);
+                                    if (childInfo['routes'] != null) {
+                                      for (var shuttleId
+                                          in Map<String, bool>.from(
+                                                  childInfo['routes'])
+                                              .keys
+                                              .toList()) {
+                                        childUnsubRoute(currChildId, shuttleId);
+                                      }
                                     }
+
                                     removeChild(currChildId);
 
                                     /// başka parent kullanıcıları varsa silmek
