@@ -17,7 +17,6 @@ import '../profile/profile_widget.dart';
 import '../profile/redirection_button.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -26,6 +25,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String? name = null;
+  String? surname = null;
 
    String? name =null;
    String? surname =null;
@@ -152,17 +153,16 @@ Future _imgFromGallery() async {
   Widget buildName() => Column(
         children: [
           FutureBuilder(
-          future: _fetch(),
-          builder: (context,snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
+            future: _fetch(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return Text("Loading data...Please wait");
+              }
+              return Text("$name $surname");
+            },
+          ),
 
-              return Text("Loading data...Please wait");
-            }
-            else return Text("Name : $name $surname");
-          },
-        ),
-  
-         /*
+          /*
           Text(
             FirebaseAuth.instance.currentUser!.displayName as String,
             
@@ -171,7 +171,7 @@ Future _imgFromGallery() async {
           */
           const SizedBox(height: 4),
           Text(
-             FirebaseAuth.instance.currentUser!.email as String,
+            FirebaseAuth.instance.currentUser!.email as String,
             style: const TextStyle(color: Colors.grey),
           )
         ],
@@ -216,7 +216,6 @@ Future _imgFromGallery() async {
   */
 
   _fetch() async {
-  
     final firebaseUser = await FirebaseAuth.instance.currentUser;
 
     if (firebaseUser != null) {
@@ -228,14 +227,10 @@ Future _imgFromGallery() async {
         name = ds.data()!['Name'];
         surname = ds.data()!['Surname'];
         print(name);
-
       }).catchError((e) {
         print(e);
       });
-    }
-    else
+    } else
       print("aaaaa");
   }
 }
-
-  

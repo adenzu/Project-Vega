@@ -38,7 +38,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               padding: EdgeInsets.symmetric(horizontal: 32),
               physics: BouncingScrollPhysics(),
               children: <Widget>[
-                
                 const SizedBox(height: 24),
                 
                 /*
@@ -51,7 +50,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 child: Text('Save'),
               ),
               */
-              /*
+                /*
                 ButtonWidget(
                   text: "Save",
                   onClicked: () {

@@ -26,7 +26,7 @@ class MainBody extends StatelessWidget {
             seperator,
             MainPageRedirectionButton(
               icon: Icons.account_circle,
-              iconBackgroundColor: Colors.purple,
+              iconBackgroundColor: Colors.white70,
               text: "Profil",
               imageName: "assets/images/profiles.jpeg",
               screenName: ScreenNames.profile,
@@ -36,7 +36,7 @@ class MainBody extends StatelessWidget {
             seperator,
             MainPageRedirectionButton(
               icon: Icons.account_tree,
-              iconBackgroundColor: Colors.blue,
+              iconBackgroundColor: Colors.white70,
               text: "Bağlı Profiller",
               imageName: "assets/images/branch.jpeg",
               screenName: ScreenNames.childProfiles,
@@ -46,7 +46,7 @@ class MainBody extends StatelessWidget {
             seperator,
             MainPageRedirectionButton(
               icon: Icons.directions_bus,
-              iconBackgroundColor: Colors.green,
+              iconBackgroundColor: Colors.white70,
               text: "Servisler",
               height: buttonHeight,
               imageName: "assets/images/shuttleservice.jpeg",
@@ -56,7 +56,7 @@ class MainBody extends StatelessWidget {
             seperator,
             MainPageRedirectionButton(
               icon: Icons.map,
-              iconBackgroundColor: Colors.pink,
+              iconBackgroundColor: Colors.white70,
               text: "Harita",
               imageName: "assets/images/mapimage.jpeg",
               height: buttonHeight,

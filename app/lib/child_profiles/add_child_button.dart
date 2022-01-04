@@ -1,21 +1,17 @@
 import 'package:app/database/functions.dart';
 import 'package:app/general/screens.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../general/util.dart';
 
-class AddChildButton extends StatefulWidget {
-  const AddChildButton({Key? key}) : super(key: key);
-
-  @override
-  _AddChildButtonState createState() => _AddChildButtonState();
-}
-
-class _AddChildButtonState extends State<AddChildButton> {
+class AddChildButton extends StatelessWidget {
   final String text;
 
-  _AddChildButtonState({
+  const AddChildButton({
+    Key? key,
     this.text = "",
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +21,7 @@ class _AddChildButtonState extends State<AddChildButton> {
     return Align(
       // width:300,
       // height: 100,
-      //alignment: Alignment.bottomRight,
+      alignment: Alignment.bottomRight,
       child: ElevatedButton(
         child: Icon(
           Icons.add,
@@ -34,7 +30,7 @@ class _AddChildButtonState extends State<AddChildButton> {
         style: ElevatedButton.styleFrom(
           shape: CircleBorder(),
           padding: EdgeInsets.all(15),
-          primary: Colors.blue, // <-- Button color
+          primary: Colors.orange, // <-- Button color
           onPrimary: Colors.white, // <-- Splash color
         ),
         onPressed: () {
@@ -78,13 +74,20 @@ class _AddChildButtonState extends State<AddChildButton> {
                   ElevatedButton(
                     child: Text("Submit"),
                     onPressed: () async {
-                      Navigator.of(context).pop();
-                      String childid = await generateUserToken();
-
-                      addChild(childid);
-                      createUser(childid, firstNameController.text,
-                          lastNameController.text);
-                      subscribeToShuttle(childid, shuttleIDController.text);
+                      Navigator.pop(context);
+                      String childId = await generateChildId();
+                      print(childId);
+                      // shuttle id yerine route id'ye dönüş yapılması gerekiyor
+                      createChild(childId, {
+                        'name': firstNameController.text,
+                        'surname': lastNameController.text,
+                        'routes': {shuttleIDController.text: true},
+                        'parents': {
+                          FirebaseAuth.instance.currentUser!.uid: true
+                        },
+                      });
+                      addChild(childId);
+                      childSubRoute(childId, shuttleIDController.text);
                     },
                   ),
                 ],

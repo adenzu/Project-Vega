@@ -8,7 +8,17 @@ import 'package:flutter/material.dart';
 /// redirectionTo(ScreenNames.main)(context)
 /// ```
 Future Function(BuildContext) redirectionTo(String screenName) {
-  return (context) => Navigator.of(context).pushNamed(screenName);
+  return (context) => Navigator.pushNamed(context, screenName);
+}
+
+/// ekrandaki sayfanın verilen sayfa olup olmadığını kontrol eden fonksiyon döndürür
+///
+/// Örnek:
+/// ```
+/// isScreenName(ScreenNames.main)(context)
+/// ```
+bool Function(BuildContext) isScreenName(String screenName) {
+  return (context) => ModalRoute.of(context)?.settings.name == screenName;
 }
 
 Future<T?> showTightModalBottomSheet<T>({
