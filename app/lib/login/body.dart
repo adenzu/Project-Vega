@@ -1,4 +1,5 @@
 import 'package:app/database/functions.dart';
+import 'package:app/general/screens.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../components/circular_button.dart';
@@ -94,10 +95,10 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                     );
                   } else {
                     addFCMToken();
-                    Navigator.push(
+                    Navigator.pushNamedAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const MainScreen()),
+                      ScreenNames.main,
+                      (route) => false,
                     );
                   }
                 } on FirebaseAuthException catch (e) {

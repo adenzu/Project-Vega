@@ -1,3 +1,4 @@
+import 'package:app/employee_shuttles/screen.dart';
 import 'package:app/login/screen.dart';
 import 'package:app/pending_profiles/screen.dart';
 import 'package:app/profile/edit_profile_page.dart';
@@ -37,6 +38,7 @@ class ScreenNames {
   static const login = 'login';
   static const signup = 'signup';
   static const pendingUsers = 'pendingUsers';
+  static const employeeShuttles = 'employeeShuttles';
 }
 
 /// Yeni bir sayfa oluşturduğunuzda buraya ilişkin değişkeni ekleyin
@@ -65,8 +67,9 @@ class Screens {
   static const login = LoginScreen();
   static const signup = SignUp();
   static const pendingUsers = PendingUsersScreen();
+  static const employeeShuttles = EmployeeShuttlesScreen();
 
-  static const Map<String, Widget> screenMap = {
+  static const Map<String, Widget> screensMap = {
     ScreenNames.main: Screens.main,
     ScreenNames.profile: Screens.profile,
     ScreenNames.myShuttle: Screens.myShuttle,
@@ -79,5 +82,6 @@ class Screens {
     ScreenNames.login: Screens.login,
     ScreenNames.signup: Screens.signup,
     ScreenNames.pendingUsers: Screens.pendingUsers,
+    ScreenNames.employeeShuttles: Screens.employeeShuttles,
   };
 }

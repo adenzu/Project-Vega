@@ -77,6 +77,12 @@ class AddChildButton extends StatelessWidget {
                     ),
                     actions: [
                       ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("İptal"),
+                      ),
+                      ElevatedButton(
                         child: const Text("Ekle"),
                         onPressed: () async {
                           if (firstNameController.text.isEmpty ||
@@ -126,6 +132,12 @@ class AddChildButton extends StatelessWidget {
                       ),
                     ),
                     actions: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("İptal"),
+                      ),
                       ElevatedButton(
                         onPressed: () async {
                           if (userIdController.text.isEmpty) {

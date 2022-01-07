@@ -35,10 +35,12 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
       });
     });
     childrenRef.onValue.listen((event) {
-      setState(() {
-        childrenIds =
-            Map<String, bool>.from(event.snapshot.value).keys.toList();
-      });
+      if (event.snapshot.exists) {
+        setState(() {
+          childrenIds =
+              Map<String, bool>.from(event.snapshot.value).keys.toList();
+        });
+      }
     });
   }
 
@@ -48,153 +50,157 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
     // final screenHeight = size.height;
     return Stack(
       children: [
-        ListView.builder(
-          itemCount: childrenIds.length,
-          itemBuilder: (context, i) {
-            String currChildId = childrenIds[i];
-            return FutureBuilder(
-              future: FirebaseDatabase.instance
-                  .reference()
-                  .child("users/" + currChildId)
-                  .once(),
-              builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
-                if (snapshot.hasData && snapshot.data!.exists) {
-                  Map<String, dynamic> childInfo =
-                      Map<String, dynamic>.from(snapshot.data!.value);
-                  return Container(
-                    padding: EdgeInsets.all(20),
-                    child: TitledRectWidgetButton(
-                      padding: EdgeInsets.all(20),
-                      borderRadius: BorderRadius.circular(25),
-                      alignment: Alignment.centerLeft,
-                      title: Text.rich(
-                        TextSpan(
-                          children: [
-                            WidgetSpan(
-                                child: Icon(
-                                  Icons.person,
-                                  color: Colors.white54,
-                                  size: 100.0,
-                                ),
-                                alignment: PlaceholderAlignment.middle),
-                            WidgetSpan(
-                                child: Text(
-                                  childInfo['name'] + " \n",
-                                  style: DefaultTextStyle.of(context)
-                                      .style
-                                      .apply(
-                                          fontSizeFactor: 2.0,
-                                          color: Colors.white),
-                                ),
-                                alignment: PlaceholderAlignment.middle),
-                            WidgetSpan(
-                                child: Text(
-                                  childInfo['surname'],
-                                  style: DefaultTextStyle.of(context)
-                                      .style
-                                      .apply(
-                                          fontSizeFactor: 1.0,
-                                          color: Colors.white70),
-                                ),
-                                alignment: PlaceholderAlignment.middle)
-                          ],
-                        ),
-                      ),
-                      child: Container(
-                        width: double.infinity,
-                        height: 150,
-                        color: Colors.blue,
-                      ),
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              scrollable: true,
-                              title: Text("Bilgi"),
-                              content: Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Form(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            WidgetSpan(
-                                                child: Text(
-                                                  childInfo['name'] +
-                                                      " " +
-                                                      childInfo['surname'] +
-                                                      "\n",
-                                                  style: DefaultTextStyle.of(
-                                                          context)
-                                                      .style
-                                                      .apply(
-                                                          fontSizeFactor: 1.0,
-                                                          color: Colors.black),
-                                                ),
-                                                alignment: PlaceholderAlignment
-                                                    .middle),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              actions: [
-                                ElevatedButton(
-                                    child: Text("Düzenle"),
-                                    onPressed: () async {}),
-                                ElevatedButton(
-                                  child: Text("Sil"),
-                                  onPressed: () async {
-                                    Navigator.of(context).pop();
-                                    if (childInfo['routes'] != null) {
-                                      for (var shuttleId
-                                          in Map<String, bool>.from(
-                                                  childInfo['routes'])
-                                              .keys
-                                              .toList()) {
-                                        childUnsubRoute(currChildId, shuttleId);
-                                      }
-                                    }
-
-                                    removeChild(currChildId);
-
-                                    /// başka parent kullanıcıları varsa silmek
-                                    /// mantıklıca olmayacaktır
-                                    deleteChild(currChildId);
-                                  },
-                                )
-                              ],
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  );
-                }
-                return Center(
-                  child: Container(
-                    padding: EdgeInsets.all(40),
-                    height: 190,
-                    width: 190,
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-        childrenIds.isNotEmpty
-            ? const SizedBox()
-            : const Center(
+        childrenIds.isEmpty
+            ? const Center(
                 child: Text(
                   "Bağlı profiliniz bulunmamaktadır.",
                   style: TextStyle(fontSize: 30),
                   textAlign: TextAlign.center,
                 ),
+              )
+            : ListView.builder(
+                itemCount: childrenIds.length,
+                itemBuilder: (context, i) {
+                  String currChildId = childrenIds[i];
+                  return FutureBuilder(
+                    future: FirebaseDatabase.instance
+                        .reference()
+                        .child("users/" + currChildId)
+                        .once(),
+                    builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+                      if (snapshot.hasData && snapshot.data!.exists) {
+                        Map<String, dynamic> childInfo =
+                            Map<String, dynamic>.from(snapshot.data!.value);
+                        return Container(
+                          padding: EdgeInsets.all(20),
+                          child: TitledRectWidgetButton(
+                            padding: EdgeInsets.all(20),
+                            borderRadius: BorderRadius.circular(25),
+                            alignment: Alignment.centerLeft,
+                            title: Text.rich(
+                              TextSpan(
+                                children: [
+                                  WidgetSpan(
+                                      child: Icon(
+                                        Icons.person,
+                                        color: Colors.white54,
+                                        size: 100.0,
+                                      ),
+                                      alignment: PlaceholderAlignment.middle),
+                                  WidgetSpan(
+                                      child: Text(
+                                        childInfo['name'] + " \n",
+                                        style: DefaultTextStyle.of(context)
+                                            .style
+                                            .apply(
+                                                fontSizeFactor: 2.0,
+                                                color: Colors.white),
+                                      ),
+                                      alignment: PlaceholderAlignment.middle),
+                                  WidgetSpan(
+                                      child: Text(
+                                        childInfo['surname'],
+                                        style: DefaultTextStyle.of(context)
+                                            .style
+                                            .apply(
+                                                fontSizeFactor: 1.0,
+                                                color: Colors.white70),
+                                      ),
+                                      alignment: PlaceholderAlignment.middle)
+                                ],
+                              ),
+                            ),
+                            child: Container(
+                              width: double.infinity,
+                              height: 150,
+                              color: Colors.blue,
+                            ),
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    scrollable: true,
+                                    title: const Text("Bilgi"),
+                                    content: Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      child: Form(
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  WidgetSpan(
+                                                      child: Text(
+                                                        childInfo['name'] +
+                                                            " " +
+                                                            childInfo[
+                                                                'surname'] +
+                                                            "\n",
+                                                        style: DefaultTextStyle
+                                                                .of(context)
+                                                            .style
+                                                            .apply(
+                                                                fontSizeFactor:
+                                                                    1.0,
+                                                                color: Colors
+                                                                    .black),
+                                                      ),
+                                                      alignment:
+                                                          PlaceholderAlignment
+                                                              .middle),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    actions: [
+                                      ElevatedButton(
+                                          child: Text("Düzenle"),
+                                          onPressed: () async {}),
+                                      ElevatedButton(
+                                        child: Text("Sil"),
+                                        onPressed: () async {
+                                          Navigator.of(context).pop();
+                                          if (childInfo['routes'] != null) {
+                                            for (var shuttleId
+                                                in Map<String, bool>.from(
+                                                        childInfo['routes'])
+                                                    .keys
+                                                    .toList()) {
+                                              childUnsubRoute(
+                                                  currChildId, shuttleId);
+                                            }
+                                          }
+
+                                          removeChild(currChildId);
+
+                                          /// başka parent kullanıcıları varsa silmek
+                                          /// mantıklıca olmayacaktır
+                                          deleteChild(currChildId);
+                                        },
+                                      )
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        );
+                      }
+                      return Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(40),
+                          height: 190,
+                          width: 190,
+                          child: const CircularProgressIndicator(),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
         Padding(
           padding: EdgeInsets.fromLTRB(
