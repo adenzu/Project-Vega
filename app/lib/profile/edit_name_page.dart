@@ -3,12 +3,12 @@ import 'package:app/database/functions.dart';
 import 'package:app/login/screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import '../profile/button_widget.dart';
 import '../profile/redirection_button.dart';
 import '../profile/screen.dart';
 import '../profile/screen_helper.dart';
 import 'package:flutter/material.dart';
-import '../profile/user.dart';
 import '../profile/user_preferences.dart';
 import '../profile/appbar_widget.dart';
 import '../profile/profile_widget.dart';
@@ -91,14 +91,10 @@ class _EditNamePageState extends State<EditNamePage> {
                          surname = _controller2.text;
                       });
                       
-                      final FirebaseAuth _auth = FirebaseAuth.instance;
-                      final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-                         await _firestore.collection('User').doc(_auth.currentUser!.uid)
-                        .update({
-                        'Name': name,
-                        'Surname':surname,
-                       });
-
+                      final databaseRef = FirebaseDatabase.instance.reference().child("users");
+                      User? cuser = await FirebaseAuth.instance.currentUser;
+                      Map<String, String> x = {"name": name, "surname": surname};
+                      databaseRef.child(cuser!.uid).update(x);
                        
                          Navigator.push(
                            context,

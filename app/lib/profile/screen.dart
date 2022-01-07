@@ -6,9 +6,9 @@ import 'package:app/general/screens.dart';
 import 'package:app/general/util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../profile/user.dart';
 import '../profile/edit_profile_page.dart';
 import '../profile/user_preferences.dart';
 import '../profile/appbar_widget.dart';
@@ -16,6 +16,7 @@ import '../profile/button_widget.dart';
 import '../profile/profile_widget.dart';
 import '../profile/redirection_button.dart';
 import 'package:image_picker/image_picker.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -25,11 +26,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
   String? name = null;
   String? surname = null;
-
-   String? name =null;
-   String? surname =null;
 
    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
    final imagePicker = ImagePicker();
@@ -149,6 +148,30 @@ Future _imgFromGallery() async {
       _image = File(image!.path);
     });
 }
+/*
+Future<String> uploadFile(File image) async
+  {
+    String downloadURL;
+    String postId=DateTime.now().millisecondsSinceEpoch.toString();
+    Reference ref = FirebaseStorage.instance.ref().child("images").child("post_$postId.jpg");
+    await ref.putFile(image);
+    downloadURL = await ref.getDownloadURL();
+    return downloadURL;
+  }
+*/
+/*
+uploadToFirebase()async
+{
+final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+final String uid = _firebaseAuth.currentUser!.uid;
+final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+final CollectionReference users = _firebaseFirestore.collection("User");
+String url=await uploadFile(_image!); // this will upload the file and store url in the variable 'url'
+await users.doc(uid).update({  //use update to update the doc fields.
+'url':url
+});
+}
+*/
 
   Widget buildName() => Column(
         children: [
@@ -215,22 +238,14 @@ Future _imgFromGallery() async {
   }
   */
 
+  
   _fetch() async {
-    final firebaseUser = await FirebaseAuth.instance.currentUser;
+    final ref = FirebaseDatabase.instance.reference();
+    User? cuser = await FirebaseAuth.instance.currentUser;
 
-    if (firebaseUser != null) {
-      await _firestore
-          .collection('User')
-          .doc(firebaseUser.uid)
-          .get()
-          .then((ds) {
-        name = ds.data()!['Name'];
-        surname = ds.data()!['Surname'];
-        print(name);
-      }).catchError((e) {
-        print(e);
-      });
-    } else
-      print("aaaaa");
+    return ref.child('users').child(cuser!.uid).once().then((DataSnapshot snap) {
+      name = snap.value['name'].toString();
+      surname = snap.value['surname'].toString();
+    });
   }
 }
