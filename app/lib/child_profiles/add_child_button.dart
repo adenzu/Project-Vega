@@ -1,11 +1,8 @@
 import 'package:app/database/functions.dart';
-import 'package:app/general/screens.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../general/util.dart';
 
 class AddChildButton extends StatelessWidget {
   final String text;

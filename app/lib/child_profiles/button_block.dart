@@ -1,16 +1,11 @@
 //import 'dart:html';
 
 import 'package:app/database/functions.dart';
-import 'package:app/general/screens.dart';
 import 'package:app/general/titled_rect_widget_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../child_profiles/add_child_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import '../child_profiles/enter_info.dart';
-
-import 'redirection_button.dart';
 import 'add_child_button.dart';
 
 class ButtonsBlock extends StatefulWidget {
@@ -174,12 +169,7 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                                                   currChildId, shuttleId);
                                             }
                                           }
-
                                           removeChild(currChildId);
-
-                                          /// başka parent kullanıcıları varsa silmek
-                                          /// mantıklıca olmayacaktır
-                                          deleteChild(currChildId);
                                         },
                                       )
                                     ],

@@ -3,8 +3,6 @@ import 'package:app/database/user_use_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 /// verilen shuttle id'yi kullanıcının servislerine ekler
 ///
