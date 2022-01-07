@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> {
       /// screens.dart dosyasında Screens classında screenMapte
       /// olan sayfaları route'a ekleme satırı, yeni sayfaları
       /// screens.dart'a ekleyin
-      routes: Screens.screenMap
+      routes: Screens.screensMap
           .map((key, value) => MapEntry(key, (context) => value)),
     );
   }

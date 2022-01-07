@@ -1,3 +1,4 @@
+import 'package:app/database/functions.dart';
 import 'package:app/general/util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class SlideMenu extends StatelessWidget {
     {
       "isDivider": false,
       "title": "Servislerim",
-      "iconData": Icons.directions_bus,
+      "iconData": Icons.airport_shuttle,
       "onTap": redirectOrPop(ScreenNames.myShuttle),
     },
     {
@@ -53,7 +54,7 @@ class SlideMenu extends StatelessWidget {
       "isDivider": false,
       "title": "Servis oluştur",
       "iconData": Icons.add,
-      "onTap": (context) {},
+      "onTap": redirectOrPop(ScreenNames.employeeShuttles),
     },
     {
       "isDivider": true,
@@ -64,18 +65,18 @@ class SlideMenu extends StatelessWidget {
       "iconData": Icons.pending_actions,
       "onTap": redirectOrPop(ScreenNames.pendingUsers),
     },
-    {
-      "isDivider": false,
-      "title": "Bildir",
-      "iconData": Icons.mail,
-      "onTap": redirectOrPop(ScreenNames.feedback),
-    },
-    {
-      "isDivider": false,
-      "title": "Hakkında",
-      "iconData": Icons.info,
-      "onTap": redirectOrPop(ScreenNames.about),
-    },
+    // {
+    //   "isDivider": false,
+    //   "title": "Bildir",
+    //   "iconData": Icons.mail,
+    //   "onTap": redirectOrPop(ScreenNames.feedback),
+    // },
+    // {
+    //   "isDivider": false,
+    //   "title": "Hakkında",
+    //   "iconData": Icons.info,
+    //   "onTap": redirectOrPop(ScreenNames.about),
+    // },
     {
       "isDivider": false,
       "title": "Ayarlar",
@@ -87,9 +88,11 @@ class SlideMenu extends StatelessWidget {
       "title": "Çıkış",
       "iconData": Icons.logout,
       "onTap": (context) {
-        FirebaseAuth.instance.signOut();
-        Navigator.pushNamedAndRemoveUntil(
-            context, ScreenNames.login, (route) => false);
+        removeFCMToken().then((value) {
+          FirebaseAuth.instance.signOut();
+          Navigator.pushNamedAndRemoveUntil(
+              context, ScreenNames.login, (route) => false);
+        });
       },
     },
   ];

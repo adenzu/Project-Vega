@@ -3,8 +3,6 @@ import 'package:app/database/user_use_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 /// verilen shuttle id'yi kullanıcının servislerine ekler
 ///
@@ -18,8 +16,10 @@ import 'package:flutter/material.dart';
 ///       shuttles
 ///         S504: true
 /// ```
-Future<void> addShuttle(String shuttleId) async {
+Future<void> createShuttle() async {
   String userId = FirebaseAuth.instance.currentUser!.uid;
+  String shuttleId = await generateShuttleId();
+  _setShuttle(shuttleId, true);
   _setEmployeeShuttle(userId, shuttleId, true);
 }
 
@@ -85,6 +85,11 @@ Future<void> childUnsubRoute(String childId, String routeId) async {
 Future<void> requestConnection(String userId) async {
   String currentUserId = FirebaseAuth.instance.currentUser!.uid;
   _setSentUser(currentUserId, userId, Request.pending);
+}
+
+Future<void> cancelConnectionRequest(String userId) async {
+  String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+  _setSentUser(currentUserId, userId, Request.canceled);
 }
 
 Future<void> respondToConnectionRequest(String userId, Request req) async {
