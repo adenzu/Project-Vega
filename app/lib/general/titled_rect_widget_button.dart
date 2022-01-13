@@ -27,6 +27,10 @@ class TitledRectWidgetButton extends StatelessWidget {
           borderRadius: borderRadius,
           child: child,
         ),
+        Container(
+          padding: padding,
+          child: title,
+        ),
         Positioned.fill(
           child: Material(
             color: Colors.transparent,
@@ -35,10 +39,6 @@ class TitledRectWidgetButton extends StatelessWidget {
               onTap: onTap,
             ),
           ),
-        ),
-        Container(
-          padding: padding,
-          child: title,
         ),
       ],
     );

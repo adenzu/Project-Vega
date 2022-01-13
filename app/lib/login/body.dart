@@ -1,3 +1,7 @@
+import 'package:app/database/functions.dart';
+import 'package:app/general/screens.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 import '../components/circular_button.dart';
 import '../components/not_visible_text_field_container.dart';
 import '../components/visible_text_field_container.dart';
@@ -90,10 +94,11 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                           builder: (context) => const VerifyScreen()),
                     );
                   } else {
-                    Navigator.push(
+                    addFCMToken();
+                    Navigator.pushNamedAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const MainScreen()),
+                      ScreenNames.main,
+                      (route) => false,
                     );
                   }
                 } on FirebaseAuthException catch (e) {

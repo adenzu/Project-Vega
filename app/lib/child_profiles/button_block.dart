@@ -1,16 +1,11 @@
 //import 'dart:html';
 
 import 'package:app/database/functions.dart';
-import 'package:app/general/screens.dart';
 import 'package:app/general/titled_rect_widget_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../child_profiles/add_child_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import '../child_profiles/enter_info.dart';
-
-import 'redirection_button.dart';
 import 'add_child_button.dart';
 
 class ButtonsBlock extends StatefulWidget {
@@ -23,7 +18,26 @@ class ButtonsBlock extends StatefulWidget {
 class _ButtonsBlockState extends State<ButtonsBlock> {
   final childrenRef = FirebaseDatabase.instance
       .reference()
-      .child("users/" + FirebaseAuth.instance.currentUser!.uid + "/children");
+      .child("users/${FirebaseAuth.instance.currentUser!.uid}/children");
+  List<String> childrenIds = [];
+
+  @override
+  void initState() {
+    super.initState();
+    childrenRef.onChildRemoved.listen((event) {
+      setState(() {
+        childrenIds.clear();
+      });
+    });
+    childrenRef.onValue.listen((event) {
+      if (event.snapshot.exists) {
+        setState(() {
+          childrenIds =
+              Map<String, bool>.from(event.snapshot.value).keys.toList();
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,179 +45,159 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
     // final screenHeight = size.height;
     return Stack(
       children: [
-        FutureBuilder(
-            future: childrenRef.once(),
-            builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data!.exists) {
-                  Map<String, bool> children =
-                      Map<String, bool>.from(snapshot.data!.value);
-                  List<String> childIds = children.keys.toList();
-
-                  return ListView.builder(
-                    itemCount: childIds.length,
-                    itemBuilder: (context, i) {
-                      String currChildId = childIds[i];
-                      return FutureBuilder(
-                        future: FirebaseDatabase.instance
-                            .reference()
-                            .child("users/" + currChildId)
-                            .once(),
-                        builder:
-                            (context, AsyncSnapshot<DataSnapshot> snapshot) {
-                          if (snapshot.hasData && snapshot.data!.exists) {
-                            Map<String, dynamic> childInfo =
-                                Map<String, dynamic>.from(snapshot.data!.value);
-                            return Container(
-                              padding: EdgeInsets.all(20),
-                              child: TitledRectWidgetButton(
-                                padding: EdgeInsets.all(20),
-                                borderRadius: BorderRadius.circular(25),
-                                alignment: Alignment.centerLeft,
-                                title: Text.rich(TextSpan(children: [
+        childrenIds.isEmpty
+            ? const Center(
+                child: Text(
+                  "Bağlı profiliniz bulunmamaktadır.",
+                  style: TextStyle(fontSize: 30),
+                  textAlign: TextAlign.center,
+                ),
+              )
+            : ListView.builder(
+                itemCount: childrenIds.length,
+                itemBuilder: (context, i) {
+                  String currChildId = childrenIds[i];
+                  return FutureBuilder(
+                    future: FirebaseDatabase.instance
+                        .reference()
+                        .child("users/" + currChildId)
+                        .once(),
+                    builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+                      if (snapshot.hasData && snapshot.data!.exists) {
+                        Map<String, dynamic> childInfo =
+                            Map<String, dynamic>.from(snapshot.data!.value);
+                        return Container(
+                          padding: EdgeInsets.all(20),
+                          child: TitledRectWidgetButton(
+                            padding: EdgeInsets.all(20),
+                            borderRadius: BorderRadius.circular(25),
+                            alignment: Alignment.centerLeft,
+                            title: Text.rich(
+                              TextSpan(
+                                children: [
                                   WidgetSpan(
-                                      child: Icon(Icons.account_box),
+                                      child: Icon(
+                                        Icons.person,
+                                        color: Colors.white54,
+                                        size: 100.0,
+                                      ),
                                       alignment: PlaceholderAlignment.middle),
                                   WidgetSpan(
                                       child: Text(
-                                        childInfo['name'],
+                                        childInfo['name'] + " \n",
+                                        style: DefaultTextStyle.of(context)
+                                            .style
+                                            .apply(
+                                                fontSizeFactor: 2.0,
+                                                color: Colors.white),
+                                      ),
+                                      alignment: PlaceholderAlignment.middle),
+                                  WidgetSpan(
+                                      child: Text(
+                                        childInfo['surname'],
+                                        style: DefaultTextStyle.of(context)
+                                            .style
+                                            .apply(
+                                                fontSizeFactor: 1.0,
+                                                color: Colors.white70),
                                       ),
                                       alignment: PlaceholderAlignment.middle)
-                                ])),
-                                //  Container(
-                                //   child: Text(childInfo['name'],
-                                //       style: TextStyle(fontSize: 50)),
-                                // ),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 150,
-                                  color: Colors.blue,
-                                ),
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        scrollable: true,
-                                        title: Text("Child Information"),
-                                        content: Padding(
-                                          padding: const EdgeInsets.all(2.0),
-                                          child: Form(
-                                            child: Column(
-                                              children: <Widget>[
-                                                Text(childInfo['name']),
-                                              ],
+                                ],
+                              ),
+                            ),
+                            child: Container(
+                              width: double.infinity,
+                              height: 150,
+                              color: Colors.blue,
+                            ),
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    scrollable: true,
+                                    title: const Text("Bilgi"),
+                                    content: Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      child: Form(
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  WidgetSpan(
+                                                      child: Text(
+                                                        childInfo['name'] +
+                                                            " " +
+                                                            childInfo[
+                                                                'surname'] +
+                                                            "\n",
+                                                        style: DefaultTextStyle
+                                                                .of(context)
+                                                            .style
+                                                            .apply(
+                                                                fontSizeFactor:
+                                                                    1.0,
+                                                                color: Colors
+                                                                    .black),
+                                                      ),
+                                                      alignment:
+                                                          PlaceholderAlignment
+                                                              .middle),
+                                                ],
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                        actions: [
-                                          ElevatedButton(
-                                              child: Text("Edit"),
-                                              onPressed: () async {}),
-                                          ElevatedButton(
-                                            child: Text("Delete Child"),
-                                            onPressed: () async {
-                                              Navigator.of(context).pop();
-
-                                              for (var shuttleId
-                                                  in Map<String, bool>.from(
-                                                          childInfo['shuttles'])
-                                                      .keys
-                                                      .toList()) {
-                                                removeFromShuttle(
-                                                    currChildId, shuttleId);
-                                              }
-                                              removeChild(currChildId);
-                                            },
-                                          )
-                                        ],
-                                      );
-                                    },
+                                      ),
+                                    ),
+                                    actions: [
+                                      ElevatedButton(
+                                          child: Text("Düzenle"),
+                                          onPressed: () async {}),
+                                      ElevatedButton(
+                                        child: Text("Sil"),
+                                        onPressed: () async {
+                                          Navigator.of(context).pop();
+                                          if (childInfo['routes'] != null) {
+                                            for (var shuttleId
+                                                in Map<String, bool>.from(
+                                                        childInfo['routes'])
+                                                    .keys
+                                                    .toList()) {
+                                              childUnsubRoute(
+                                                  currChildId, shuttleId);
+                                            }
+                                          }
+                                          removeChild(currChildId);
+                                        },
+                                      )
+                                    ],
                                   );
                                 },
-                              ),
-                            );
-                          }
-                          return SizedBox();
-                        },
+                              );
+                            },
+                          ),
+                        );
+                      }
+                      return Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(40),
+                          height: 190,
+                          width: 190,
+                          child: const CircularProgressIndicator(),
+                        ),
                       );
                     },
                   );
-                }
-                return const Expanded(
-                  child: Center(
-                    child: Text(
-                      "Bağlı profiliniz bulunmamaktadır.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 30),
-                    ),
-                  ),
-                );
-              }
-              return const Center(child: CircularProgressIndicator());
-            }),
+                },
+              ),
         Padding(
           padding: EdgeInsets.fromLTRB(
-              size.width * 0.8, size.height * 0.2, 0.0, 0.0),
+              size.width * 0.7, size.height * 0.2, 0.0, 0.0),
           child: const AddChildButton(),
         )
       ],
     );
   }
 }
-
-/*
-
-showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: Stack(
-                      overflow: Overflow.visible,
-                      children: <Widget>[
-                        Positioned(
-                          right: -40.0,
-                          top: -40.0,
-                          child: InkResponse(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: CircleAvatar(
-                              child: Icon(Icons.close),
-                              backgroundColor: Colors.red,
-                            ),
-                          ),
-                        ),
-                        Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: TextFormField(),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: TextFormField(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: RaisedButton(
-                                  child: Text("Submitß"),
-                                  onPressed: () {
-                                    if (_formKey.currentState.validate()) {
-                                      _formKey.currentState.save();
-                                    }
-                                  },
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                });
-
-                */

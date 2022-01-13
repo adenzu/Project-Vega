@@ -9,7 +9,7 @@ class ChildProfilesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Child Profiles"),
+        title: const Text("Bağlı Profiller"),
         foregroundColor: Colors.blue,
         backgroundColor: Colors.transparent,
         elevation: 0,

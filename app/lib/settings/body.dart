@@ -26,17 +26,6 @@ class _SettingsBodyState extends State<SettingsBody> {
     return ListView(
       children: [
         SwitchListTile(
-          secondary: const Icon(Icons.shield),
-          title: const Text("Yetkilendir"),
-          value: _authorized,
-          onChanged: (value) {
-            setState(() {
-              _authorized = value;
-            });
-          },
-        ),
-        const Divider(),
-        SwitchListTile(
           secondary: const Icon(Icons.bus_alert),
           title: const Text("Servis yaklaşınca bildir"),
           value: _shuttleNotify,
