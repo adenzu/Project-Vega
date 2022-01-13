@@ -106,8 +106,9 @@ class _ShuttleCreationScreen2State extends State<ShuttleCreationScreen2> {
                             FocusScope.of(context).unfocus();
                             if (isValid) {
                               final ShuttleInformation _si = ShuttleInformation(widget._plate, widget._shuttleBrand, widget._shuttleModel, widget._shuttleYear, _shuttleCompany, _driverID, _shuttleLicense, _seatNumber);
-                              createShuttle2(_si);
+                              //createShuttle2(_si);
                               _formKey.currentState!.save();
+                              // integerlara printlerken 0ları yazmiyor
                               String message = "Plaka: " + widget._plate +"\n";
                               message += "Marka: " + widget._shuttleBrand+"\n";
                               message += "Model: " + widget._shuttleModel+"\n";
