@@ -112,8 +112,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                          email = _controller3.text;
                          password = _controller4.text;
                       });
-                         updateUserInfo({'name':name});
-                         updateUserInfo({'surname':surname});
+                       //  updateUserInfo({'name':name});
+                       //  updateUserInfo({'surname':surname});
                          Navigator.pop(context);
                     }, ),
                     padding: EdgeInsets.all(32),
