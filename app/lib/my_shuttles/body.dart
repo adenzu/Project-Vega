@@ -1,4 +1,6 @@
 import 'package:app/my_shuttles/sliding_panel.dart';
+import 'package:app/shuttle_creation/shuttle_creation_screen1.dart';
+import 'package:app/shuttle_creation/shuttle_creation_widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../my_shuttles_map/screen.dart';
@@ -42,7 +44,7 @@ class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
                   alignment: Alignment.topCenter,
                   width: size.width,
                   height: size.height,
-                  child: MyShuttleMap(),
+                  child: const MyShuttleMap(),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: size.height * 0.02),
@@ -117,14 +119,8 @@ class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
                   ),
                   margin: EdgeInsets.fromLTRB(
                       size.width * 0.83, size.height * 0.3, 0.0, 0.0),
-                  child: IconButton(
-                    iconSize: size.width * 0.1,
-                    icon: const Icon(CupertinoIcons.refresh_circled_solid,
-                        color: Colors.blue),
-                    onPressed: () {},
-                  ),
+                  child: ShuttleCreationWidget(iconSize: size.width *0.1),
                 ),
-
               ],
             ),
           ],

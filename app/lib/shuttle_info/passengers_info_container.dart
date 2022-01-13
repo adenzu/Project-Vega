@@ -43,9 +43,22 @@ class _PassengersInfoContainerState extends State<PassengersInfoContainer> {
             //             borderRadius: BorderRadius.circular(20.0)),
             //       );
             //     });
-            setState(() {});
+            showDialog(
+                barrierDismissible: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text("Passengers Info"),
+                    content: const Text("Pass Info will be printed here."),
+                    elevation: 24.0,
+                    backgroundColor: Colors.blueAccent,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                  );
+                });
+            //setState(() {});
           },
-          child: Container(
+          child: SizedBox(
             height: size.height * 0.335,
             width: size.width * 0.38,
             child: Container(

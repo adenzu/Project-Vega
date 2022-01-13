@@ -23,30 +23,22 @@ class _DriverInfoContainerState extends State<DriverInfoContainer> {
         color: Colors.orange,
         child: InkWell(
           onTap: () {
-            // showDialog(
-            //     barrierDismissible: true,
-            //     context: context,
-            //     builder: (BuildContext context) {
-            //       return AlertDialog(
-            //         title: const Text("Shuttle Usage"),
-            //         content: const Text("Will you use shuttle today?"),
-            //         actions: [
-            //           const Text("No",
-            //               style: TextStyle(
-            //                 color: Colors.white,
-            //               )),
-            //           const Text("Late", style: TextStyle(color: Colors.white)),
-            //           const Text("Yes", style: TextStyle(color: Colors.white)),
-            //         ],
-            //         elevation: 24.0,
-            //         backgroundColor: Colors.blueAccent,
-            //         shape: RoundedRectangleBorder(
-            //             borderRadius: BorderRadius.circular(20.0)),
-            //       );
-            //     });
-            setState(() {});
+            showDialog(
+                barrierDismissible: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text("Driver Info"),
+                    content: const Text("Driver Info will be printed here."),
+                    elevation: 24.0,
+                    backgroundColor: Colors.blueAccent,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                  );
+                });
+            //setState(() {});
           },
-          child: Container(
+          child: SizedBox(
             height: size.height * 0.335,
             width: size.width * 0.32,
             child: Container(
