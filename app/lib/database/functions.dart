@@ -23,6 +23,7 @@ Future<void> createShuttle() async {
   _setEmployeeShuttle(userId, shuttleId, true);
 }
 
+
 /// verilen shuttle id'yi kullanıcının servislerinden siler
 ///
 /// Örnek:
@@ -282,6 +283,8 @@ Future<void> setRouteUse(String routeId, UserUseRoute status) async {
 ///```
 ///
 */
+
+
 
 /* -------YASAK ALAN BAŞLANGICI------- */
 

@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import '../profile/edit_profile_page.dart';
+import '../profile/edit_profile_page.dart';
 import '../profile/user_preferences.dart';
 import '../profile/appbar_widget.dart';
 import '../profile/button_widget.dart';
