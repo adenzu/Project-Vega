@@ -1,6 +1,6 @@
 import 'package:app/database/request.dart';
 import 'package:app/database/user_use_route.dart';
-//import 'package:app/shuttle_creation/shuttle_info_class.dart';
+import 'package:app/shuttle_creation/shuttle_info_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -24,6 +24,34 @@ Future<void> createShuttle() async {
   _setEmployeeShuttle(userId, shuttleId, true);
 }
 
+
+  // shuttle information classi
+  //   String? plate;
+  //   String? shuttleBrand;
+  //   String? shuttleModel;
+  //   int? shuttleYear;
+  //   String? shuttleCompany;
+  //   int? driverID;
+  //   int? shuttleLicense;
+  //   int? seatNumber;
+  // bu bilgileri tutuyor.
+  // Yeni shuttle olustururken bu bilgilerle olusmasi lazim.
+
+
+Future<void> createShuttle2(ShuttleInformation si) async {
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+  String shuttleId = await generateShuttleId();
+  _setShuttle(shuttleId, true);
+  _setEmployeeShuttle(userId, shuttleId, true);
+}
+
+    //
+    // ayni zamanda databasede plaka kontrolu yapmak lazim
+    // gelen plate bilgisi uppercase ve bosluk yok: Orn: "41P4141" gibi.
+    //
+Future<bool> isPlateOnDatabase(String plate) async {
+    return Future<bool>.value(false);
+}
 
 /// verilen shuttle id'yi kullanıcının servislerinden siler
 ///
@@ -284,8 +312,6 @@ Future<void> setRouteUse(String routeId, UserUseRoute status) async {
 ///```
 ///
 */
-
-
 
 /* -------YASAK ALAN BAŞLANGICI------- */
 
