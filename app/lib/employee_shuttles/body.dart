@@ -68,42 +68,72 @@ class _EmployeeShuttlesBodyState extends State<EmployeeShuttlesBody> {
                           return Container(
                             padding: const EdgeInsets.all(20),
                             child: TitledRectWidgetButton(
-                                padding: const EdgeInsets.all(20),
-                                borderRadius: BorderRadius.circular(25),
-                                alignment: Alignment.centerLeft,
-                                title: Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      const Icon(
-                                        Icons.airport_shuttle,
-                                        size: 60,
-                                      ),
-                                      Text(
-                                        currId,
-                                        style: const TextStyle(fontSize: 30),
-                                      ),
-                                    ]
-                                        .map((e) => WidgetSpan(
-                                            child: e,
-                                            alignment:
-                                                PlaceholderAlignment.middle))
-                                        .toList(),
-                                  ),
-                                ),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 150,
-                                  color: Colors.red,
-                                ),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ShuttleRoutesScreen(
-                                          shuttleId: currId),
+                              padding: const EdgeInsets.all(20),
+                              borderRadius: BorderRadius.circular(25),
+                              alignment: Alignment.centerLeft,
+                              title: Text.rich(
+                                TextSpan(
+                                  children: [
+                                    const Icon(
+                                      Icons.airport_shuttle,
+                                      size: 60,
                                     ),
-                                  );
-                                }),
+                                    Text(
+                                      currId,
+                                      style: const TextStyle(fontSize: 30),
+                                    ),
+                                  ]
+                                      .map((e) => WidgetSpan(
+                                          child: e,
+                                          alignment:
+                                              PlaceholderAlignment.middle))
+                                      .toList(),
+                                ),
+                              ),
+                              child: Container(
+                                width: double.infinity,
+                                height: 150,
+                                color: Colors.red,
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ShuttleRoutesScreen(shuttleId: currId),
+                                  ),
+                                );
+                              },
+                              onLongPress: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text("İşlem seç"),
+                                      actions: [
+                                        ElevatedButton(
+                                          child: const Text("İptal"),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        ElevatedButton(
+                                          child: const Text("Düzenle"),
+                                          onPressed: () {},
+                                        ),
+                                        ElevatedButton(
+                                          child: const Text("Ayrıl"),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            leaveShuttle(currId);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                           );
                         } else {
                           return const Text("Bilgi bulunmuyor.");
@@ -162,7 +192,7 @@ class _EmployeeShuttlesBodyState extends State<EmployeeShuttlesBody> {
                                     msg: "Alanlar boş bırakılamaz");
                               } else {
                                 Navigator.pop(context);
-                                createShuttle();
+                                addShuttle();
                               }
                             },
                           ),
@@ -173,7 +203,8 @@ class _EmployeeShuttlesBodyState extends State<EmployeeShuttlesBody> {
                         content: TextFormField(
                           controller: shuttleIdController,
                           decoration: const InputDecoration(
-                            label: Text("Servis kodu"),
+                            icon: Icon(Icons.vpn_key),
+                            label: Text("Kod"),
                           ),
                         ),
                         actions: [
@@ -191,7 +222,7 @@ class _EmployeeShuttlesBodyState extends State<EmployeeShuttlesBody> {
                                     msg: "Alanlar boş bırakılamaz");
                               } else {
                                 Navigator.pop(context);
-                                createShuttle();
+                                addShuttle();
                               }
                             },
                           ),

@@ -1,13 +1,11 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:app/my_shuttles/sliding_panel.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../my_shuttles_map/screen.dart';
 import '../shuttle_info/screen.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import '../components/gradient_icon_button.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 
 // test
 class MyShuttleScreenBody extends StatefulWidget {
@@ -20,14 +18,13 @@ class MyShuttleScreenBody extends StatefulWidget {
 class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
   final panelController = PanelController();
 
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SlidingUpPanel(
       controller: panelController,
-      maxHeight: size.height*0.19,
-      minHeight: size.height*0.04,
+      maxHeight: size.height * 0.19,
+      minHeight: size.height * 0.04,
       parallaxEnabled: true,
       parallaxOffset: .5,
       borderRadius: const BorderRadius.vertical(top: Radius.circular(30.0)),
@@ -80,7 +77,7 @@ class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
                                 style: TextStyle(
                                   color: Colors.blue,
                                   decoration: TextDecoration.underline,
-                                )),
+                                ),),
                           ),
                         ),
                       ],
@@ -105,7 +102,7 @@ class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                            const ShuttleInfoScreen(shuttleID: 0)),
+                                const ShuttleInfoScreen(shuttleID: 0)),
                       );
                     },
                   ),
@@ -124,13 +121,15 @@ class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
                     onPressed: () {},
                   ),
                 ),
-
               ],
             ),
           ],
         ),
       ),
-      panelBuilder: (controller) => SlidingPanel(controller: controller,panelController: panelController,),
+      panelBuilder: (controller) => SlidingPanel(
+        controller: controller,
+        panelController: panelController,
+      ),
     );
   }
 }

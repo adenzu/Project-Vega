@@ -16,7 +16,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 ///       shuttles
 ///         S504: true
 /// ```
-Future<void> createShuttle() async {
+Future<void> addShuttle() async {
   String userId = FirebaseAuth.instance.currentUser!.uid;
   String shuttleId = await generateShuttleId();
   _setShuttle(shuttleId, true);
@@ -35,14 +35,20 @@ Future<void> createShuttle() async {
 ///       shuttles
 ///         S504: null   // deleted
 /// ```
+@Deprecated("Bu fonksiyon servisi siler. `leaveShuttle` kullan")
 Future<void> removeShuttle(String shuttleId) async {
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+  _setEmployeeShuttle(userId, shuttleId, null);
+}
+
+Future<void> leaveShuttle(String shuttleId) async {
   String userId = FirebaseAuth.instance.currentUser!.uid;
   _setEmployeeShuttle(userId, shuttleId, null);
 }
 
 /// rotaya abone olur
 @Deprecated(
-    "Bu fonksiyon görevliye sormadan kullanıcıyı rotaya ekler. `requestRouteSub` kullan")
+    "Bu fonksiyon görevliye sormadan kullanıcıyı rotaya abone eder. `requestRouteSub` kullan")
 Future<void> subRoute(String routeId) async {
   String userId = FirebaseAuth.instance.currentUser!.uid;
   _setUserRoute(userId, routeId, true);
@@ -51,7 +57,7 @@ Future<void> subRoute(String routeId) async {
 
 /// çocuğu rotaya abone eder
 @Deprecated(
-    "Bu fonksiyon görevliye sormadan çocuğu rotaya ekler. `requestChildRouteSub` kullan")
+    "Bu fonksiyon görevliye sormadan çocuğu rotaya abone eder. `requestChildRouteSub` kullan")
 Future<void> childSubRoute(String childId, String routeId) async {
   _setUserRoute(childId, routeId, true);
   _setRouteUser(routeId, childId, {'isOn': false, 'status': 0});
@@ -95,6 +101,11 @@ Future<void> cancelConnectionRequest(String userId) async {
 Future<void> respondToConnectionRequest(String userId, Request req) async {
   String currentUserId = FirebaseAuth.instance.currentUser!.uid;
   _setUserPending(currentUserId, userId, req);
+}
+
+Future<void> requestShuttleEmployee(String shuttleId) async {
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+  _setSentShuttle(userId, shuttleId, Request.pending);
 }
 
 /// verilen id'yi kullanıcının bağlı (children) profillerine ekler
@@ -193,6 +204,17 @@ Future<void> setRouteUse(String routeId, UserUseRoute status) async {
   _setUserUseRoute(userId, routeId, status);
 }
 
+Future<void> addRoute(String shuttleId) async {
+  String routeId = await generateRouteId();
+  _setRoute(routeId, {'shuttleId': shuttleId});
+  _setShuttleRoute(shuttleId, routeId, false);
+}
+
+Future<void> removeRoute(String shuttleId, String routeId) async {
+  _setShuttleRoute(shuttleId, routeId, null);
+  _setRoute(routeId, null);
+}
+
 /*
 /// hiyerarşi:
 ///```
@@ -204,6 +226,10 @@ Future<void> setRouteUse(String routeId, UserUseRoute status) async {
 ///   employees
 ///     employeeId
 ///       shuttles
+///         shuttleId1
+///         shuttleId2
+///         ...
+///       sentShuttles
 ///         shuttleId1
 ///         shuttleId2
 ///         ...
@@ -259,6 +285,10 @@ Future<void> setRouteUse(String routeId, UserUseRoute status) async {
 ///         employeeId1
 ///         epmloyeeId2
 ///         ...
+///       pendingUsers
+///         userId1
+///         userId2
+///         ...
 ///   routes
 ///     routeId
 ///       startLocation
@@ -295,6 +325,14 @@ Future<void> _setRoute(String routeId, dynamic value) async {
 
 Future<void> _setShuttle(String shuttleId, dynamic value) async {
   FirebaseDatabase.instance.reference().child("shuttles/$shuttleId").set(value);
+}
+
+Future<void> _setShuttleRoute(
+    String shuttleId, String routeId, dynamic value) async {
+  FirebaseDatabase.instance
+      .reference()
+      .child("shuttles/$shuttleId/routes/$routeId")
+      .set(value);
 }
 
 Future<void> _setEmployee(String employeeId, dynamic value) async {
@@ -354,6 +392,14 @@ Future<void> _setSentRoute(String userId, String routeId, Request req) async {
   FirebaseDatabase.instance
       .reference()
       .child("users/$userId/sentRoutes/$routeId")
+      .set(req.value);
+}
+
+Future<void> _setSentShuttle(
+    String userId, String shuttleId, Request req) async {
+  FirebaseDatabase.instance
+      .reference()
+      .child("employees/$userId/sentShuttles/$shuttleId")
       .set(req.value);
 }
 
