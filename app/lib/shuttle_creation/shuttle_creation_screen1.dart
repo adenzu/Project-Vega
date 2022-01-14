@@ -257,7 +257,7 @@ class _ShuttleCreationScreen1State extends State<ShuttleCreationScreen1> {
         validator: (value) {
           if (value!.isEmpty) {
             return "Bu alan boş kalamaz.";
-          } else if (value.length != 4 || int.parse(value) > 2023) {
+          } else if (value.length != 4 || int.parse(value) > 2022 || int.parse(value) < 1970) {
             return "Geçerli bir yıl girin.";
           } else {
             return null;
