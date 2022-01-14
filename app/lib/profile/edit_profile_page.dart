@@ -28,7 +28,6 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Builder(
@@ -39,7 +38,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               physics: BouncingScrollPhysics(),
               children: <Widget>[
                 const SizedBox(height: 24),
-                
+
                 /*
                 ElevatedButton(
                 onPressed: () {
@@ -54,7 +53,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ButtonWidget(
                   text: "Save",
                   onClicked: () {
-                   
+
                     //UserPreferences.myUser.name = temp;
                     Navigator.pop(context);
                   },
@@ -64,30 +63,32 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   width: double.infinity,
                   child: FlatButton(
                     child: Text('Edit Name'),
-                    color:Colors.blue,
+                    color: Colors.blue,
                     onPressed: () {
                       Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const EditNamePage()),
-                  );     
-                    }, ),
-                    padding: EdgeInsets.all(32),
-                    ),
-                    Container(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const EditNamePage()),
+                      );
+                    },
+                  ),
+                  padding: EdgeInsets.all(32),
+                ),
+                Container(
                   width: double.infinity,
                   child: FlatButton(
                     child: Text('Edit Password'),
-                    color:Colors.blue,
+                    color: Colors.blue,
                     onPressed: () {
                       Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const EditPasswordPage()),
-                  );     
-                    }, ),
-                    padding: EdgeInsets.all(32),
-                    )
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const EditPasswordPage()),
+                      );
+                    },
+                  ),
+                  padding: EdgeInsets.all(32),
+                )
               ],
             ),
           ),

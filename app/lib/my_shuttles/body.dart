@@ -81,7 +81,6 @@ class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.blue,
-                                  decoration: TextDecoration.underline,
                                 )),
                           ),
                         ),

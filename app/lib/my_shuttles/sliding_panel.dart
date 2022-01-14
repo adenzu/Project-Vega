@@ -169,16 +169,10 @@ class _SlidingPanelState extends State<SlidingPanel> {
             Container(
               margin: EdgeInsets.fromLTRB(
                   size.width * 0.08, size.height * 0.08, 0.0, 0.0),
-              child: Stack(
-                children: <Widget>[
-                  Icon(CupertinoIcons.clock,size: size.height*0.1,
-                  ),
-                  Text("45 min",
-                      style: TextStyle(
-                          fontSize: size.width * 0.07,
-                          color: const Color(0xf5080887))),
-                ],
-              ),
+              child: Text("45 min",
+                  style: TextStyle(
+                      fontSize: size.width * 0.07,
+                      color: const Color(0xf5080887))),
             ),
           ],
         ),
