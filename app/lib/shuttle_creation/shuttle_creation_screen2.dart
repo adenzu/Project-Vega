@@ -108,7 +108,6 @@ class _ShuttleCreationScreen2State extends State<ShuttleCreationScreen2> {
                               final ShuttleInformation _si = ShuttleInformation(widget._plate, widget._shuttleBrand, widget._shuttleModel, widget._shuttleYear, _shuttleCompany, _driverID, _shuttleLicense, _seatNumber);
                               //createShuttle2(_si);
                               _formKey.currentState!.save();
-                              // integerlara printlerken 0ları yazmiyor
                               String message = "Plaka: " + widget._plate +"\n";
                               message += "Marka: " + widget._shuttleBrand+"\n";
                               message += "Model: " + widget._shuttleModel+"\n";
@@ -237,6 +236,8 @@ class _ShuttleCreationScreen2State extends State<ShuttleCreationScreen2> {
         validator: (value) {
           if (value!.isEmpty) {
             return "Bu alan boş kalamaz.";
+          } else if(value[0] == "0"){
+            return "Ruhsat numarası 0 ile başlayamaz.";
           }
           else if(value.length != 6){
             return "Ruhsat numarası 6 haneli olmalıdır.";
@@ -278,6 +279,9 @@ class _ShuttleCreationScreen2State extends State<ShuttleCreationScreen2> {
           } else if(value.length != 11){
             return "T.C kimlik numarası 11 haneli olmalıdır.";
           }
+          else if(value[0] == "0"){
+            return "T.C kimlik numarası 0 ile başlayamaz.";
+          }
           else {
             return null;
           }
@@ -312,7 +316,10 @@ class _ShuttleCreationScreen2State extends State<ShuttleCreationScreen2> {
         validator: (value) {
           if (value!.isEmpty) {
             return "Bu alan boş kalamaz.";
-          } else {
+          }else if(int.parse(value) == 0){
+            return "Koltuk sayısı 0 olamaz.";
+          }
+          else {
             return null;
           }
         },
