@@ -7,6 +7,7 @@ import 'package:app/general/util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../profile/edit_profile_page.dart';
@@ -29,6 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   String? name = null;
   String? surname = null;
+  String? url= null;
 
    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
    final imagePicker = ImagePicker();
@@ -37,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final user = UserPreferences.myUser;
-
+    
     return Scaffold(
       body: Builder(
         builder: (context) => Scaffold(
@@ -48,10 +50,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               imageProfile(),
               const SizedBox(height: 24),
               buildName(),
-              const SizedBox(height: 24),
-              Center(child: buildUpgradeButton()),
               const SizedBox(height: 48),
+              
               FlatButton(
+                height: 60,
                 child: Text("Update Info"),
                 color: Colors.blue, 
                 textColor: Colors.white,
@@ -69,19 +71,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget imageProfile() {
+    getUrl();
+    print(url);
     return Center(
+      
       child: GestureDetector(
             onTap: () {
               _showPicker(context);
             },
+            
             child: CircleAvatar(
               radius: 55,
+          
               backgroundColor: Color(0xffFDCF09),
-              child: _image != null
+              child: url != null
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(50),
-                      child: Image.file(
-                        _image!,
+                      child: Image.network(
+                        url!,
                         width: 100,
                         height: 100,
                         fit: BoxFit.fitHeight,
@@ -118,6 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () {
                       _imgFromGallery();
                       Navigator.of(context).pop();
+                      
                     }),
                 new ListTile(
                   leading: new Icon(Icons.photo_camera),
@@ -125,6 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onTap: () {
                     _imgFromCamera();
                     Navigator.of(context).pop();
+    
                   },
                 ),
               ],
@@ -140,6 +149,7 @@ Future _imgFromCamera() async {
     setState(() {
       _image = File(image!.path);
     });
+     uploadToFirebase();
 }
 
 Future _imgFromGallery() async {
@@ -147,8 +157,11 @@ Future _imgFromGallery() async {
     setState(() {
       _image = File(image!.path);
     });
+    
+     uploadToFirebase();
+     
 }
-/*
+
 Future<String> uploadFile(File image) async
   {
     String downloadURL;
@@ -158,20 +171,20 @@ Future<String> uploadFile(File image) async
     downloadURL = await ref.getDownloadURL();
     return downloadURL;
   }
-*/
-/*
+
+
 uploadToFirebase()async
 {
 final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final String uid = _firebaseAuth.currentUser!.uid;
 final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 final CollectionReference users = _firebaseFirestore.collection("User");
-String url=await uploadFile(_image!); // this will upload the file and store url in the variable 'url'
+ String url=await uploadFile(_image!); // this will upload the file and store url in the variable 'url'
 await users.doc(uid).update({  //use update to update the doc fields.
 'url':url
 });
 }
-*/
+
 
   Widget buildName() => Column(
         children: [
@@ -200,24 +213,24 @@ await users.doc(uid).update({  //use update to update the doc fields.
         ],
       );
 
+/*
   Widget buildUpgradeButton() => ButtonWidget(
         text: 'Upgrade To Shuttle Employee',
         onClicked: () {},
       );
+*/
 
-/*
-    _fetch() async {
+    getUrl() async {
          final firebaseUser = await FirebaseAuth.instance.currentUser!;
          if(firebaseUser!=null) 
             await FirebaseFirestore.instance.collection('User').doc(firebaseUser.uid).get().then((ds){
-              name = ds.data['Name'];
-              print(name);
+              url = ds.data()!['url'];
+              print(url);
             } ).catchError((e){
               print(e);
-            }
-            
+            });
     }
-    */
+    
 /*
   void getData()async{ //use a Async-await function to get the data
     DocumentSnapshot snapshot;
