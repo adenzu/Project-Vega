@@ -1,48 +1,34 @@
 import 'package:app/database/request.dart';
 import 'package:app/database/user_use_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:app/general/util.dart';
+import 'package:app/shuttle_creation/shuttle_info_class.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 /// verilen shuttle id'yi kullanıcının servislerine ekler
-///
-/// Örnek:
-/// ```
-/// addShuttle('S504');
-///
-/// database
-///   employees
-///     thisUser
-///       shuttles
-///         S504: true
-/// ```
-Future<void> addShuttle() async {
-  String userId = FirebaseAuth.instance.currentUser!.uid;
+Future<void> addShuttle(String plate, int seatCount) async {
+  String userId = getUserId();
   String shuttleId = await generateShuttleId();
-  _setShuttle(shuttleId, true);
+  _setShuttle(shuttleId, {
+    "employees": {userId: true},
+    "plate": plate,
+    "seatCount": seatCount,
+    "info": "Bilgi bulunmamakta.",
+  });
+  _setPlate(plate, shuttleId);
   _setEmployeeShuttle(userId, shuttleId, true);
 }
 
 /// verilen shuttle id'yi kullanıcının servislerinden siler
-///
-/// Örnek:
-/// ```
-/// addShuttle('S504');
-///
-/// database
-///   employees
-///     thisUser
-///       shuttles
-///         S504: null   // deleted
-/// ```
 @Deprecated("Bu fonksiyon servisi siler. `leaveShuttle` kullan")
 Future<void> removeShuttle(String shuttleId) async {
-  String userId = FirebaseAuth.instance.currentUser!.uid;
+  String userId = getUserId();
   _setEmployeeShuttle(userId, shuttleId, null);
 }
 
 Future<void> leaveShuttle(String shuttleId) async {
-  String userId = FirebaseAuth.instance.currentUser!.uid;
+  String userId = getUserId();
+  _setShuttleEmployee(shuttleId, userId, null);
   _setEmployeeShuttle(userId, shuttleId, null);
 }
 
@@ -50,7 +36,7 @@ Future<void> leaveShuttle(String shuttleId) async {
 @Deprecated(
     "Bu fonksiyon görevliye sormadan kullanıcıyı rotaya abone eder. `requestRouteSub` kullan")
 Future<void> subRoute(String routeId) async {
-  String userId = FirebaseAuth.instance.currentUser!.uid;
+  String userId = getUserId();
   _setUserRoute(userId, routeId, true);
   _setRouteUser(routeId, userId, {'isOn': false, 'status': 0});
 }
@@ -65,7 +51,7 @@ Future<void> childSubRoute(String childId, String routeId) async {
 
 /// rotaya abone olma isteği yollar
 Future<void> requestRouteSub(String routeId) async {
-  String userId = FirebaseAuth.instance.currentUser!.uid;
+  String userId = getUserId();
   _setSentRoute(userId, routeId, Request.pending);
 }
 
@@ -76,7 +62,7 @@ Future<void> requestChildRouteSub(String childId, String routeId) async {
 
 /// rotaya abonelikten çıkar
 Future<void> unsubRoute(String routeId) async {
-  String userId = FirebaseAuth.instance.currentUser!.uid;
+  String userId = getUserId();
   _setUserRoute(userId, routeId, null);
   _setRouteUser(routeId, userId, null);
 }
@@ -89,35 +75,47 @@ Future<void> childUnsubRoute(String childId, String routeId) async {
 
 /// `userId` id'li kullanıcıya onu "çocuk" profili olarak ekleme isteği yollar
 Future<void> requestConnection(String userId) async {
-  String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+  String currentUserId = getUserId();
   _setSentUser(currentUserId, userId, Request.pending);
 }
 
 Future<void> cancelConnectionRequest(String userId) async {
-  String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+  String currentUserId = getUserId();
   _setSentUser(currentUserId, userId, Request.canceled);
 }
 
 Future<void> respondToConnectionRequest(String userId, Request req) async {
-  String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+  String currentUserId = getUserId();
   _setUserPending(currentUserId, userId, req);
 }
 
 Future<void> requestShuttleEmployee(String shuttleId) async {
-  String userId = FirebaseAuth.instance.currentUser!.uid;
+  String userId = getUserId();
   _setSentShuttle(userId, shuttleId, Request.pending);
+}
+
+Future<Map<String, dynamic>> getUserData() async {
+  DatabaseReference userRef =
+      FirebaseDatabase.instance.reference().child("users/${getUserId()}");
+  DataSnapshot userData = await userRef.once();
+  return userData.value;
 }
 
 /// verilen id'yi kullanıcının bağlı (children) profillerine ekler
 Future<void> addChild(String childId) async {
-  String userId = FirebaseAuth.instance.currentUser!.uid;
+  String userId = getUserId();
   _setUserChild(userId, childId, true);
 }
 
 /// verilen id'yi kullanıcının bağlı (children) profillerinden siler
 Future<void> removeChild(String childId) async {
-  String userId = FirebaseAuth.instance.currentUser!.uid;
+  String userId = getUserId();
   _setUserChild(userId, childId, null);
+}
+
+Future<void> removeParentOf(String childId) async {
+  String userId = getUserId();
+  _setUserParent(childId, userId, null);
 }
 
 /// çocuğu database'e verilen değerlere ekler
@@ -185,14 +183,14 @@ Future<void> userGetOff(String userId, String routeId) async {
 
 /// bildirim yollamak için gereken cihaz tokenini user altına ekler
 Future<void> addFCMToken() async {
-  String userId = FirebaseAuth.instance.currentUser!.uid;
+  String userId = getUserId();
   String? fcmToken = await FirebaseMessaging.instance.getToken();
   _setUserFCMToken(userId, fcmToken!, true);
 }
 
 /// bildirim yollamak için gereken cihaz tokenini user altından siler
 Future<void> removeFCMToken() async {
-  String userId = FirebaseAuth.instance.currentUser!.uid;
+  String userId = getUserId();
   String? fcmToken = await FirebaseMessaging.instance.getToken();
   _setUserFCMToken(userId, fcmToken!, null);
 }
@@ -200,7 +198,7 @@ Future<void> removeFCMToken() async {
 /// userın servisi kullanıp kullanmayacağını veya geç kalacağını setler
 /// ama bunu **route** altında yapar
 Future<void> setRouteUse(String routeId, UserUseRoute status) async {
-  String userId = FirebaseAuth.instance.currentUser!.uid;
+  String userId = getUserId();
   _setUserUseRoute(userId, routeId, status);
 }
 
@@ -215,6 +213,64 @@ Future<void> removeRoute(String shuttleId, String routeId) async {
   _setRoute(routeId, null);
 }
 
+Future<bool> checkShuttleExists(String shuttleId) async {
+  return (await FirebaseDatabase.instance
+          .reference()
+          .child("shuttles/$shuttleId")
+          .once())
+      .exists;
+}
+
+Future<bool> checkPlateExists(String plate) async {
+  return (await FirebaseDatabase.instance
+          .reference()
+          .child("plates/$plate")
+          .once())
+      .exists;
+}
+
+Future<int> concurrentPassengerCount(String shuttleId) async {
+  Map<String, bool>? routes = (await FirebaseDatabase.instance
+          .reference()
+          .child("shuttles/$shuttleId/rotues")
+          .once())
+      .value;
+
+  if (routes == null) {
+    return 0;
+  }
+
+  late String currentRoute;
+
+  routes.forEach((key, value) {
+    if (value == true) {
+      currentRoute = key;
+    }
+  });
+
+  Map<String, dynamic> passengers = (await FirebaseDatabase.instance
+          .reference()
+          .child("routes/$currentRoute/passengers")
+          .once())
+      .value;
+
+  return passengers.length;
+}
+
+Future<void> setShuttleInfo(String shuttleId, String shuttleInfo) async {
+  _setShuttle(shuttleId, {'info': shuttleInfo});
+}
+
+Future<void> setShuttleLocation(
+    String shuttleId, double longitude, double latitude) async {
+  _setShuttle(shuttleId, {
+    'location': {
+      'longitude': longitude,
+      'latitude': latitude,
+    },
+  });
+}
+
 /*
 /// hiyerarşi:
 ///```
@@ -223,6 +279,9 @@ Future<void> removeRoute(String shuttleId, String routeId) async {
 ///   userCounter
 ///   routeCounter
 ///   shuttleCounter
+///   plates
+///     plate1: shuttleId1
+///     plate2: shuttleId2
 ///   employees
 ///     employeeId
 ///       shuttles
@@ -271,8 +330,15 @@ Future<void> removeRoute(String shuttleId, String routeId) async {
 ///         routeId1
 ///         routeId2
 ///         ...
+///       notifications
+///         childUpdate: true       // should notificate
+///         shuttleClose: false     // should not
+///         ...
 ///   shuttles
 ///     shuttleId
+///       plate
+///       seatCount
+///       info
 ///       currentLocation
 ///         longtitude: ...
 ///         latitude: ...
@@ -358,6 +424,18 @@ Future<void> _setEmployeeShuttle(
       .set(value);
 }
 
+Future<void> _setPlate(String plate, String shuttleId) async {
+  FirebaseDatabase.instance.reference().child("plates/$plate").set(shuttleId);
+}
+
+Future<void> _setShuttleEmployee(
+    String shuttleId, String employeeId, dynamic value) async {
+  FirebaseDatabase.instance
+      .reference()
+      .child("shuttles/$shuttleId/employees/$employeeId")
+      .set(value);
+}
+
 Future<void> _setRouteUser(String routeId, String userId, dynamic value) async {
   FirebaseDatabase.instance
       .reference()
@@ -430,6 +508,14 @@ Future<void> _setUserChild(String userId, String childId, dynamic value) async {
   FirebaseDatabase.instance
       .reference()
       .child("users/$userId/children/$childId")
+      .set(value);
+}
+
+Future<void> _setUserParent(
+    String userId, String parentId, dynamic value) async {
+  FirebaseDatabase.instance
+      .reference()
+      .child("users/$userId/parents/$parentId")
       .set(value);
 }
 

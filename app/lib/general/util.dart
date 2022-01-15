@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 /// ExamplePage sayfasına yönlendirmek için redirectionTo(ScreenNames.examplePage)(context)
@@ -31,4 +32,8 @@ Future<T?> showTightModalBottomSheet<T>({
       return Wrap(children: children);
     },
   );
+}
+
+String getUserId() {
+  return FirebaseAuth.instance.currentUser!.uid;
 }

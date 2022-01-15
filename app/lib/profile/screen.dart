@@ -1,20 +1,32 @@
+import 'dart:io';
+
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:app/general/screens.dart';
 import 'package:app/general/util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../profile/user.dart';
 import '../profile/edit_profile_page.dart';
 import '../profile/user_preferences.dart';
 import '../profile/appbar_widget.dart';
 import '../profile/button_widget.dart';
 import '../profile/profile_widget.dart';
 import '../profile/redirection_button.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  final String userId;
+  final DataSnapshot? userData;
+  final bool editable;
+
+  const ProfileScreen({
+    Key? key,
+    required this.userId,
+    this.userData,
+    this.editable = false,
+  }) : super(key: key);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -25,6 +37,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? surname = null;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final imagePicker = ImagePicker();
+  File? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -37,19 +51,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
           body: ListView(
             physics: const BouncingScrollPhysics(),
             children: [
-              ProfileWidget(
-                imagePath: user.imagePath,
-                onClicked: () =>
-                    redirectionTo(ScreenNames.editProfile)(context),
-              ),
+              imageProfile(),
               const SizedBox(height: 24),
               buildName(),
               const SizedBox(height: 24),
               Center(child: buildUpgradeButton()),
               const SizedBox(height: 48),
-              const RedirectionButton(
-                text: "Update Info",
-                screenName: ScreenNames.editProfile,
+              FlatButton(
+                child: Text("Update Info"),
+                color: Colors.blue,
+                textColor: Colors.white,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const EditProfilePage()),
+                  );
+                },
               ),
             ],
           ),
@@ -57,6 +75,109 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+  Widget imageProfile() {
+    return Center(
+      child: GestureDetector(
+        onTap: () {
+          _showPicker(context);
+        },
+        child: CircleAvatar(
+          radius: 55,
+          backgroundColor: Color(0xffFDCF09),
+          child: _image != null
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.file(
+                    _image!,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.fitHeight,
+                  ),
+                )
+              : Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(50)),
+                  width: 100,
+                  height: 100,
+                  child: Icon(
+                    Icons.camera_alt,
+                    color: Colors.grey[800],
+                  ),
+                ),
+        ),
+      ),
+    );
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Future _imgFromCamera() async {
+    final image = await imagePicker.getImage(source: ImageSource.camera);
+    setState(() {
+      _image = File(image!.path);
+    });
+  }
+
+  Future _imgFromGallery() async {
+    final image = await imagePicker.getImage(source: ImageSource.gallery);
+    setState(() {
+      _image = File(image!.path);
+    });
+  }
+/*
+Future<String> uploadFile(File image) async
+  {
+    String downloadURL;
+    String postId=DateTime.now().millisecondsSinceEpoch.toString();
+    Reference ref = FirebaseStorage.instance.ref().child("images").child("post_$postId.jpg");
+    await ref.putFile(image);
+    downloadURL = await ref.getDownloadURL();
+    return downloadURL;
+  }
+*/
+/*
+uploadToFirebase()async
+{
+final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+final String uid = _firebaseAuth.currentUser!.uid;
+final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+final CollectionReference users = _firebaseFirestore.collection("User");
+String url=await uploadFile(_image!); // this will upload the file and store url in the variable 'url'
+await users.doc(uid).update({  //use update to update the doc fields.
+'url':url
+});
+}
+*/
 
   Widget buildName() => Column(
         children: [
@@ -124,21 +245,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   */
 
   _fetch() async {
-    final firebaseUser = await FirebaseAuth.instance.currentUser;
+    final ref = FirebaseDatabase.instance.reference();
+    // User? cuser = await FirebaseAuth.instance.currentUser;
 
-    if (firebaseUser != null) {
-      await _firestore
-          .collection('User')
-          .doc(firebaseUser.uid)
-          .get()
-          .then((ds) {
-        name = ds.data()!['Name'];
-        surname = ds.data()!['Surname'];
-        print(name);
-      }).catchError((e) {
-        print(e);
-      });
-    } else
-      print("aaaaa");
+    return ref
+        .child('users')
+        .child(widget.userId)
+        .once()
+        .then((DataSnapshot snap) {
+      name = snap.value['name'].toString();
+      surname = snap.value['surname'].toString();
+    });
   }
 }
