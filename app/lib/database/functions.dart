@@ -94,11 +94,18 @@ Future<void> requestShuttleEmployee(String shuttleId) async {
   _setSentShuttle(userId, shuttleId, Request.pending);
 }
 
-Future<Map<String, dynamic>> getUserData() async {
+Future<DataSnapshot> getUserData({String userId = ''}) async {
+  if (userId == '') {
+    userId = getUserId();
+  }
   DatabaseReference userRef =
-      FirebaseDatabase.instance.reference().child("users/${getUserId()}");
+      FirebaseDatabase.instance.reference().child("users/$userId");
   DataSnapshot userData = await userRef.once();
-  return userData.value;
+  return userData;
+}
+
+Future<Map<String, dynamic>> getUserDataValue({String userId = ''}) async {
+  return Map<String, dynamic>.from((await getUserData(userId: userId)).value);
 }
 
 /// verilen id'yi kullanıcının bağlı (children) profillerine ekler
@@ -143,25 +150,33 @@ Future<void> deleteEmployee(String employeeId) async {
   _setEmployee(employeeId, null);
 }
 
+Future<void> acceptEmployee(String shuttleId, String userId) async {
+  _setShuttlePendingEmployee(shuttleId, userId, Request.accept);
+}
+
+Future<void> rejectEmployee(String shuttleId, String userId) async {
+  _setShuttlePendingEmployee(shuttleId, userId, Request.reject);
+}
+
 /// user için unique id oluşturur, bu auth için değil bağlantı isteği içindir
 Future<String> generateUserId() async {
   DataSnapshot snap = await _getUserCounter().once();
   await _increaseUserCounter();
-  return "U" + snap.value.toString();
+  return "U" + (snap.value ?? 0).toString();
 }
 
 /// child için unique id oluşturur
 Future<String> generateChildId() async {
   DataSnapshot snap = await _getChildCounter().once();
   await _increaseChildCounter();
-  return "C" + snap.value.toString();
+  return "C" + (snap.value ?? 0).toString();
 }
 
 /// shuttle için unique id oluşturur
 Future<String> generateShuttleId() async {
   DataSnapshot snap = await _getShuttleCounter().once();
   await _increaseShuttleCounter();
-  return "S" + snap.value.toString();
+  return "S" + (snap.value ?? 0).toString();
 }
 
 /// route için unique id oluşturur
@@ -271,6 +286,17 @@ Future<void> setShuttleLocation(
   });
 }
 
+Future<List<String>> getUserRoutes({String userId = ''}) async {
+  if (userId == '') {
+    userId = getUserId();
+  }
+  DataSnapshot routesData = await FirebaseDatabase.instance
+      .reference()
+      .child("users/$userId/routes")
+      .once();
+  return Map<String, bool>.from(routesData.value).keys.toList();
+}
+
 /*
 /// hiyerarşi:
 ///```
@@ -301,7 +327,7 @@ Future<void> setShuttleLocation(
 ///       isReal
 ///       name
 ///       surname
-///       publicUserId
+///       publicId
 ///       parents
 ///         parentId1
 ///         parentId2
@@ -354,6 +380,10 @@ Future<void> setShuttleLocation(
 ///       pendingUsers
 ///         userId1
 ///         userId2
+///         ...
+///       pendingEmployees
+///         employeeId1
+///         employeeId2
 ///         ...
 ///   routes
 ///     routeId
@@ -434,6 +464,14 @@ Future<void> _setShuttleEmployee(
       .reference()
       .child("shuttles/$shuttleId/employees/$employeeId")
       .set(value);
+}
+
+Future<void> _setShuttlePendingEmployee(
+    String shuttleId, String userId, Request req) async {
+  FirebaseDatabase.instance
+      .reference()
+      .child("shuttles/$shuttleId/pendingEmployees/$userId")
+      .set(req.value);
 }
 
 Future<void> _setRouteUser(String routeId, String userId, dynamic value) async {

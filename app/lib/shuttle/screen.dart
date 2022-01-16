@@ -29,7 +29,18 @@ class _ShuttleScreenState extends State<ShuttleScreen> {
             return Scaffold(
               appBar: AppBar(
                 centerTitle: true,
-                title: Text(plate),
+                title: Text.rich(
+                  TextSpan(
+                    text: "$plate\n",
+                    children: [
+                      TextSpan(
+                        text: widget.shuttleId,
+                        style: TextStyle(color: Colors.grey[800]),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
                 actions: [
                   FutureBuilder(
                     future: concurrentPassengerCount(widget.shuttleId),

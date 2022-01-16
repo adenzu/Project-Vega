@@ -1,5 +1,6 @@
 import 'package:app/database/functions.dart';
 import 'package:app/general/titled_rect_widget_button.dart';
+import 'package:app/general/util.dart';
 import 'package:app/shuttle/screen.dart';
 import 'package:app/shuttle_routes/screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -286,14 +287,28 @@ class _EmployeeShuttlesBodyState extends State<EmployeeShuttlesBody> {
                             onPressed: () async {
                               if (shuttleConnectionFormKey.currentState!
                                   .validate()) {
-                                if (await checkShuttleExists(
-                                    shuttleIdController.text)) {
-                                  Navigator.pop(context);
-                                  requestShuttleEmployee(
-                                      shuttleIdController.text);
-                                } else {
+                                DataSnapshot shuttleData = (await FirebaseDatabase
+                                    .instance
+                                    .reference()
+                                    .child(
+                                        "shuttles/${shuttleIdController.text}/employees")
+                                    .once());
+                                if (!shuttleData.exists) {
                                   Fluttertoast.showToast(
                                       msg: "Bu kodla bir servis bulunmamakta");
+                                } else {
+                                  Map<String, dynamic> shuttleValue =
+                                      Map<String, dynamic>.from(
+                                          shuttleData.value);
+                                  if (shuttleValue[getUserId()]) {
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            "Halihazırda bu servisin görevlisisiniz");
+                                  } else {
+                                    Navigator.pop(context);
+                                    requestShuttleEmployee(
+                                        shuttleIdController.text);
+                                  }
                                 }
                               }
                             },

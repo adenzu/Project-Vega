@@ -37,21 +37,59 @@ class _ShuttleEditScreenState extends State<ShuttleEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String seatCount = shuttleData.value["seatCount"];
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(shuttleData.value["plate"]),
-        leading:
-            Text("${concurrentPassengerCount(widget.shuttleId)}/$seatCount"),
-        foregroundColor: Colors.blue,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: ShuttleEditBody(
-        shuttleId: widget.shuttleId,
-        shuttleData: shuttleData,
-      ),
+    return FutureBuilder(
+      future: FirebaseDatabase.instance
+          .reference()
+          .child("shuttles/${widget.shuttleId}")
+          .once(),
+      builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data!.exists) {
+            String plate = snapshot.data!.value["plate"];
+            String seatCount = snapshot.data!.value["seatCount"].toString();
+
+            return Scaffold(
+              appBar: AppBar(
+                centerTitle: true,
+                title: Text.rich(
+                  TextSpan(
+                    text: "$plate\n",
+                    children: [
+                      TextSpan(
+                        text: widget.shuttleId,
+                        style: TextStyle(color: Colors.grey[800]),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                actions: [
+                  FutureBuilder(
+                    future: concurrentPassengerCount(widget.shuttleId),
+                    builder: (context, AsyncSnapshot<int> snapshot) => Center(
+                      child: Text(
+                        "${snapshot.data}/$seatCount",
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ],
+                foregroundColor: Colors.blue,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+              ),
+              body: ShuttleEditBody(
+                shuttleId: widget.shuttleId,
+                shuttleData: snapshot.data,
+              ),
+            );
+          } else {
+            return const Text("Bilgi bulunmuyor");
+          }
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }

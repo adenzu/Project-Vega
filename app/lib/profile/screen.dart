@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:app/database/functions.dart';
 import 'package:app/general/screens.dart';
 import 'package:app/general/util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -55,22 +56,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               imageProfile(),
               const SizedBox(height: 24),
-              buildName(),
-              const SizedBox(height: 48),
-              
-              FlatButton(
-                height: 60,
-                child: Text("Update Info"),
-                color: Colors.blue,
-                textColor: Colors.white,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const EditProfilePage()),
-                  );
+              FutureBuilder(
+                future: buildName(widget.userId),
+                builder: (context, AsyncSnapshot<Widget> snapshot) {
+                  if (snapshot.hasData) {
+                    return snapshot.data!;
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
                 },
               ),
+              const SizedBox(height: 24),
+              // Center(child: buildUpgradeButton()),
+              const SizedBox(height: 48),
+              widget.editable
+                  ? ElevatedButton(
+                      child: const Text("Update Info"),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                        foregroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const EditProfilePage()),
+                        );
+                      },
+                    )
+                  : const SizedBox(),
             ],
           ),
         ),
@@ -158,7 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future _imgFromCamera() async {
-    final image = await imagePicker.getImage(source: ImageSource.camera);
+    final image = await imagePicker.pickImage(source: ImageSource.camera);
     setState(() {
       _image = File(image!.path);
     });
@@ -166,7 +183,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 }
 
   Future _imgFromGallery() async {
-    final image = await imagePicker.getImage(source: ImageSource.gallery);
+    final image = await imagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       _image = File(image!.path);
     });
@@ -199,7 +216,7 @@ await users.doc(uid).update({  //use update to update the doc fields.
 }
 
 
-  Widget buildName() => Column(
+  Future<Widget> buildName(String userId) async => Column(
         children: [
           FutureBuilder(
             future: _fetch(),
@@ -220,7 +237,7 @@ await users.doc(uid).update({  //use update to update the doc fields.
           */
           const SizedBox(height: 4),
           Text(
-            FirebaseAuth.instance.currentUser!.email as String,
+            (await getUserDataValue(userId: userId))["publicId"],
             style: const TextStyle(color: Colors.grey),
           )
         ],

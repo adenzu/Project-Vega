@@ -34,6 +34,7 @@ class MainBody extends StatelessWidget {
               height: buttonHeight,
               navigateTo: ProfileScreen(
                 userId: getUserId(),
+                editable: true,
               ),
             ),
             seperator,
