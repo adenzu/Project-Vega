@@ -1,4 +1,5 @@
 import 'package:app/database/functions.dart';
+import 'package:app/shuttle/screen.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -38,18 +39,29 @@ class _ShuttleEditBodyState extends State<ShuttleEditBody> {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      alignment: Alignment.bottomRight,
       children: [
         TextFormField(
           controller: shuttleInfoController,
           maxLines: 100,
           keyboardType: TextInputType.multiline,
         ),
-        FloatingActionButton(
-          child: const Icon(Icons.done),
-          onPressed: () {
-            setShuttleInfo(widget.shuttleId, shuttleInfoController.text);
-          },
-        )
+        Container(
+          padding: const EdgeInsets.all(15),
+          child: FloatingActionButton(
+            child: const Icon(Icons.done),
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ShuttleScreen(shuttleId: widget.shuttleId),
+                  ),
+                  (route) => route is! ShuttleScreen);
+              // setShuttleInfo(widget.shuttleId, shuttleInfoController.text);
+            },
+          ),
+        ),
       ],
     );
   }
