@@ -9,6 +9,9 @@ import '../my_shuttles_map/screen.dart';
 import '../shuttle_info/screen.dart';
 import '../components/gradient_icon_button.dart';
 
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+
 // test
 class MyShuttleScreenBody extends StatefulWidget {
   const MyShuttleScreenBody({Key? key}) : super(key: key);
@@ -20,6 +23,7 @@ class MyShuttleScreenBody extends StatefulWidget {
 class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
   final panelController = PanelController();
 
+  String dropdownValue = "Servis Yok";
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -33,83 +37,71 @@ class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
       body: SizedBox(
         height: size.height,
         width: double.infinity,
-        child: Column(
-          children: <Widget>[
-            Stack(
-              children: [
-                Container(
-                  alignment: Alignment.topCenter,
-                  width: size.width,
-                  height: size.height,
-                  child: const MyShuttleMap(),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.02),
-                  child: Container(
+        child: Stack(
+          children: [
+            Container(
+              alignment: Alignment.topCenter,
+              width: size.width,
+              height: size.height,
+              child: const MyShuttleMap(),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: size.height * 0.02),
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    width: size.width*0.8,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(width: 1, color: Colors.black87),
                       color: Colors.white70,
                     ),
-                    padding: const EdgeInsets.fromLTRB(10.0, 4.0, 0.0, 4.0),
+                    padding: EdgeInsets.only(left: size.width * 0.15),
                     margin: EdgeInsets.symmetric(
                         vertical: size.height * 0.07, horizontal: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        GradientIconButton(
-                          icon: const Icon(
-                            Icons.directions_bus,
-                            color: Colors.blue,
-                          ),
-                          iconSize: size.width * 0.1,
-                          press: () {},
+                    child: DropdownButton<String>(
+                      dropdownColor: Colors.black87,
+                      isExpanded: true,
+                      value: dropdownValue,
+                      icon: const Icon(Icons.arrow_downward),
+                      elevation: 8,
+                      style: const TextStyle(color: Colors.blue),
+                      underline: Container(
+                        height: 2,
+                        color: Colors.lightBlueAccent,
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownValue = newValue!;
+                        });
+                      },
+                      items: <String>["Servis Yok", "YBFL Servis"]
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: const TextStyle(fontSize: 20),
+                          ),);
+                          }).toList(),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.fromLTRB(
-                                  20.0, 10.0, 20.0, 10.0),
-                              textStyle: const TextStyle(fontSize: 30),
-                            ),
-                            onPressed: null,
-                            child: const Text(
-                              "YBFL SERVIS",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ),
-                        ),
+                  ),
+
                       ],
                     ),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: Colors.white,
-                  ),
-                  margin: EdgeInsets.fromLTRB(
-                      size.width * 0.83, size.height * 0.2, 0.0, 0.0),
-                  child: IconButton(
-                    iconSize: size.width * 0.1,
-                    icon: const Icon(
-                      Icons.info_outline_rounded,
-                      color: Colors.blue,
+            ),
+                  Container(
+                    margin:
+                        EdgeInsets.only(top: size.height * 0.077, left: size.width*0.05),
+                    child: GradientIcon(
+                      icon: Icon(
+                        Icons.directions_bus,
+                        color: Colors.blue,
+                        size: size.width * 0.08,
+                      ),
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const ShuttleInfoScreen(shuttleID: 0)),
-                      );
-                    },
+
                   ),
-                ),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30.0),
@@ -118,8 +110,40 @@ class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
                   margin: EdgeInsets.fromLTRB(
                       size.width * 0.83, size.height * 0.3, 0.0, 0.0),
                   child: ShuttleCreationWidget(iconSize: size.width * 0.1),
+
+                  ),
+
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                color: Colors.white,
+              ),
+              margin: EdgeInsets.fromLTRB(
+                  size.width * 0.83, size.height * 0.2, 0.0, 0.0),
+              child: IconButton(
+                iconSize: size.width * 0.1,
+                icon: const Icon(
+                  Icons.info_outline_rounded,
+                  color: Colors.blue,
                 ),
-              ],
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const ShuttleInfoScreen(shuttleID: 0)),
+                  );
+                },
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                color: Colors.white,
+              ),
+              margin: EdgeInsets.fromLTRB(
+                  size.width * 0.83, size.height * 0.3, 0.0, 0.0),
+              child: ShuttleCreationWidget(iconSize: size.width * 0.1),
             ),
           ],
         ),

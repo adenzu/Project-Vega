@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 
-class GradientIconButton extends StatelessWidget {
-
-  final double iconSize;
+class GradientIcon extends StatelessWidget {
   final Icon icon;
-  final void Function() press;
 
-  const GradientIconButton({Key? key,
+  const GradientIcon({Key? key,
     required this.icon,
-    required this.iconSize,
-    required this.press,
   }) : super(key: key);
 
 
@@ -36,11 +31,7 @@ class GradientIconButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(30.0),
             color: Colors.white,
           ),
-          child: IconButton(
-            onPressed: press,
-            icon: icon,
-            iconSize: iconSize,
-          ),
+          child: icon,
         ),
       ),
     );
