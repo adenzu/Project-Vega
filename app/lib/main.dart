@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'welcome/screen.dart';
 import 'general/screens.dart';
+import 'package:dcdg/dcdg.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
