@@ -2,9 +2,9 @@ import 'package:app/employee_shuttles/screen.dart';
 import 'package:app/login/screen.dart';
 import 'package:app/pending_profiles/screen.dart';
 import 'package:app/profile/edit_profile_page.dart';
+import 'package:app/shuttle_creation/shuttle_creation_screen.dart';
 import 'package:app/signup/screen.dart';
 
-import '../child_profiles/enter_info.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../child_profiles/screen.dart';
@@ -12,7 +12,6 @@ import '../about/screen.dart';
 import '../feedback/screen.dart';
 import '../my_shuttles_map/screen.dart';
 import '../my_shuttles/screen.dart';
-import '../profile/screen.dart';
 import '../settings/screen.dart';
 import '../main/screen.dart';
 
@@ -39,6 +38,7 @@ class ScreenNames {
   static const signup = 'signup';
   static const pendingUsers = 'pendingUsers';
   static const employeeShuttles = 'employeeShuttles';
+  static const shuttleCreation = "shuttleCreation";
 }
 
 /// Yeni bir sayfa oluşturduğunuzda buraya ilişkin değişkeni ekleyin
@@ -56,7 +56,6 @@ class Screens {
   Screens._();
 
   static const main = MainScreen();
-  static const profile = ProfileScreen();
   static const myShuttle = MyShuttleScreen();
   static const childProfiles = ChildProfilesScreen();
   static const myShuttleMap = MyShuttleMap();
@@ -68,10 +67,10 @@ class Screens {
   static const signup = SignUp();
   static const pendingUsers = PendingUsersScreen();
   static const employeeShuttles = EmployeeShuttlesScreen();
+  static const shuttleCreation = ShuttleCreationScreen();
 
   static const Map<String, Widget> screensMap = {
     ScreenNames.main: Screens.main,
-    ScreenNames.profile: Screens.profile,
     ScreenNames.myShuttle: Screens.myShuttle,
     ScreenNames.childProfiles: Screens.childProfiles,
     ScreenNames.map: Screens.myShuttleMap,
@@ -83,5 +82,6 @@ class Screens {
     ScreenNames.signup: Screens.signup,
     ScreenNames.pendingUsers: Screens.pendingUsers,
     ScreenNames.employeeShuttles: Screens.employeeShuttles,
+    ScreenNames.shuttleCreation: Screens.shuttleCreation,
   };
 }

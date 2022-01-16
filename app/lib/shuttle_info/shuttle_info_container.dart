@@ -26,25 +26,17 @@ class _ShuttleInfoContainerState extends State<ShuttleInfoContainer> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: const Text("Shuttle Usage"),
-                    content: const Text("Will you use shuttle today?"),
-                    actions: [
-                      const Text("No",
-                          style: TextStyle(
-                            color: Colors.white,
-                          )),
-                      const Text("Late", style: TextStyle(color: Colors.white)),
-                      const Text("Yes", style: TextStyle(color: Colors.white)),
-                    ],
+                    title: const Text("Shuttle Info"),
+                    content: const Text("Shuttle Info will be printed here."),
                     elevation: 24.0,
                     backgroundColor: Colors.blueAccent,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
                   );
                 });
-            setState(() {});
+            //setState(() {});
           },
-          child: Container(
+          child: SizedBox(
             height: size.height * 0.335,
             width: size.width * 0.65,
             child: Container(

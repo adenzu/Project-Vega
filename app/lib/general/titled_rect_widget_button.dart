@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class TitledRectWidgetButton extends StatelessWidget {
   final Widget title;
   final Widget child;
-  final void Function() onTap;
+  final void Function()? onTap;
+  final void Function()? onLongPress;
   final AlignmentGeometry alignment;
   final BorderRadius? borderRadius;
   final EdgeInsetsGeometry? padding;
@@ -13,8 +14,9 @@ class TitledRectWidgetButton extends StatelessWidget {
     required this.title,
     required this.child,
     required this.onTap,
+    this.onLongPress,
     this.alignment = AlignmentDirectional.bottomStart,
-    this.borderRadius = BorderRadius.zero,
+    this.borderRadius,
     this.padding,
   }) : super(key: key);
 
@@ -37,6 +39,7 @@ class TitledRectWidgetButton extends StatelessWidget {
             child: InkWell(
               borderRadius: borderRadius,
               onTap: onTap,
+              onLongPress: onLongPress,
             ),
           ),
         ),

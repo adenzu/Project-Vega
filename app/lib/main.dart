@@ -1,5 +1,4 @@
 import 'package:app/database/message_type.dart';
-import 'package:app/general/util.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +16,21 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+/// TODO delete 'a' class
+
+class a extends StatelessWidget {
+  String t;
+
+  a({Key? key, required this.t}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Text(t),
+    );
+  }
+}
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -29,11 +43,16 @@ class _MyAppState extends State<MyApp> {
     String dataType = message.data["type"];
     String dataValue = message.data["value"];
 
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => a(t: "$dataType $dataValue"),
+      ),
+    );
     switch (dataType) {
       case MessageType.requestRespond:
         break;
       case MessageType.requestReceive:
-        redirectionTo(ScreenNames.pendingUsers)(context);
         break;
       default:
         return;
@@ -48,6 +67,7 @@ class _MyAppState extends State<MyApp> {
       _handleMessage(initialMessage);
     }
 
+    FirebaseMessaging.onMessage.listen((event) {});
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
   }
 

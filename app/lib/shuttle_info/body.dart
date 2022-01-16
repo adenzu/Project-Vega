@@ -50,23 +50,11 @@ class _ShuttleInfoScreenBodyState extends State<ShuttleInfoScreenBody> {
                       color: Colors.blueAccent.withOpacity(0.14)),
                   textAlign: TextAlign.center,
                 ),
-                // child:Text(
-                //   "VEGA",
-                //   style: TextStyle(
-                //     fontSize: 120,
-                //     letterSpacing: 3,
-                //     fontWeight: FontWeight.bold,
-                //     foreground: Paint()
-                //       ..style = PaintingStyle.stroke
-                //       ..strokeWidth = 6
-                //       ..color = Colors.blue[100]!,
-                //   ),
-                // ),
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(
                     size.width * 0.12, size.height * 0.16, 0.0, 0.0),
-                child: Text(
+                child: const Text(
                   "INFORMATION",
                   style: TextStyle(
                     fontSize: 40,

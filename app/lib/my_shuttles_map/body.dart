@@ -3,12 +3,14 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 //import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:cupertino_icons/cupertino_icons.dart';
 
 class MyShuttleMapBody extends StatefulWidget {
   const MyShuttleMapBody({Key? key}) : super(key: key);
@@ -26,7 +28,8 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
   final database = FirebaseDatabase.instance.reference(); // path to location
   late double lat;
   late double long;
-
+  late double shuttlelat;
+  late double shuttlelong;
 
   // Geoflutterfire geo = Geoflutterfire();
 
@@ -55,13 +58,13 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
 
 
   void refreshmarker(LocationData newData, Uint8List imagedat) {
-    LatLng latitudelongitude = LatLng(newData.latitude!, newData.longitude!);
+    LatLng latitudelongitude = LatLng(shuttlelat, shuttlelong);
     lat = newData.latitude!;
     long = newData.longitude!;
 
     setState(() {
       _shuttleMarker = Marker(
-        markerId: MarkerId("Home"),
+        markerId: MarkerId("Shuttle"),
         position: latitudelongitude,
         rotation: newData.heading!,
         draggable: false,
@@ -82,7 +85,18 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
   //     'name': 'Yay I can be queried!'
   //   });
   // }
+void _getshuttleLoc() async{
 
+    database.child('shuttles/shuttleId/location/latitude').onValue.listen((event) {
+    shuttlelat = event.snapshot.value;
+    print(shuttlelat);
+  });
+    database.child('shuttles/shuttleId/location/longitude').onValue.listen((event) {
+      shuttlelong = event.snapshot.value;
+      print(shuttlelong);
+    });
+
+}
   void _getcurrentLoc() async {
     try {
       Uint8List imagedata = await getMarker();
@@ -149,15 +163,16 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
             child: Container(
               child:
               FloatingActionButton(
-                child: const Icon(Icons.location_searching),
+                child: const Icon(CupertinoIcons.bus,size: 35,color: Colors.white,),
                 onPressed: () {
+                  _getshuttleLoc();
                   _getcurrentLoc();
-                  try{
-                    shuttlesRef.set({'latitude': lat,'longitude': long });
-                    print('WRITE SUCCESFULLY');
-                  }catch(e){
-                    print('You got an database error');
-                  }
+                  // try{
+                  //   shuttlesRef.set({'latitude': lat,'longitude': long });
+                  //   print('WRITE SUCCESFULLY');
+                  // }catch(e){
+                  //   print('You got an database error');
+                  // }
                 },
               ),
             ),
