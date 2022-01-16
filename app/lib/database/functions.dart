@@ -286,6 +286,17 @@ Future<void> setShuttleLocation(
   });
 }
 
+Future<List<String>> getUserRoutes({String userId = ''}) async {
+  if (userId == '') {
+    userId = getUserId();
+  }
+  DataSnapshot routesData = await FirebaseDatabase.instance
+      .reference()
+      .child("users/$userId/routes")
+      .once();
+  return Map<String, bool>.from(routesData.value).keys.toList();
+}
+
 /*
 /// hiyerarşi:
 ///```
