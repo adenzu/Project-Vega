@@ -209,6 +209,7 @@ final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final String uid = _firebaseAuth.currentUser!.uid;
 final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 final CollectionReference users = _firebaseFirestore.collection("User");
+
 String url=await uploadFile(_image!); // this will upload the file and store url in the variable 'url'
 await users.doc(uid).update({  //use update to update the doc fields.
 'url':url
