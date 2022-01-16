@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'welcome/screen.dart';
 import 'general/screens.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

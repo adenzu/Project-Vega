@@ -11,7 +11,6 @@ import '../components/gradient_icon_button.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-
 // test
 class MyShuttleScreenBody extends StatefulWidget {
   const MyShuttleScreenBody({Key? key}) : super(key: key);
@@ -24,6 +23,7 @@ class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
   final panelController = PanelController();
 
   String dropdownValue = "Servis Yok";
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -50,7 +50,7 @@ class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    width: size.width*0.8,
+                    width: size.width * 0.8,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(width: 1, color: Colors.black87),
@@ -82,37 +82,34 @@ class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
                           child: Text(
                             value,
                             style: const TextStyle(fontSize: 20),
-                          ),);
-                          }).toList(),
-                        ),
-                  ),
-
-                      ],
+                          ),
+                        );
+                      }).toList(),
                     ),
+                  ),
+                ],
+              ),
             ),
-                  Container(
-                    margin:
-                        EdgeInsets.only(top: size.height * 0.077, left: size.width*0.05),
-                    child: GradientIcon(
-                      icon: Icon(
-                        Icons.directions_bus,
-                        color: Colors.blue,
-                        size: size.width * 0.08,
-                      ),
-                    ),
-
-                  ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: Colors.white,
-                  ),
-                  margin: EdgeInsets.fromLTRB(
-                      size.width * 0.83, size.height * 0.3, 0.0, 0.0),
-                  child: ShuttleCreationWidget(iconSize: size.width * 0.1),
-
-                  ),
-
+            Container(
+              margin: EdgeInsets.only(
+                  top: size.height * 0.096, left: size.width * 0.05),
+              child: GradientIcon(
+                icon: Icon(
+                  Icons.directions_bus,
+                  color: Colors.blue,
+                  size: size.width * 0.08,
+                ),
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                color: Colors.white,
+              ),
+              margin: EdgeInsets.fromLTRB(
+                  size.width * 0.83, size.height * 0.3, 0.0, 0.0),
+              child: ShuttleCreationWidget(iconSize: size.width * 0.1),
+            ),
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.0),
