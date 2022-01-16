@@ -7,7 +7,7 @@ import 'package:app/general/util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-//import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../profile/edit_profile_page.dart';
@@ -192,15 +192,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
      
 }
 
-//Future<String> uploadFile(File image) async
- // {
- //   String downloadURL;
- //   String postId=DateTime.now().millisecondsSinceEpoch.toString();
- //   Reference ref = FirebaseStorage.instance.ref().child("images").child("post_$postId.jpg");
- //   await ref.putFile(image);
- //   downloadURL = await ref.getDownloadURL();
-   // return downloadURL;
-//  }
+Future<String> uploadFile(File image) async
+ {
+   String downloadURL;
+   String postId=DateTime.now().millisecondsSinceEpoch.toString();
+   Reference ref = FirebaseStorage.instance.ref().child("images").child("post_$postId.jpg");
+   await ref.putFile(image);
+   downloadURL = await ref.getDownloadURL();
+   return downloadURL;
+ }
 
 
 uploadToFirebase()async
@@ -209,7 +209,7 @@ final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 final String uid = _firebaseAuth.currentUser!.uid;
 final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 final CollectionReference users = _firebaseFirestore.collection("User");
-// String url=await uploadFile(_image!); // this will upload the file and store url in the variable 'url'
+String url=await uploadFile(_image!); // this will upload the file and store url in the variable 'url'
 await users.doc(uid).update({  //use update to update the doc fields.
 'url':url
 });
@@ -283,7 +283,7 @@ await users.doc(uid).update({  //use update to update the doc fields.
 
   _fetch() async {
     final ref = FirebaseDatabase.instance.reference();
-    // User? cuser = await FirebaseAuth.instance.currentUser;
+    User? cuser = await FirebaseAuth.instance.currentUser;
 
     return ref
         .child('users')

@@ -75,15 +75,6 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
     });
   }
 
-  // Future<DocumentReference> _addGeoPoint() async {
-  //   var pos = await _location.getLocation();
-  //   GeoFirePoint point = geo.point(latitude: pos.latitude!, longitude: pos.longitude!);
-  //   print("deneme123");
-  //   return firestore.collection('locations').add({
-  //     'position': point.data,
-  //     'name': 'Yay I can be queried!'
-  //   });
-  // }
 void _getshuttleLoc() async{ // databaseden location verisini alir ve global verilere atar
 
     database.child('shuttles/shuttleId/location/latitude').onValue.listen((event) {
