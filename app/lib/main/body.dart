@@ -1,4 +1,5 @@
 import 'package:app/database/functions.dart';
+import 'package:app/general/util.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,10 @@ class MainBody extends StatelessWidget {
               imageName: "assets/images/profiles.jpeg",
               screenName: ScreenNames.profile,
               height: buttonHeight,
-              navigateTo: const ProfileScreen(),
+              navigateTo: ProfileScreen(
+                userId: getUserId(),
+                editable: true,
+              ),
             ),
             seperator,
             MainPageRedirectionButton(

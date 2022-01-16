@@ -1,5 +1,4 @@
-import 'package:app/database/message_type.dart';
-import 'package:app/general/util.dart';
+import 'package:app/database/notification_type.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +17,21 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+/// TODO: delete 'a' class
+
+class a extends StatelessWidget {
+  String t;
+
+  a({Key? key, required this.t}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Text(t),
+    );
+  }
+}
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -26,30 +40,37 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  void _handleMessage(RemoteMessage message) {
-    String dataType = message.data["type"];
-    String dataValue = message.data["value"];
+  // TODO:
+  // void _handleMessage(RemoteMessage message) {
+  //   String dataType = message.data["type"];
+  //   String dataValue = message.data["value"];
 
-    switch (dataType) {
-      case MessageType.requestRespond:
-        break;
-      case MessageType.requestReceive:
-        redirectionTo(ScreenNames.pendingUsers)(context);
-        break;
-      default:
-        return;
-    }
-  }
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => a(t: "$dataType $dataValue"),
+  //     ),
+  //   );
+  //   switch (dataType) {
+  //     case NotificationType.requestRespond:
+  //       break;
+  //     case NotificationType.requestReceive:
+  //       break;
+  //     default:
+  //       return;
+  //   }
+  // }
 
   Future<void> setupInteractedMessage() async {
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
 
     if (initialMessage != null) {
-      _handleMessage(initialMessage);
+      // _handleMessage(initialMessage);
     }
 
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+    FirebaseMessaging.onMessage.listen((event) {});
+    // FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
   }
 
   @override

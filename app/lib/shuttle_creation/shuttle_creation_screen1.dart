@@ -148,19 +148,19 @@ class _ShuttleCreationScreen1State extends State<ShuttleCreationScreen1> {
           //   bool checkPlate = await isPlateOnDatabase(_temp);
           // }
           //
-          if (_temp.length > 9) {
-            return "Plaka Standarlarına uygun plaka girin.";
-          }
-          else if(isPlateOnDatabase(_temp) == false){
-            return "Girilen plaka daha önce kullanılmıştır.";
-          }
-          else if (!_temp.contains('P')) {
-            return "Servis Plakaları P plaka olmak zorundadır.";
-          } else if (_temp.length > 3 && _temp.contains(RegExp(r'[A-Z]'), 3)) {
-            return "Servis Plakaları P plaka olmak zorundadır.";
-          } else {
-            return null;
-          }
+          // if (_temp.length > 9) {
+          //   return "Plaka Standarlarına uygun plaka girin.";
+          // }
+          // else if(isPlateOnDatabase(_temp) == false){
+          //   return "Girilen plaka daha önce kullanılmıştır.";
+          // }
+          // else if (!_temp.contains('P')) {
+          //   return "Servis Plakaları P plaka olmak zorundadır.";
+          // } else if (_temp.length > 3 && _temp.contains(RegExp(r'[A-Z]'), 3)) {
+          //   return "Servis Plakaları P plaka olmak zorundadır.";
+          // } else {
+          //   return null;
+          // }
         },
         onSaved: (value) => setState(() {
           String _temp;
@@ -257,7 +257,9 @@ class _ShuttleCreationScreen1State extends State<ShuttleCreationScreen1> {
         validator: (value) {
           if (value!.isEmpty) {
             return "Bu alan boş kalamaz.";
-          } else if (value.length != 4 || int.parse(value) > 2022 || int.parse(value) < 1970) {
+          } else if (value.length != 4 ||
+              int.parse(value) > 2022 ||
+              int.parse(value) < 1970) {
             return "Geçerli bir yıl girin.";
           } else {
             return null;

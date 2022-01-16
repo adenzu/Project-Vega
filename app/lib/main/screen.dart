@@ -10,7 +10,7 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Project-Vega",
+          "Vega",
         ),
         foregroundColor: Colors.blue,
         backgroundColor: Colors.white,

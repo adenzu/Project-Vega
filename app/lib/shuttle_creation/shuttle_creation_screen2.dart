@@ -11,13 +11,13 @@ class ShuttleCreationScreen2 extends StatefulWidget {
   final String _shuttleModel;
   final int _shuttleYear;
 
-  const ShuttleCreationScreen2(
-      {Key? key,
-      required String plate,
-        required String shuttleBrand,
-        required String shuttleModel,
-        required int shuttleYear,})
-      : _plate = plate,
+  const ShuttleCreationScreen2({
+    Key? key,
+    required String plate,
+    required String shuttleBrand,
+    required String shuttleModel,
+    required int shuttleYear,
+  })  : _plate = plate,
         _shuttleBrand = shuttleBrand,
         _shuttleModel = shuttleModel,
         _shuttleYear = shuttleYear,
@@ -28,8 +28,6 @@ class ShuttleCreationScreen2 extends StatefulWidget {
 }
 
 class _ShuttleCreationScreen2State extends State<ShuttleCreationScreen2> {
-
-
   final _formKey = GlobalKey<FormState>();
   final _database = FirebaseDatabase.instance.reference();
   String? _driverName;
@@ -38,8 +36,6 @@ class _ShuttleCreationScreen2State extends State<ShuttleCreationScreen2> {
   String? _shuttleEName;
   int? _shuttleLicense;
   int? _driverID;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -105,27 +101,41 @@ class _ShuttleCreationScreen2State extends State<ShuttleCreationScreen2> {
                             final isValid = _formKey.currentState!.validate();
                             FocusScope.of(context).unfocus();
                             if (isValid) {
-                              final ShuttleInformation _si = ShuttleInformation(widget._plate, widget._shuttleBrand, widget._shuttleModel, widget._shuttleYear, _shuttleCompany, _driverID, _shuttleLicense, _seatNumber);
+                              final ShuttleInformation _si = ShuttleInformation(
+                                  widget._plate,
+                                  widget._shuttleBrand,
+                                  widget._shuttleModel,
+                                  widget._shuttleYear,
+                                  _shuttleCompany,
+                                  _driverID,
+                                  _shuttleLicense,
+                                  _seatNumber);
                               //createShuttle2(_si);
                               _formKey.currentState!.save();
-                              String message = "Plaka: " + widget._plate +"\n";
-                              message += "Marka: " + widget._shuttleBrand+"\n";
-                              message += "Model: " + widget._shuttleModel+"\n";
-                              message += "Yıl: " + widget._shuttleYear.toString()+"\n";
+                              String message = "Plaka: " + widget._plate + "\n";
+                              message +=
+                                  "Marka: " + widget._shuttleBrand + "\n";
+                              message +=
+                                  "Model: " + widget._shuttleModel + "\n";
+                              message += "Yıl: " +
+                                  widget._shuttleYear.toString() +
+                                  "\n";
                               message += "Şirket: $_shuttleCompany \n";
-                              message += "Koltuk Sayısı: " + _seatNumber.toString()+"\n";
-                              message += "Sürücü T.C: " + _driverID.toString()+"\n";
-                              message += "Ruhsat No: " + _shuttleLicense.toString();
+                              message += "Koltuk Sayısı: " +
+                                  _seatNumber.toString() +
+                                  "\n";
+                              message +=
+                                  "Sürücü T.C: " + _driverID.toString() + "\n";
+                              message +=
+                                  "Ruhsat No: " + _shuttleLicense.toString();
 
                               final snackBar = SnackBar(
-                                content: Text(
-                                    message,
-                                    style: const TextStyle(fontSize: 20)
-                                ),
+                                content: Text(message,
+                                    style: const TextStyle(fontSize: 20)),
                                 backgroundColor: Colors.green,
-
                               );
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
                             }
                           },
                         ),
@@ -236,13 +246,11 @@ class _ShuttleCreationScreen2State extends State<ShuttleCreationScreen2> {
         validator: (value) {
           if (value!.isEmpty) {
             return "Bu alan boş kalamaz.";
-          } else if(value[0] == "0"){
+          } else if (value[0] == "0") {
             return "Ruhsat numarası 0 ile başlayamaz.";
-          }
-          else if(value.length != 6){
+          } else if (value.length != 6) {
             return "Ruhsat numarası 6 haneli olmalıdır.";
-          }
-          else {
+          } else {
             return null;
           }
         },
@@ -276,13 +284,11 @@ class _ShuttleCreationScreen2State extends State<ShuttleCreationScreen2> {
         validator: (value) {
           if (value!.isEmpty) {
             return "Bu alan boş kalamaz.";
-          } else if(value.length != 11){
+          } else if (value.length != 11) {
             return "T.C kimlik numarası 11 haneli olmalıdır.";
-          }
-          else if(value[0] == "0"){
+          } else if (value[0] == "0") {
             return "T.C kimlik numarası 0 ile başlayamaz.";
-          }
-          else {
+          } else {
             return null;
           }
         },
@@ -316,10 +322,9 @@ class _ShuttleCreationScreen2State extends State<ShuttleCreationScreen2> {
         validator: (value) {
           if (value!.isEmpty) {
             return "Bu alan boş kalamaz.";
-          }else if(int.parse(value) == 0){
+          } else if (int.parse(value) == 0) {
             return "Koltuk sayısı 0 olamaz.";
-          }
-          else {
+          } else {
             return null;
           }
         },

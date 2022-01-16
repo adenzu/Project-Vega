@@ -1,4 +1,5 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:app/general/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../profile/screen.dart';
@@ -29,7 +30,9 @@ class abc extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           //theme: ThemeProvider.of(context),
           title: title,
-          home: ProfileScreen(),
+          home: ProfileScreen(
+            userId: getUserId(),
+          ),
         ),
       ),
     );

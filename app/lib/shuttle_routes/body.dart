@@ -1,3 +1,4 @@
+import 'package:app/database/functions.dart';
 import 'package:app/general/titled_rect_widget_button.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -104,6 +105,8 @@ class _ServiceRoutesBodyState extends State<ServiceRoutesBody> {
                                         ElevatedButton(
                                           onPressed: () {
                                             Navigator.pop(context);
+                                            removeRoute(
+                                                widget.shuttleId, currId);
                                           },
                                           child: const Text("Sil"),
                                         ),
@@ -153,8 +156,10 @@ class _ServiceRoutesBodyState extends State<ServiceRoutesBody> {
                       children: [
                         TextFormField(
                           controller: routeNameController,
-                          decoration:
-                              const InputDecoration(label: Text("Rota ismi")),
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.sort_by_alpha),
+                            label: Text("İsim"),
+                          ),
                         )
                       ],
                     ),
@@ -167,7 +172,10 @@ class _ServiceRoutesBodyState extends State<ServiceRoutesBody> {
                       ),
                       ElevatedButton(
                         child: const Text("Ekle"),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                          addRoute(widget.shuttleId);
+                        },
                       ),
                     ],
                   );

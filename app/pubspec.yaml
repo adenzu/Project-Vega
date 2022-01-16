@@ -33,6 +33,7 @@ dependencies:
   firebase_database: ^8.0.1
   firebase_auth: ^3.1.4
   cloud_firestore: ^2.5.4
+  firebase_storage: ^10.2.5
   fluttertoast: ^8.0.8
   flutter_plugin_android_lifecycle: ^2.0.5
   google_maps_flutter_platform_interface: ^2.1.3
@@ -50,7 +51,11 @@ dependencies:
   cloud_functions: ^3.2.4
   firebase_messaging: ^11.2.4
   image_picker: ^0.8.4+4
+<<<<<<< HEAD
   dcdg: ^4.0.1
+=======
+  flutter_local_notifications: ^9.2.0
+>>>>>>> b517621851826f1055a6d816b253b4951027afb4
 
 dev_dependencies:
   flutter_test:
