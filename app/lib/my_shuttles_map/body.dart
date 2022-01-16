@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-//import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
@@ -85,7 +84,7 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
   //     'name': 'Yay I can be queried!'
   //   });
   // }
-void _getshuttleLoc() async{
+void _getshuttleLoc() async{ // databaseden location verisini alir ve global verilere atar
 
     database.child('shuttles/shuttleId/location/latitude').onValue.listen((event) {
     shuttlelat = event.snapshot.value;
