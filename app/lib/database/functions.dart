@@ -118,18 +118,15 @@ Future<Map<String, dynamic>> getUserDataValue({String userId = ''}) async {
 /// verilen id'yi kullanıcının bağlı (children) profillerine ekler
 Future<void> addChild(String childId) async {
   String userId = getUserId();
+  _setUserParent(childId, userId, null);
   _setUserChild(userId, childId, true);
 }
 
 /// verilen id'yi kullanıcının bağlı (children) profillerinden siler
 Future<void> removeChild(String childId) async {
   String userId = getUserId();
+  _setUserParent(childId, childId, null);
   _setUserChild(userId, childId, null);
-}
-
-Future<void> removeParentOf(String childId) async {
-  String userId = getUserId();
-  _setUserParent(childId, userId, null);
 }
 
 /// çocuğu database'e verilen değerlere ekler

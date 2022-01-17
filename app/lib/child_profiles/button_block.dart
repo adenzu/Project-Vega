@@ -169,7 +169,6 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                                                   currChildId, shuttleId);
                                             }
                                           }
-                                          removeParentOf(currChildId);
                                           removeChild(currChildId);
                                         },
                                       )
