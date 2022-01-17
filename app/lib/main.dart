@@ -1,34 +1,47 @@
-import 'package:app/database/notification_type.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'welcome/screen.dart';
 import 'general/screens.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // print('Handling a background message ${message.messageId}');
+}
+
+late AndroidNotificationChannel channel;
+late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true, // Required to display a heads up notification
-    badge: true,
-    sound: true,
-  );
-  runApp(const MyApp());
-}
 
-/// TODO: delete 'a' class
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-class a extends StatelessWidget {
-  String t;
+  if (!kIsWeb) {
+    channel = const AndroidNotificationChannel(
+      'high_importance_channel',
+      'High Importance Notifications',
+      description: 'This channel is used for important notifications.',
+      importance: Importance.high,
+    );
 
-  a({Key? key, required this.t}) : super(key: key);
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Text(t),
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
     );
   }
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -39,45 +52,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // TODO:
-  // void _handleMessage(RemoteMessage message) {
-  //   String dataType = message.data["type"];
-  //   String dataValue = message.data["value"];
-
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => a(t: "$dataType $dataValue"),
-  //     ),
-  //   );
-  //   switch (dataType) {
-  //     case NotificationType.requestRespond:
-  //       break;
-  //     case NotificationType.requestReceive:
-  //       break;
-  //     default:
-  //       return;
-  //   }
-  // }
-
-  Future<void> setupInteractedMessage() async {
-    RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
-
-    if (initialMessage != null) {
-      // _handleMessage(initialMessage);
-    }
-
-    FirebaseMessaging.onMessage.listen((event) {});
-    // FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    setupInteractedMessage();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

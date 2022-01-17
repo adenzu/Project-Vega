@@ -22,7 +22,8 @@ class _PendingUsersBodyState extends State<PendingUsersBody> {
       .child("users/${FirebaseAuth.instance.currentUser!.uid}/pendingUsers");
   List<String> sentIds = [];
   List<String> pendingIds = [];
-  TextEditingController userIdController = TextEditingController();
+  final userIdController = TextEditingController();
+  final userIdFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -170,11 +171,23 @@ class _PendingUsersBodyState extends State<PendingUsersBody> {
                     builder: (context) {
                       return AlertDialog(
                         title: const Text("İstek yollayın"),
-                        content: TextFormField(
-                          controller: userIdController,
-                          decoration: const InputDecoration(
-                            icon: Icon(Icons.vpn_key),
-                            label: Text("Kod"),
+                        content: Form(
+                          key: userIdFormKey,
+                          child: TextFormField(
+                            controller: userIdController,
+                            decoration: const InputDecoration(
+                              icon: Icon(Icons.vpn_key),
+                              label: Text("Kod"),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Alan boş bırakılamaz";
+                              } else if (!value
+                                  .contains(RegExp(r'^(U|C)[0-9]+$'))) {
+                                return "Uygun bir kod giriniz";
+                              }
+                              return null;
+                            },
                           ),
                         ),
                         actions: [
@@ -186,20 +199,24 @@ class _PendingUsersBodyState extends State<PendingUsersBody> {
                           ),
                           ElevatedButton(
                             onPressed: () async {
-                              if (userIdController.text.isEmpty) {
-                                Fluttertoast.showToast(
-                                    msg: "Alanlar boş bırakılamaz");
-                              } else if ((await FirebaseDatabase.instance
-                                      .reference()
-                                      .child(
-                                          "publicUserIds/${userIdController.text}")
-                                      .once())
-                                  .exists) {
-                                Navigator.pop(context);
-                                requestConnection(userIdController.text);
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: "Hatalı kullanıcı kodu girdiniz");
+                              if (userIdFormKey.currentState!.validate()) {
+                                String userId = userIdController.text;
+                                if (await checkUserExists(userId)) {
+                                  if (await checkChildExists(userId)) {
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            "Kullanıcı ile halihazırda bağlantılısınız");
+                                  } else {
+                                    Navigator.pop(context);
+                                    Fluttertoast.showToast(
+                                        msg: "İstek yollandı");
+                                    requestConnection(userId);
+                                  }
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg:
+                                          "Bu kodla bir kullanıcı bulunmamakta");
+                                }
                               }
                             },
                             child: const Text("Ekle"),

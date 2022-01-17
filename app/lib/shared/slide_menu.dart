@@ -37,8 +37,8 @@ class SlideMenu extends StatelessWidget {
     },
     {
       "isDivider": false,
-      "title": "Servislerim",
-      "iconData": Icons.airport_shuttle,
+      "title": "Rotalarım",
+      "iconData": Icons.map,
       "onTap": redirectOrPop(ScreenNames.myShuttle),
     },
     {
@@ -48,12 +48,18 @@ class SlideMenu extends StatelessWidget {
       "onTap": redirectOrPop(ScreenNames.childProfiles),
     },
     {
+      "isDivider": false,
+      "title": "Rotaya Bağlan",
+      "iconData": Icons.add_link,
+      "onTap": redirectOrPop(ScreenNames.routeConnection),
+    },
+    {
       "isDivider": true,
     },
     {
       "isDivider": false,
-      "title": "Servis oluştur",
-      "iconData": Icons.add,
+      "title": "Görevli Servislerim",
+      "iconData": Icons.airport_shuttle,
       "onTap": redirectOrPop(ScreenNames.employeeShuttles),
     },
     {

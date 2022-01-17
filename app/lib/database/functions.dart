@@ -73,6 +73,13 @@ Future<void> childUnsubRoute(String childId, String routeId) async {
   _setRouteUser(routeId, childId, null);
 }
 
+/// kullanıcıyı rota aboneliklerinden çıkartır
+///
+/// aslında `childUnsubRoute` kullanıyor ama çaktırma :)
+Future<void> removePassenger(String passengerId, String routeId) async {
+  childUnsubRoute(passengerId, routeId);
+}
+
 /// `userId` id'li kullanıcıya onu "çocuk" profili olarak ekleme isteği yollar
 Future<void> requestConnection(String userId) async {
   String currentUserId = getUserId();
@@ -236,6 +243,30 @@ Future<bool> checkShuttleExists(String shuttleId) async {
       .exists;
 }
 
+Future<bool> checkRouteExists(String routeId) async {
+  return (await FirebaseDatabase.instance
+          .reference()
+          .child("routes/$routeId")
+          .once())
+      .exists;
+}
+
+Future<bool> checkUserExists(String userId) async {
+  return (await FirebaseDatabase.instance
+          .reference()
+          .child("publicUserIds/$userId")
+          .once())
+      .exists;
+}
+
+Future<bool> checkChildExists(String childId) async {
+  return (await FirebaseDatabase.instance
+          .reference()
+          .child("users/${getUserId()}/children/$childId")
+          .once())
+      .exists;
+}
+
 Future<bool> checkPlateExists(String plate) async {
   return (await FirebaseDatabase.instance
           .reference()
@@ -294,7 +325,7 @@ Future<List<String>> getUserRoutes({String userId = ''}) async {
       .reference()
       .child("users/$userId/routes")
       .once();
-  return Map<String, bool>.from(routesData.value).keys.toList();
+  return Map<String, bool>.from(routesData.value ?? {}).keys.toList();
 }
 
 /*

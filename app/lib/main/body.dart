@@ -51,7 +51,7 @@ class MainBody extends StatelessWidget {
             MainPageRedirectionButton(
               icon: Icons.airport_shuttle,
               iconBackgroundColor: Colors.white70,
-              text: "Servisler",
+              text: "Rotalar",
               height: buttonHeight,
               imageName: "assets/images/shuttleservice.jpeg",
               screenName: ScreenNames.myShuttle,

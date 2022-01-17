@@ -7,10 +7,14 @@ class Request {
   static const accept = Request._(1);
   static const pending = Request._(2);
   static const canceled = Request._(3);
+}
 
-  @override
-  bool operator ==(dynamic other) =>
-      (other is String && value.toString() == other) ||
-      (other is int && value == other) ||
-      (other is Request && value == other.value);
+extension RequestChecking on String {
+  Request parseRequest() {
+    try {
+      return Request._(int.parse(this));
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

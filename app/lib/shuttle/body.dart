@@ -278,19 +278,27 @@ class _ShuttleBodyState extends State<ShuttleBody> {
                                     title: Text("$userName $userSurname"),
                                     actions: [
                                       ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                            rejectEmployee(
-                                                widget.shuttleId, currId);
-                                          },
-                                          child: const Text("Reddet")),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text("İptal"),
+                                      ),
                                       ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                            acceptEmployee(
-                                                widget.shuttleId, currId);
-                                          },
-                                          child: const Text("Kabul et"))
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          rejectEmployee(
+                                              widget.shuttleId, currId);
+                                        },
+                                        child: const Text("Reddet"),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          acceptEmployee(
+                                              widget.shuttleId, currId);
+                                        },
+                                        child: const Text("Kabul et"),
+                                      ),
                                     ],
                                   );
                                 },
