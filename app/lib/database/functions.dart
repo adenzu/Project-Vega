@@ -118,7 +118,7 @@ Future<Map<String, dynamic>> getUserDataValue({String userId = ''}) async {
 /// verilen id'yi kullanıcının bağlı (children) profillerine ekler
 Future<void> addChild(String childId) async {
   String userId = getUserId();
-  _setUserParent(childId, userId, null);
+  _setUserParent(childId, userId, true);
   _setUserChild(userId, childId, true);
 }
 
