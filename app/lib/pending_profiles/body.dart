@@ -66,7 +66,7 @@ class _PendingUsersBodyState extends State<PendingUsersBody> {
             sentIds.isEmpty
                 ? const Center(
                     child: Text(
-                      "Gönderilmiş bağlantı isteğiniz bulunmamaktadır.",
+                      "Gönderilmiş çocuk ekleme isteğiniz bulunmamaktadır.",
                       style: TextStyle(fontSize: 30),
                       textAlign: TextAlign.center,
                     ),
@@ -233,7 +233,7 @@ class _PendingUsersBodyState extends State<PendingUsersBody> {
         pendingIds.isEmpty
             ? const Center(
                 child: Text(
-                  "Bekleyen bağlantı isteğiniz bulunmamaktadır.",
+                  "Gelen ebeveyn isteğiniz bulunmamaktadır.",
                   style: TextStyle(fontSize: 30),
                   textAlign: TextAlign.center,
                 ),

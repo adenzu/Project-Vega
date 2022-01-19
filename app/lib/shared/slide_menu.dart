@@ -1,5 +1,7 @@
 import 'package:app/database/functions.dart';
 import 'package:app/general/util.dart';
+import 'package:app/profile/screen.dart';
+import 'package:app/route_connection/screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +35,16 @@ class SlideMenu extends StatelessWidget {
       "isDivider": false,
       "title": "Profilim",
       "iconData": Icons.account_circle,
-      "onTap": redirectOrPop(ScreenNames.profile),
+      "onTap": (context) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfileScreen(
+                userId: getUserId(),
+                editable: true,
+                canSeeParents: true,
+              ),
+            ),
+          ),
     },
     {
       "isDivider": false,
@@ -43,7 +54,7 @@ class SlideMenu extends StatelessWidget {
     },
     {
       "isDivider": false,
-      "title": "Bağlı Profiller",
+      "title": "Çocuklarım",
       "iconData": Icons.account_tree,
       "onTap": redirectOrPop(ScreenNames.childProfiles),
     },
@@ -51,7 +62,14 @@ class SlideMenu extends StatelessWidget {
       "isDivider": false,
       "title": "Rotaya Bağlan",
       "iconData": Icons.add_link,
-      "onTap": redirectOrPop(ScreenNames.routeConnection),
+      "onTap": (context) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RouteConnectionScreen(
+                userId: getUserId(),
+              ),
+            ),
+          ),
     },
     {
       "isDivider": true,

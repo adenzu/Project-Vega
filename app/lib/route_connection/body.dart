@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class RouteConnectionBody extends StatelessWidget {
+  final userId;
   final routeIdFormKey = GlobalKey<FormState>();
   final routeIdController = TextEditingController();
 
-  RouteConnectionBody({Key? key}) : super(key: key);
+  RouteConnectionBody({Key? key, required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +40,14 @@ class RouteConnectionBody extends StatelessWidget {
                   if (routeIdFormKey.currentState!.validate()) {
                     String routeId = routeIdController.text;
                     if (await checkRouteExists(routeId)) {
-                      List<String> userRoutes = await getUserRoutes();
+                      List<String> userRoutes =
+                          await getUserRoutes(userId: userId);
 
                       if (userRoutes.contains(routeId)) {
                         Fluttertoast.showToast(
-                            msg: "Bu rotaya halihazırda abonesiniz");
+                            msg: "Bu rotaya halihazırda abone");
                       } else {
-                        requestRouteSub(routeId);
+                        requestRouteSub(routeId, userId: userId);
                         Fluttertoast.showToast(msg: "Abone isteği yollandı");
                       }
                     } else {

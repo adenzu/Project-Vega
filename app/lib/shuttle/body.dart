@@ -1,7 +1,6 @@
 import 'package:app/database/functions.dart';
 import 'package:app/general/titled_rect_widget_button.dart';
 import 'package:app/profile/screen.dart';
-import 'package:app/shuttle_edit/screen.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +27,8 @@ class _ShuttleBodyState extends State<ShuttleBody> {
   late DataSnapshot shuttleData;
   List<String> pendingEmployeeIds = [];
   List<String> employeeIds = [];
+  final shuttleInfoController = TextEditingController();
+  late String shuttleInfo = "Yükleniyor...";
 
   void settleShuttleData() async {
     shuttleData = widget.shuttleData ??
@@ -47,6 +48,8 @@ class _ShuttleBodyState extends State<ShuttleBody> {
         shuttleRef.child("pendingEmployees");
 
     DatabaseReference employeesRef = shuttleRef.child("employees");
+
+    DatabaseReference infoRef = shuttleRef.child("info");
 
     pendingEmployeesRef.onChildRemoved.listen((event) {
       setState(() {
@@ -85,6 +88,20 @@ class _ShuttleBodyState extends State<ShuttleBody> {
         });
       }
     });
+
+    infoRef.onChildRemoved.listen((event) {
+      setState(() {
+        shuttleInfo = "Bilgi bulunmamakta.";
+      });
+    });
+
+    infoRef.onValue.listen((event) {
+      if (event.snapshot.exists) {
+        setState(() {
+          shuttleInfo = event.snapshot.value;
+        });
+      }
+    });
   }
 
   @override
@@ -93,13 +110,13 @@ class _ShuttleBodyState extends State<ShuttleBody> {
         (Map<String, bool>.from(shuttleData.value['employees'])).keys.toList();
     List<Widget> listChildren = [
       const Text(
-        "Bilgi",
+        "Servis Bilgisi",
         style: TextStyle(fontSize: 30),
       ),
       Container(
         padding: const EdgeInsets.fromLTRB(5, 0, 0, 20),
         child: Text(
-          shuttleData.value["info"],
+          shuttleInfo,
         ),
       ),
       const Text(
@@ -159,7 +176,10 @@ class _ShuttleBodyState extends State<ShuttleBody> {
                             child: const Text("Geri"),
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pop(context);
+                              removeEmployee(widget.shuttleId, currId);
+                            },
                             child: const Text("Çıkart"),
                           ),
                         ],
@@ -170,7 +190,6 @@ class _ShuttleBodyState extends State<ShuttleBody> {
                       MaterialPageRoute(
                         builder: (context) => ProfileScreen(
                           userId: currId,
-                          userData: snapshot.data,
                         ),
                       ),
                     ),
@@ -200,17 +219,37 @@ class _ShuttleBodyState extends State<ShuttleBody> {
           padding: const EdgeInsets.all(15),
           child: FloatingActionButton(
             child: const Icon(Icons.edit),
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ShuttleEditScreen(
-                      shuttleId: widget.shuttleId,
-                      shuttleData: widget.shuttleData,
-                    ),
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text("Servis Bilgisi Ekle"),
+                  content: TextFormField(
+                    controller: shuttleInfoController,
+                    keyboardType: TextInputType.multiline,
+                    decoration:
+                        const InputDecoration(label: Text("Servis Bilgisi")),
+                    maxLines: null,
                   ),
-                  (route) => route is! ShuttleEditScreen);
-            },
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("İptal"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        setShuttleInfo(
+                            widget.shuttleId, shuttleInfoController.text);
+                      },
+                      child: const Text("Kaydet"),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       );

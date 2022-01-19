@@ -2,6 +2,8 @@
 
 import 'package:app/database/functions.dart';
 import 'package:app/general/titled_rect_widget_button.dart';
+import 'package:app/profile/screen.dart';
+import 'package:app/route_connection/screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../child_profiles/add_child_button.dart';
@@ -42,13 +44,12 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    // final screenHeight = size.height;
     return Stack(
       children: [
         childrenIds.isEmpty
             ? const Center(
                 child: Text(
-                  "Bağlı profiliniz bulunmamaktadır.",
+                  "Çocuğunuz bulunmamaktadır.",
                   style: TextStyle(fontSize: 30),
                   textAlign: TextAlign.center,
                 ),
@@ -75,7 +76,7 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                             title: Text.rich(
                               TextSpan(
                                 children: [
-                                  WidgetSpan(
+                                  const WidgetSpan(
                                       child: Icon(
                                         Icons.person,
                                         color: Colors.white54,
@@ -110,53 +111,43 @@ class _ButtonsBlockState extends State<ButtonsBlock> {
                               height: 150,
                               color: Colors.blue,
                             ),
+                            onLongPress: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProfileScreen(
+                                  userId: currChildId,
+                                  editable: true,
+                                  canSeeParents: true,
+                                ),
+                              ),
+                            ),
                             onTap: () {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     scrollable: true,
-                                    title: const Text("Bilgi"),
-                                    content: Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: Form(
-                                        child: Column(
-                                          children: <Widget>[
-                                            Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  WidgetSpan(
-                                                      child: Text(
-                                                        childInfo['name'] +
-                                                            " " +
-                                                            childInfo[
-                                                                'surname'] +
-                                                            "\n",
-                                                        style: DefaultTextStyle
-                                                                .of(context)
-                                                            .style
-                                                            .apply(
-                                                                fontSizeFactor:
-                                                                    1.0,
-                                                                color: Colors
-                                                                    .black),
-                                                      ),
-                                                      alignment:
-                                                          PlaceholderAlignment
-                                                              .middle),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                    title: Text(
+                                        "${childInfo['name']} ${childInfo['surname']}"),
                                     actions: [
                                       ElevatedButton(
-                                          child: Text("Düzenle"),
-                                          onPressed: () async {}),
+                                          child: const Text("İptal"),
+                                          onPressed: () =>
+                                              Navigator.pop(context)),
                                       ElevatedButton(
-                                        child: Text("Sil"),
+                                        child: const Text("Rotaya Ekle"),
+                                        onPressed: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                RouteConnectionScreen(
+                                              userId: currChildId,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                        child: const Text("Sil"),
                                         onPressed: () async {
                                           Navigator.of(context).pop();
                                           if (childInfo['routes'] != null) {

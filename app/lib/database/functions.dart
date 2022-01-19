@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:app/database/request.dart';
 import 'package:app/database/user_use_route.dart';
 import 'package:app/general/util.dart';
 import 'package:app/shuttle_creation/shuttle_info_class.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 /// verilen shuttle id'yi kullanıcının servislerine ekler
 Future<void> addShuttle(String plate, int seatCount) async {
@@ -50,8 +53,8 @@ Future<void> childSubRoute(String childId, String routeId) async {
 }
 
 /// rotaya abone olma isteği yollar
-Future<void> requestRouteSub(String routeId) async {
-  String userId = getUserId();
+Future<void> requestRouteSub(String routeId, {String userId = ''}) async {
+  userId = userId == '' ? getUserId() : userId;
   _setSentRoute(userId, routeId, Request.pending);
 }
 
@@ -272,6 +275,22 @@ Future<bool> checkPlateExists(String plate) async {
       .exists;
 }
 
+Future<bool> isUserReal(String userId) async {
+  return (await FirebaseDatabase()
+          .reference()
+          .child("users/$userId/isReal")
+          .once())
+      .value;
+}
+
+Future<String> getPublicId(String userId) async {
+  return (await FirebaseDatabase.instance
+          .reference()
+          .child("users/$userId/publicId")
+          .once())
+      .value;
+}
+
 Future<int> concurrentPassengerCount(String shuttleId) async {
   Map<String, bool>? routes = (await FirebaseDatabase.instance
           .reference()
@@ -301,17 +320,36 @@ Future<int> concurrentPassengerCount(String shuttleId) async {
 }
 
 Future<void> setShuttleInfo(String shuttleId, String shuttleInfo) async {
-  _setShuttle(shuttleId, {'info': shuttleInfo});
+  FirebaseDatabase.instance
+      .reference()
+      .child("shuttles/$shuttleId/info")
+      .set(shuttleInfo);
+}
+
+Future<void> removeEmployee(String shuttleId, String employeeId) async {
+  FirebaseDatabase.instance
+      .reference()
+      .child("shuttles/$shuttleId/employees/$employeeId")
+      .set(null);
+  FirebaseDatabase.instance
+      .reference()
+      .child("employees/$employeeId/shuttles/$shuttleId")
+      .set(null);
+}
+
+Future<void> uploadProfilePicture(File image, {String userId = ''}) async {
+  if (userId == '') {
+    userId == getUserId();
+  }
+  await FirebaseStorage.instance.ref("profilePictures/$userId").putFile(image);
 }
 
 Future<void> setShuttleLocation(
     String shuttleId, double longitude, double latitude) async {
-  _setShuttle(shuttleId, {
-    'location': {
-      'longitude': longitude,
-      'latitude': latitude,
-    },
-  });
+  DatabaseReference shuttleRef =
+      FirebaseDatabase.instance.reference().child("shuttles/$shuttleId");
+  shuttleRef.child("longitude").set(longitude);
+  shuttleRef.child("latitude").set(latitude);
 }
 
 Future<List<String>> getUserRoutes({String userId = ''}) async {
@@ -355,6 +393,7 @@ Future<List<String>> getUserRoutes({String userId = ''}) async {
 ///       isReal
 ///       name
 ///       surname
+///       info
 ///       publicId
 ///       parents
 ///         parentId1

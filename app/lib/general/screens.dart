@@ -40,7 +40,6 @@ class ScreenNames {
   static const pendingUsers = 'pendingUsers';
   static const employeeShuttles = 'employeeShuttles';
   static const shuttleCreation = "shuttleCreation";
-  static const routeConnection = "routeConnection";
 }
 
 /// Yeni bir sayfa oluşturduğunuzda buraya ilişkin değişkeni ekleyin
@@ -70,7 +69,6 @@ class Screens {
   static const pendingUsers = PendingUsersScreen();
   static const employeeShuttles = EmployeeShuttlesScreen();
   static const shuttleCreation = ShuttleCreationScreen();
-  static const routeConnection = RouteConnectionScreen();
 
   static const Map<String, Widget> screensMap = {
     ScreenNames.main: Screens.main,
@@ -86,6 +84,5 @@ class Screens {
     ScreenNames.pendingUsers: Screens.pendingUsers,
     ScreenNames.employeeShuttles: Screens.employeeShuttles,
     ScreenNames.shuttleCreation: Screens.shuttleCreation,
-    ScreenNames.routeConnection: Screens.routeConnection,
   };
 }
