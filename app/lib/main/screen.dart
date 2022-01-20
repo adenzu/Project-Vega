@@ -34,6 +34,10 @@ class _MainScreenState extends State<MainScreen> {
 
     checkEmployee().then((value) {
       if (isEmployee) {
+        BackgroundLocation.setAndroidNotification(
+            title: "Konum Takibi",
+            message:
+                "Servisinizin konumunu güncel tutmak adına telefon konumunuz takip edilmektedir");
         BackgroundLocation.setAndroidConfiguration(30000);
         BackgroundLocation.startLocationService();
         BackgroundLocation.getLocationUpdates((location) async {
