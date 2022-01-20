@@ -94,6 +94,10 @@ Future<void> cancelConnectionRequest(String userId) async {
   _setSentUser(currentUserId, userId, Request.canceled);
 }
 
+Future<void> cancelSubEmployeeRequest(String shuttleId) async {
+  _setSentShuttle(getUserId(), shuttleId, Request.canceled);
+}
+
 Future<void> respondToConnectionRequest(String userId, Request req) async {
   String currentUserId = getUserId();
   _setUserPending(currentUserId, userId, req);
