@@ -1,6 +1,7 @@
 import 'package:app/database/functions.dart';
 import 'package:app/general/screens.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/circular_button.dart';
 import '../components/not_visible_text_field_container.dart';
@@ -95,6 +96,10 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                     );
                   } else {
                     addFCMToken();
+                    String? email = user.email;
+                    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                    sharedPreferences.setString('email',email!);
+                    sharedPreferences.setBool("isLoggedIn", true);
                     Navigator.pushNamedAndRemoveUntil(
                       context,
                       ScreenNames.main,

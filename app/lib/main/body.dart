@@ -66,7 +66,7 @@ class MainBody extends StatelessWidget {
               imageName: "assets/images/mapimage.jpeg",
               height: buttonHeight,
               screenName: ScreenNames.map,
-              navigateTo: const MyShuttleMap(),
+              navigateTo:  const MyShuttleMap(shuttleId: 'S19'),
             ),
             seperator,
           ],

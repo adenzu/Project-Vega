@@ -59,7 +59,7 @@ class Screens {
   static const main = MainScreen();
   static const myShuttle = MyShuttleScreen();
   static const childProfiles = ChildProfilesScreen();
-  static const myShuttleMap = MyShuttleMap();
+  static const myShuttleMap = MyShuttleMap(shuttleId: 'S19');
   static const about = AboutScreen();
   static const feedback = FeedbackScreen();
   static const settings = SettingsScreen();
