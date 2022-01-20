@@ -71,15 +71,21 @@ class _ShuttleInfoScreenBodyState extends State<ShuttleInfoScreenBody> {
         Row(
           children: [
             ShuttleInfoContainer(widget.shuttleID),
-            DriverInfoContainer(widget.shuttleID),
+          //  DriverInfoContainer(widget.shuttleID),
           ],
         ),
         Row(
           children: [
-            PassengersInfoContainer(widget.shuttleID),
-            SLicenseInfoContainer(widget.shuttleID),
+            SizedBox(width:size.width*0.3),
+            DriverInfoContainer(widget.shuttleID),
           ],
         ),
+        // Row(
+        //   children: [
+        //     PassengersInfoContainer(widget.shuttleID),
+        //     SLicenseInfoContainer(widget.shuttleID),
+        //   ],
+        // ),
         // Padding(
         //   padding: EdgeInsets.fromLTRB(size.width *0.05,size.height * 0.35,size.width *0.05,size.height * 0.05),
         //   child: GridView.builder(

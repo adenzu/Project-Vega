@@ -40,10 +40,10 @@ class RouteConnectionBody extends StatelessWidget {
                   if (routeIdFormKey.currentState!.validate()) {
                     String routeId = routeIdController.text;
                     if (await checkRouteExists(routeId)) {
-                      List<String> userRoutes =
+                      List<String>? userRoutes =
                           await getUserRoutes(userId: userId);
 
-                      if (userRoutes.contains(routeId)) {
+                      if (userRoutes!.contains(routeId)) {
                         Fluttertoast.showToast(
                             msg: "Bu rotaya halihazırda abone");
                       } else {

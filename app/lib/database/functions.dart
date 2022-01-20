@@ -356,7 +356,7 @@ Future<void> setShuttleLocation(
   shuttleRef.child("latitude").set(latitude);
 }
 
-Future<List<String>> getUserRoutes({String userId = ''}) async {
+Future<List<String>?> getUserRoutes({String userId = ''}) async {
   if (userId == '') {
     userId = getUserId();
   }
