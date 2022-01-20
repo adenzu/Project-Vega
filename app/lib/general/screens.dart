@@ -2,6 +2,7 @@ import 'package:app/employee_shuttles/screen.dart';
 import 'package:app/login/screen.dart';
 import 'package:app/pending_profiles/screen.dart';
 import 'package:app/profile/edit_profile_page.dart';
+import 'package:app/route_connection/screen.dart';
 import 'package:app/shuttle_creation/shuttle_creation_screen.dart';
 import 'package:app/signup/screen.dart';
 

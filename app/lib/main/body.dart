@@ -35,13 +35,14 @@ class MainBody extends StatelessWidget {
               navigateTo: ProfileScreen(
                 userId: getUserId(),
                 editable: true,
+                canSeeParents: true,
               ),
             ),
             seperator,
             MainPageRedirectionButton(
               icon: Icons.account_tree,
               iconBackgroundColor: Colors.white70,
-              text: "Bağlı Profiller",
+              text: "Çocuklarım",
               imageName: "assets/images/branch.jpeg",
               screenName: ScreenNames.childProfiles,
               height: buttonHeight,
@@ -51,7 +52,7 @@ class MainBody extends StatelessWidget {
             MainPageRedirectionButton(
               icon: Icons.airport_shuttle,
               iconBackgroundColor: Colors.white70,
-              text: "Servisler",
+              text: "Rotalar",
               height: buttonHeight,
               imageName: "assets/images/shuttleservice.jpeg",
               screenName: ScreenNames.myShuttle,

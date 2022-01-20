@@ -34,7 +34,7 @@ class _ShuttleScreenState extends State<ShuttleScreen> {
                     text: "$plate\n",
                     children: [
                       TextSpan(
-                        text: widget.shuttleId,
+                        text: "Kod: ${widget.shuttleId}",
                         style: TextStyle(color: Colors.grey[800]),
                       ),
                     ],

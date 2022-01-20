@@ -41,7 +41,7 @@ class AddChildButton extends StatelessWidget {
                 children: [
                   AlertDialog(
                     scrollable: true,
-                    title: const Text("Yeni Oluştur"),
+                    title: const Text("Çocuk Ekle"),
                     content: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Form(
@@ -102,6 +102,7 @@ class AddChildButton extends StatelessWidget {
                               'isReal': false,
                               'name': firstNameController.text,
                               'surname': lastNameController.text,
+                              'info': 'Bilgi bulunmamakta.',
                               'parents': {
                                 FirebaseAuth.instance.currentUser!.uid: true
                               },
