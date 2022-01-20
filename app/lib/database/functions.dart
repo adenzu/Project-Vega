@@ -178,8 +178,6 @@ Future<void> rejectPassenger(String routeId, String userId) async {
   _setRoutePending(routeId, userId, Request.reject);
 }
 
-
-
 /// user için unique id oluşturur, bu auth için değil bağlantı isteği içindir
 Future<String> generateUserId() async {
   DataSnapshot snap = await _getUserCounter().once();
@@ -274,6 +272,14 @@ Future<bool> checkUserExists(String userId) async {
       .exists;
 }
 
+Future<bool> checkEmployeeExists(String userId) async {
+  return (await FirebaseDatabase.instance
+          .reference()
+          .child("employee/$userId")
+          .once())
+      .exists;
+}
+
 Future<bool> checkChildExists(String childId) async {
   return (await FirebaseDatabase.instance
           .reference()
@@ -352,6 +358,48 @@ Future<void> removeEmployee(String shuttleId, String employeeId) async {
       .set(null);
 }
 
+Future<void> setShuttleCurrentRoute(String shuttleId, String routeId) async {
+  FirebaseDatabase.instance
+      .reference()
+      .child("shuttles/$shuttleId/currentRoute")
+      .set(routeId);
+}
+
+Future<void> setUserCurrentRoute(String userId, String routeId) async {
+  FirebaseDatabase.instance
+      .reference()
+      .child("users/$userId/currentRoute")
+      .set(routeId);
+}
+
+Future<void> setEmployeeCurrentShuttle(String userId, String shuttleId) async {
+  FirebaseDatabase.instance
+      .reference()
+      .child("employees/$userId/currentShuttle")
+      .set(shuttleId);
+}
+
+Future<void> removeShuttleCurrentRoute(String shuttleId) async {
+  FirebaseDatabase.instance
+      .reference()
+      .child("shuttles/$shuttleId/currentRoute")
+      .set(null);
+}
+
+Future<void> removeUserCurrentRoute(String userId) async {
+  FirebaseDatabase.instance
+      .reference()
+      .child("users/$userId/currentRoute")
+      .set(null);
+}
+
+Future<void> removeEmployeeCurrentShuttle(String userId) async {
+  FirebaseDatabase.instance
+      .reference()
+      .child("employees/$userId/currentShuttle")
+      .set(null);
+}
+
 Future<void> uploadProfilePicture(File image, {String userId = ''}) async {
   if (userId == '') {
     userId == getUserId();
@@ -399,6 +447,7 @@ Future<List<String>?> getUserRoutes({String userId = ''}) async {
 ///         shuttleId1
 ///         shuttleId2
 ///         ...
+///       currentShuttle: shuttleId
 ///   publicUserIds
 ///     publicUserId1: userId1
 ///     publicUserId2: userId2
@@ -410,6 +459,7 @@ Future<List<String>?> getUserRoutes({String userId = ''}) async {
 ///       surname
 ///       info
 ///       publicId
+///       currentRoute: routeId
 ///       parents
 ///         parentId1
 ///         parentId2
@@ -447,6 +497,7 @@ Future<List<String>?> getUserRoutes({String userId = ''}) async {
 ///       plate
 ///       seatCount
 ///       info
+///       currentRoute: routeId
 ///       currentLocation
 ///         longtitude: ...
 ///         latitude: ...

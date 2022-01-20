@@ -1,3 +1,9 @@
+import 'package:app/database/functions.dart';
+import 'package:app/general/util.dart';
+import 'package:app/route/screen.dart';
+import 'package:background_location/background_location.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../shared/slide_menu.dart';
 import 'body.dart';
@@ -21,6 +27,39 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  bool isEmployee = false;
+  @override
+  void initState() {
+    super.initState();
+
+    checkEmployee().then((value) {
+      if (isEmployee) {
+        BackgroundLocation.setAndroidConfiguration(30000);
+        BackgroundLocation.startLocationService();
+        BackgroundLocation.getLocationUpdates((location) async {
+          if (FirebaseAuth.instance.currentUser != null) {
+            String userId = getUserId();
+            DatabaseReference currShuttle = FirebaseDatabase.instance
+                .reference()
+                .child("employees/$userId/currentShuttle");
+            DataSnapshot currShuttleDataSnap = await currShuttle.once();
+            if (currShuttleDataSnap.exists) {
+              String currShuttleId = currShuttleDataSnap.value;
+              setShuttleLocation(
+                  currShuttleId, location.longitude!, location.latitude!);
+            }
+          }
+        });
+      } else {
+        BackgroundLocation.stopLocationService();
+      }
+    });
+  }
+
+  Future<void> checkEmployee() async {
+    isEmployee = await checkEmployeeExists(getUserId());
+  }
+
   void _handleMessage(RemoteMessage message) {
     String dataType = message.data["type"];
     String dataValue = message.data["value"];
@@ -65,9 +104,13 @@ class _MainScreenState extends State<MainScreen> {
         }
         break;
       case NotificationType.routeSubRequestReceive:
-        // TODO: route sayfası eklenince aktifleştir
-        // String routeId = message.data["routeId"];
-        // Navigator.push(context, MaterialPageRoute(builder: (context) => RouteScreen(routeId: routeId),),);
+        String routeId = message.data["routeId"];
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RouteScreen(routeID: routeId),
+          ),
+        );
         break;
       case NotificationType.routeSubRequestRespond:
         switch (dataValue.parseRequest()) {

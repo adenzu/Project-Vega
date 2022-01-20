@@ -9,7 +9,8 @@ class RouteBody extends StatefulWidget {
   final String routeID;
   final bool editable;
 
-  const RouteBody({Key? key, required this.routeID,this.editable = true}) : super(key: key);
+  const RouteBody({Key? key, required this.routeID, this.editable = true})
+      : super(key: key);
 
   @override
   _RouteBodyState createState() => _RouteBodyState();
@@ -19,7 +20,6 @@ class _RouteBodyState extends State<RouteBody> {
   late DatabaseReference routePassengersRef = FirebaseDatabase.instance
       .reference()
       .child("routes/${widget.routeID}/passengers");
-
 
   List<String> passengersIds = [];
   List<String> pendingPassengersIds = [];
@@ -31,8 +31,6 @@ class _RouteBodyState extends State<RouteBody> {
     final DatabaseReference pendingPassengerRef = FirebaseDatabase.instance
         .reference()
         .child("routes/${widget.routeID}/pendingUsers");
-
-
 
     pendingPassengerRef.onChildRemoved.listen((event) {
       setState(() {
@@ -49,8 +47,6 @@ class _RouteBodyState extends State<RouteBody> {
       }
     });
 
-
-
     routePassengersRef.onChildRemoved.listen((event) {
       setState(() {
         passengersIds.clear();
@@ -64,7 +60,6 @@ class _RouteBodyState extends State<RouteBody> {
         });
       }
     });
-
   }
 
   @override
@@ -154,10 +149,7 @@ class _RouteBodyState extends State<RouteBody> {
           });
         });
 
-        routePassengersRef
-            .child('$currId/status')
-            .onValue
-            .listen((event) {
+        routePassengersRef.child('$currId/status').onValue.listen((event) {
           if (event.snapshot.exists) {
             setState(() {
               status = event.snapshot.value;
@@ -177,7 +169,7 @@ class _RouteBodyState extends State<RouteBody> {
                     routeId: widget.routeID,
                     userId: currId);
               } else {
-                return Text('Bilgi bulunmuyor.');
+                return const Text('Bilgi bulunmuyor.');
               }
             } else {
               return Container(
@@ -194,14 +186,12 @@ class _RouteBodyState extends State<RouteBody> {
       }),
     );
 
-
     List<Widget> stackChildren = [
       ListView(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
         children: listChildren,
       )
     ];
-
 
     List<Widget> pageViewChildren = [
       Stack(
@@ -210,113 +200,107 @@ class _RouteBodyState extends State<RouteBody> {
       ),
     ];
 
-
     if (widget.editable) {
       pageViewChildren.add(pendingPassengersIds.isEmpty
           ? const Center(
-        child: Text(
-          "Bu rota için bekleyen yolcu isteği bulunmamaktadır.",
-          style: TextStyle(fontSize: 30),
-          textAlign: TextAlign.center,
-        ),
-      )
+              child: Text(
+                "Bu rota için bekleyen yolcu isteği bulunmamaktadır.",
+                style: TextStyle(fontSize: 30),
+                textAlign: TextAlign.center,
+              ),
+            )
           : ListView.builder(
-        itemCount: pendingPassengersIds.length,
-        itemBuilder: (context, index) {
-          String currId = pendingPassengersIds[index];
-          return FutureBuilder(
-            future: getUserData(userId: currId),
-            builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
-              if (snapshot.hasData) {
-                DataSnapshot userData = snapshot.data!;
-                if (userData.exists) {
-                  String userName = userData.value['name'];
-                  String userSurname = userData.value['surname'];
-                  return TitledRectWidgetButton(
-                    borderRadius: BorderRadius.circular(25),
-                    title: Text.rich(
-                      TextSpan(
-                        children: [
-                          const Icon(
-                            Icons.account_circle,
-                            size: 60,
+              itemCount: pendingPassengersIds.length,
+              itemBuilder: (context, index) {
+                String currId = pendingPassengersIds[index];
+                return FutureBuilder(
+                  future: getUserData(userId: currId),
+                  builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+                    if (snapshot.hasData) {
+                      DataSnapshot userData = snapshot.data!;
+                      if (userData.exists) {
+                        String userName = userData.value['name'];
+                        String userSurname = userData.value['surname'];
+                        return TitledRectWidgetButton(
+                          borderRadius: BorderRadius.circular(25),
+                          title: Text.rich(
+                            TextSpan(
+                              children: [
+                                const Icon(
+                                  Icons.account_circle,
+                                  size: 60,
+                                ),
+                                Text(
+                                  "$userName $userSurname",
+                                  style: const TextStyle(fontSize: 30),
+                                ),
+                              ]
+                                  .map(
+                                    (e) => WidgetSpan(
+                                        child: e,
+                                        alignment: PlaceholderAlignment.middle),
+                                  )
+                                  .toList(),
+                            ),
                           ),
-                          Text(
-                            "$userName $userSurname",
-                            style: const TextStyle(fontSize: 30),
+                          child: Container(
+                            width: double.infinity,
+                            height: 150,
+                            color: Colors.blue,
                           ),
-                        ]
-                            .map(
-                              (e) => WidgetSpan(
-                              child: e,
-                              alignment: PlaceholderAlignment.middle),
-                        )
-                            .toList(),
-                      ),
-                    ),
-                    child: Container(
-                      width: double.infinity,
-                      height: 150,
-                      color: Colors.blue,
-                    ),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("$userName $userSurname"),
-                            actions: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("İptal"),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  rejectPassenger(
-                                      widget.routeID, currId);
-                                },
-                                child: const Text("Reddet"),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  acceptPassenger(
-                                      widget.routeID, currId);
-                                },
-                                child: const Text("Kabul et"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    // onLongPress: () {
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) =>
-                    //           ProfileScreen(userId: currId),
-                    //     ),
-                    //   );
-                    // },
-                  );
-                } else {
-                  return const Text("Bilgi bulunmamakta");
-                }
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            },
-          );
-        },
-      ));
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("$userName $userSurname"),
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("İptal"),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        rejectPassenger(widget.routeID, currId);
+                                      },
+                                      child: const Text("Reddet"),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        acceptPassenger(widget.routeID, currId);
+                                      },
+                                      child: const Text("Kabul et"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          // onLongPress: () {
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           ProfileScreen(userId: currId),
+                          //     ),
+                          //   );
+                          // },
+                        );
+                      } else {
+                        return const Text("Bilgi bulunmamakta");
+                      }
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
+                );
+              },
+            ));
     }
-
-
-
 
     return PageView(
       children: pageViewChildren,

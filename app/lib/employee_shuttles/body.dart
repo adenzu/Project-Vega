@@ -146,6 +146,13 @@ class _EmployeeShuttlesBodyState extends State<EmployeeShuttlesBody> {
                                               },
                                             ),
                                             ElevatedButton(
+                                              child: const Text("Ayrıl"),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                                leaveShuttle(currId);
+                                              },
+                                            ),
+                                            ElevatedButton(
                                               child: const Text("Düzenle"),
                                               onPressed: () {
                                                 Navigator.push(
@@ -154,17 +161,18 @@ class _EmployeeShuttlesBodyState extends State<EmployeeShuttlesBody> {
                                                     builder: (context) =>
                                                         ShuttleScreen(
                                                       shuttleId: currId,
-                                                          editable: true,
+                                                      editable: true,
                                                     ),
                                                   ),
                                                 );
                                               },
                                             ),
                                             ElevatedButton(
-                                              child: const Text("Ayrıl"),
+                                              child: const Text("Seç"),
                                               onPressed: () {
                                                 Navigator.pop(context);
-                                                leaveShuttle(currId);
+                                                setEmployeeCurrentShuttle(
+                                                    getUserId(), currId);
                                               },
                                             ),
                                           ],

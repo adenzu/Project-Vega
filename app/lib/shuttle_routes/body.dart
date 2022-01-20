@@ -121,6 +121,8 @@ class _ShuttleRoutesBodyState extends State<ShuttleRoutesBody> {
                                         ElevatedButton(
                                           onPressed: () {
                                             Navigator.pop(context);
+                                            setShuttleCurrentRoute(
+                                                widget.shuttleId, currId);
                                           },
                                           child: const Text("Seç"),
                                         ),
