@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 
 class ShuttleScreen extends StatefulWidget {
   final String shuttleId;
+  final bool editable;
 
-  const ShuttleScreen({Key? key, required this.shuttleId}) : super(key: key);
+  const ShuttleScreen({Key? key, required this.shuttleId,this.editable = false}) : super(key: key);
 
   @override
   _ShuttleScreenState createState() => _ShuttleScreenState();
@@ -59,7 +60,7 @@ class _ShuttleScreenState extends State<ShuttleScreen> {
               body: ShuttleBody(
                 shuttleId: widget.shuttleId,
                 shuttleData: snapshot.data,
-                editable: true,
+                editable: widget.editable,
               ),
             );
           } else {

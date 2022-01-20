@@ -40,7 +40,7 @@ class _DriverInfoContainerState extends State<DriverInfoContainer> {
           },
           child: SizedBox(
             height: size.height * 0.335,
-            width: size.width * 0.32,
+            width: size.width * 0.59,
             child: Container(
               padding: EdgeInsets.only(top:size.height*0.03),
               width: size.width * 0.3,

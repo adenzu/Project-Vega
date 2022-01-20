@@ -254,116 +254,118 @@ class _ShuttleBodyState extends State<ShuttleBody> {
         ),
       );
     }
+    List<Widget> pageViewChildren = [
+      Stack(
+        children: stackChildren,
+        alignment: Alignment.bottomRight,
+      ),
+    ];
 
-    return PageView(
-      children: [
-        Stack(
-          children: stackChildren,
-          alignment: Alignment.bottomRight,
-        ),
-        pendingEmployeeIds.isEmpty
-            ? const Center(
-                child: Text(
-                  "Bu servis için bekleyen görevli isteği bulunmamakta",
-                  style: TextStyle(fontSize: 30),
-                  textAlign: TextAlign.center,
-                ),
-              )
-            : ListView.builder(
-                itemCount: pendingEmployeeIds.length,
-                itemBuilder: (context, index) {
-                  String currId = pendingEmployeeIds[index];
-                  return FutureBuilder(
-                    future: getUserData(userId: currId),
-                    builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
-                      if (snapshot.hasData) {
-                        DataSnapshot userData = snapshot.data!;
-                        if (userData.exists) {
-                          String userName = userData.value['name'];
-                          String userSurname = userData.value['surname'];
-                          return TitledRectWidgetButton(
-                            borderRadius: BorderRadius.circular(25),
-                            title: Text.rich(
-                              TextSpan(
-                                children: [
-                                  const Icon(
-                                    Icons.account_circle,
-                                    size: 60,
-                                  ),
-                                  Text(
-                                    "$userName $userSurname",
-                                    style: const TextStyle(fontSize: 30),
-                                  ),
-                                ]
-                                    .map(
-                                      (e) => WidgetSpan(
-                                          child: e,
-                                          alignment:
-                                              PlaceholderAlignment.middle),
-                                    )
-                                    .toList(),
-                              ),
-                            ),
-                            child: Container(
-                              width: double.infinity,
-                              height: 150,
-                              color: Colors.blue,
-                            ),
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text("$userName $userSurname"),
-                                    actions: [
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text("İptal"),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          rejectEmployee(
-                                              widget.shuttleId, currId);
-                                        },
-                                        child: const Text("Reddet"),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          acceptEmployee(
-                                              widget.shuttleId, currId);
-                                        },
-                                        child: const Text("Kabul et"),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            onLongPress: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      ProfileScreen(userId: currId),
-                                ),
-                              );
-                            },
-                          );
-                        } else {
-                          return const Text("Bilgi bulunmamakta");
-                        }
-                      } else {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                    },
-                  );
-                },
+    if (widget.editable) {
+      pageViewChildren.add(pendingEmployeeIds.isEmpty
+          ? const Center(
+              child: Text(
+                "Bu servis için bekleyen görevli isteği bulunmamakta",
+                style: TextStyle(fontSize: 30),
+                textAlign: TextAlign.center,
               ),
-      ],
+            )
+          : ListView.builder(
+              itemCount: pendingEmployeeIds.length,
+              itemBuilder: (context, index) {
+                String currId = pendingEmployeeIds[index];
+                return FutureBuilder(
+                  future: getUserData(userId: currId),
+                  builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+                    if (snapshot.hasData) {
+                      DataSnapshot userData = snapshot.data!;
+                      if (userData.exists) {
+                        String userName = userData.value['name'];
+                        String userSurname = userData.value['surname'];
+                        return TitledRectWidgetButton(
+                          borderRadius: BorderRadius.circular(25),
+                          title: Text.rich(
+                            TextSpan(
+                              children: [
+                                const Icon(
+                                  Icons.account_circle,
+                                  size: 60,
+                                ),
+                                Text(
+                                  "$userName $userSurname",
+                                  style: const TextStyle(fontSize: 30),
+                                ),
+                              ]
+                                  .map(
+                                    (e) => WidgetSpan(
+                                        child: e,
+                                        alignment: PlaceholderAlignment.middle),
+                                  )
+                                  .toList(),
+                            ),
+                          ),
+                          child: Container(
+                            width: double.infinity,
+                            height: 150,
+                            color: Colors.blue,
+                          ),
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("$userName $userSurname"),
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("İptal"),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        rejectEmployee(
+                                            widget.shuttleId, currId);
+                                      },
+                                      child: const Text("Reddet"),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        acceptEmployee(
+                                            widget.shuttleId, currId);
+                                      },
+                                      child: const Text("Kabul et"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          onLongPress: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ProfileScreen(userId: currId),
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return const Text("Bilgi bulunmamakta");
+                      }
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  },
+                );
+              },
+            ));
+    }
+    return PageView(
+      children: pageViewChildren,
     );
   }
 }
