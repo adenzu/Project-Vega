@@ -169,6 +169,17 @@ Future<void> rejectEmployee(String shuttleId, String userId) async {
   _setShuttlePendingEmployee(shuttleId, userId, Request.reject);
 }
 
+/////
+Future<void> acceptPassenger(String routeId, String userId) async {
+  _setRoutePending(routeId, userId, Request.accept);
+}
+
+Future<void> rejectPassenger(String routeId, String userId) async {
+  _setRoutePending(routeId, userId, Request.reject);
+}
+
+
+
 /// user için unique id oluşturur, bu auth için değil bağlantı isteği içindir
 Future<String> generateUserId() async {
   DataSnapshot snap = await _getUserCounter().once();

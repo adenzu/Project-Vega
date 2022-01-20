@@ -154,6 +154,7 @@ class _EmployeeShuttlesBodyState extends State<EmployeeShuttlesBody> {
                                                     builder: (context) =>
                                                         ShuttleScreen(
                                                       shuttleId: currId,
+                                                          editable: true,
                                                     ),
                                                   ),
                                                 );

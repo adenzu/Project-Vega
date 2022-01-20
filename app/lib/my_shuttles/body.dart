@@ -89,12 +89,31 @@ class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
                 width: double.infinity,
                 child: Stack(
                   children: [
-                    Container(
-                      alignment: Alignment.topCenter,
-                      width: size.width,
-                      height: size.height,
-                      child: const MyShuttleMap(),
-                    ),
+                    FutureBuilder(
+                        future: FirebaseDatabase.instance
+                            .reference()
+                            .child("routes/$_userRoute/shuttleId")
+                            .once(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            return  Container(
+                              alignment: Alignment.topCenter,
+                              width: size.width,
+                              height: size.height,
+                                  child: MyShuttleMap(shuttleId: snapshot.data.value),
+                            );
+                          } else {
+                            return Container(
+                              padding: const EdgeInsets.all(40),
+                              width: double.infinity,
+                              height: 150,
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          }
+                        }),
                     Padding(
                       padding: EdgeInsets.only(top: size.height * 0.02),
                       child: Stack(

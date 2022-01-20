@@ -4,6 +4,7 @@ import 'package:app/profile/screen.dart';
 import 'package:app/route_connection/screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../general/screens.dart';
 import 'slide_menu_tile.dart';
@@ -111,7 +112,9 @@ class SlideMenu extends StatelessWidget {
       "isDivider": false,
       "title": "Çıkış",
       "iconData": Icons.logout,
-      "onTap": (context) {
+      "onTap": (context) async {
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        sharedPreferences.setBool("isLoggedIn", false);
         removeFCMToken().then((value) {
           FirebaseAuth.instance.signOut();
           Navigator.pushNamedAndRemoveUntil(

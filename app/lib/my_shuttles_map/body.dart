@@ -12,7 +12,8 @@ import 'package:location/location.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
 
 class MyShuttleMapBody extends StatefulWidget {
-  const MyShuttleMapBody({Key? key}) : super(key: key);
+  final String shuttleId;
+  const MyShuttleMapBody({Key? key, required this.shuttleId}) : super(key: key);
 
   @override
   _MyShuttleMapBodyState createState() => _MyShuttleMapBodyState();
@@ -30,8 +31,6 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
   late double shuttlelat;
   late double shuttlelong;
 
-  // Geoflutterfire geo = Geoflutterfire();
-
   static const _initialCamera = CameraPosition(
     target: LatLng(40.806298, 29.355541),
     zoom: 14.5,
@@ -42,7 +41,7 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
     _location.onLocationChanged.listen((l) {
       _controller!.animateCamera(
         CameraUpdate.newCameraPosition(CameraPosition(
-            target: LatLng(l.latitude!, l.longitude!), zoom: 14.5)),
+            target: LatLng(l.latitude!, l.longitude!), zoom: 15)),
       );
     });
   }
@@ -77,11 +76,11 @@ class _MyShuttleMapBodyState extends State<MyShuttleMapBody> {
 
 void _getshuttleLoc() async{ // databaseden location verisini alir ve global verilere atar
 
-    database.child('shuttles/shuttleId/location/latitude').onValue.listen((event) {
+    database.child('shuttles/${widget.shuttleId}/location/latitude').onValue.listen((event) {
     shuttlelat = event.snapshot.value;
     print(shuttlelat);
   });
-    database.child('shuttles/shuttleId/location/longitude').onValue.listen((event) {
+    database.child('shuttles/${widget.shuttleId}/location/longitude').onValue.listen((event) {
       shuttlelong = event.snapshot.value;
       print(shuttlelong);
     });
@@ -106,6 +105,7 @@ void _getshuttleLoc() async{ // databaseden location verisini alir ve global ver
             zoom: 14.5,
             bearing: 192.8334901395799,
             tilt: 0,
+
           )));
           refreshmarker(newData, imagedata);
         }
@@ -144,8 +144,11 @@ void _getshuttleLoc() async{ // databaseden location verisini alir ve global ver
               initialCameraPosition: _initialCamera,
               onMapCreated: _onMapCreated,
               myLocationEnabled: true,
+            zoomGesturesEnabled: true,
+              tiltGesturesEnabled: false,
               // markers: Set.of((marker != null)),
             ),
+
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(
