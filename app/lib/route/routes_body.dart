@@ -70,18 +70,18 @@ print(widget.routeID);
         bool isOn = false;
         int status = 0;
 
-        routePassengersRef.child('$currId/isOn').onChildRemoved.listen((event) {
-          setState(() {
-            isOn = false;
-          });
-        });
-        routePassengersRef.child('$currId/isOn').onValue.listen((event) {
-          if(event.snapshot.exists){
-            setState(() {
-              isOn = event.snapshot.value;
-            });
-          }
-        });
+        // routePassengersRef.child('$currId/isOn').onChildRemoved.listen((event) {
+        //   setState(() {
+        //     isOn = false;
+        //   });
+        // });
+        // routePassengersRef.child('$currId/isOn').onValue.listen((event) {
+        //   if(event.snapshot.exists){
+        //     setState(() {
+        //       isOn = event.snapshot.value;
+        //     });
+        //   }
+        // });
 
         routePassengersRef.child('$currId/status').onChildRemoved.listen((event) {
           setState(() {
@@ -100,7 +100,7 @@ print(widget.routeID);
                     if (snapshot.data!.exists){
                       String name = snapshot.data!.value['name'];
                       String surname = snapshot.data!.value['surname'];
-                      return PassengerCard(name: '$name $surname', isOn: isOn, status: status, routeId: widget.routeID, userId: currId);
+                      return PassengerCard(name: '$name $surname',status: status, routeId: widget.routeID, userId: currId);
                     }
                     else{
                       return Text('Bilgi bulunmuyor.');

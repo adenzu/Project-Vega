@@ -18,7 +18,7 @@ class ShuttleRoutesScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: ServiceRoutesBody(
+      body: ShuttleRoutesBody(
         shuttleId: shuttleId,
       ),
     );

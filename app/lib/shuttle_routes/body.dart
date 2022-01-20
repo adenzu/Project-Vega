@@ -1,19 +1,20 @@
 import 'package:app/database/functions.dart';
 import 'package:app/general/titled_rect_widget_button.dart';
+import 'package:app/route/screen.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-class ServiceRoutesBody extends StatefulWidget {
+class ShuttleRoutesBody extends StatefulWidget {
   final String shuttleId;
 
-  const ServiceRoutesBody({Key? key, required this.shuttleId})
+  const ShuttleRoutesBody({Key? key, required this.shuttleId})
       : super(key: key);
 
   @override
-  _ServiceRoutesBodyState createState() => _ServiceRoutesBodyState();
+  _ShuttleRoutesBodyState createState() => _ShuttleRoutesBodyState();
 }
 
-class _ServiceRoutesBodyState extends State<ServiceRoutesBody> {
+class _ShuttleRoutesBodyState extends State<ShuttleRoutesBody> {
   Map<String, bool> routeIds = {};
   TextEditingController routeNameController = TextEditingController();
 
@@ -88,6 +89,13 @@ class _ServiceRoutesBodyState extends State<ServiceRoutesBody> {
                                 width: double.infinity,
                                 height: 150,
                                 color: Colors.pink,
+                              ),
+                              onLongPress: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      RouteScreen(routeID: currId),
+                                ),
                               ),
                               onTap: () {
                                 showDialog(

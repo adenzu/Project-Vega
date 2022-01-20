@@ -1,5 +1,6 @@
 
 
+import 'package:app/route/screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -63,7 +64,7 @@ class _MyAppState extends State<MyApp> {
         primaryColor: Colors.blue,
       ),
       home: const WelcomeScreen(),
-
+      // home: const RouteScreen(routeID: 'R33'),
       /// screens.dart dosyasında Screens classında screenMapte
       /// olan sayfaları route'a ekleme satırı, yeni sayfaları
       /// screens.dart'a ekleyin
