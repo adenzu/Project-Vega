@@ -189,9 +189,9 @@ class _MyShuttleScreenBodyState extends State<MyShuttleScreenBody> {
                                   onPressed: () => Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => ShuttleScreen(
-                                              shuttleId:
-                                                  snapshot.data.value),)),
+                                        builder: (context) => ShuttleScreen(
+                                            shuttleId: snapshot.data.value),
+                                      )),
                                 );
                               } else {
                                 return Container(
