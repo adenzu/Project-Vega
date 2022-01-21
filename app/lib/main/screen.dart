@@ -1,8 +1,6 @@
 import 'package:app/database/functions.dart';
 import 'package:app/general/util.dart';
 import 'package:app/route/screen.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
-    as bg;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -32,37 +30,37 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
 
-    checkEmployee().then((value) {
-      if (isEmployee) {
-        bg.BackgroundGeolocation.onLocation((bg.Location location) async {
-          if (FirebaseAuth.instance.currentUser != null) {
-            String userId = getUserId();
-            DatabaseReference currShuttle = FirebaseDatabase.instance
-                .reference()
-                .child("employees/$userId/currentShuttle");
-            DataSnapshot currShuttleDataSnap = await currShuttle.once();
-            if (currShuttleDataSnap.exists) {
-              String currShuttleId = currShuttleDataSnap.value;
-              setShuttleLocation(currShuttleId, location.coords.longitude,
-                  location.coords.latitude);
-            }
-          }
-        });
-      }
-
-      bg.BackgroundGeolocation.ready(bg.Config(
-              desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
-              distanceFilter: 10.0,
-              stopOnTerminate: false,
-              startOnBoot: true,
-              debug: true,
-              logLevel: bg.Config.LOG_LEVEL_VERBOSE))
-          .then((bg.State state) {
-        if (!state.enabled) {
-          bg.BackgroundGeolocation.start();
-        }
-      });
-    });
+    // checkEmployee().then((value) {
+    //   if (isEmployee) {
+    //     bg.BackgroundGeolocation.onLocation((bg.Location location) async {
+    //       if (FirebaseAuth.instance.currentUser != null) {
+    //         String userId = getUserId();
+    //         DatabaseReference currShuttle = FirebaseDatabase.instance
+    //             .reference()
+    //             .child("employees/$userId/currentShuttle");
+    //         DataSnapshot currShuttleDataSnap = await currShuttle.once();
+    //         if (currShuttleDataSnap.exists) {
+    //           String currShuttleId = currShuttleDataSnap.value;
+    //           setShuttleLocation(currShuttleId, location.coords.longitude,
+    //               location.coords.latitude);
+    //         }
+    //       }
+    //     });
+    //   }
+    //
+    //   bg.BackgroundGeolocation.ready(bg.Config(
+    //           desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
+    //           distanceFilter: 10.0,
+    //           stopOnTerminate: false,
+    //           startOnBoot: true,
+    //           debug: true,
+    //           logLevel: bg.Config.LOG_LEVEL_VERBOSE))
+    //       .then((bg.State state) {
+    //     if (!state.enabled) {
+    //       bg.BackgroundGeolocation.start();
+    //     }
+    //   });
+    // });
   }
 
   Future<void> checkEmployee() async {
