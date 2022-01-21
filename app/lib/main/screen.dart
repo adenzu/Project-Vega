@@ -1,11 +1,10 @@
 import 'package:app/database/functions.dart';
 import 'package:app/general/util.dart';
 import 'package:app/route/screen.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
-    as bg;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import '../shared/slide_menu.dart';
 import 'body.dart';
 import 'package:app/database/notification_type.dart';
@@ -34,7 +33,8 @@ class _MainScreenState extends State<MainScreen> {
 
     checkEmployee().then((value) {
       if (isEmployee) {
-        bg.BackgroundGeolocation.onLocation((bg.Location location) async {
+        Location.instance.enableBackgroundMode();
+        Location.instance.onLocationChanged.listen((LocationData loc) async {
           if (FirebaseAuth.instance.currentUser != null) {
             String userId = getUserId();
             DatabaseReference currShuttle = FirebaseDatabase.instance
@@ -43,25 +43,11 @@ class _MainScreenState extends State<MainScreen> {
             DataSnapshot currShuttleDataSnap = await currShuttle.once();
             if (currShuttleDataSnap.exists) {
               String currShuttleId = currShuttleDataSnap.value;
-              setShuttleLocation(currShuttleId, location.coords.longitude,
-                  location.coords.latitude);
+              setShuttleLocation(currShuttleId, loc.longitude!, loc.altitude!);
             }
           }
         });
       }
-
-      bg.BackgroundGeolocation.ready(bg.Config(
-              desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
-              distanceFilter: 10.0,
-              stopOnTerminate: false,
-              startOnBoot: true,
-              debug: true,
-              logLevel: bg.Config.LOG_LEVEL_VERBOSE))
-          .then((bg.State state) {
-        if (!state.enabled) {
-          bg.BackgroundGeolocation.start();
-        }
-      });
     });
   }
 
