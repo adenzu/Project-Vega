@@ -1,6 +1,7 @@
 import 'package:app/database/functions.dart';
 import 'package:app/general/titled_rect_widget_button.dart';
 import 'package:app/profile/screen.dart';
+import 'package:app/route/screen.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,7 @@ class _ShuttleBodyState extends State<ShuttleBody> {
   List<String> employeeIds = [];
   final shuttleInfoController = TextEditingController();
   late String shuttleInfo = "Yükleniyor...";
+  String? currRouteId;
 
   void settleShuttleData() async {
     shuttleData = widget.shuttleData ??
@@ -46,10 +48,9 @@ class _ShuttleBodyState extends State<ShuttleBody> {
 
     DatabaseReference pendingEmployeesRef =
         shuttleRef.child("pendingEmployees");
-
     DatabaseReference employeesRef = shuttleRef.child("employees");
-
     DatabaseReference infoRef = shuttleRef.child("info");
+    DatabaseReference currRouteRef = shuttleRef.child("currentRoute");
 
     pendingEmployeesRef.onChildRemoved.listen((event) {
       setState(() {
@@ -102,12 +103,27 @@ class _ShuttleBodyState extends State<ShuttleBody> {
         });
       }
     });
+
+    currRouteRef.onChildRemoved.listen((event) {
+      setState(() {
+        currRouteId = null;
+      });
+    });
+
+    currRouteRef.onValue.listen((event) {
+      if (event.snapshot.exists) {
+        setState(() {
+          currRouteId = event.snapshot.value;
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     List<String> employees =
         (Map<String, bool>.from(shuttleData.value['employees'])).keys.toList();
+
     List<Widget> listChildren = [
       const Text(
         "Servis Bilgisi",
@@ -119,11 +135,52 @@ class _ShuttleBodyState extends State<ShuttleBody> {
           shuttleInfo,
         ),
       ),
+    ];
+
+    if (currRouteId != null) {
+      listChildren.add(
+        TitledRectWidgetButton(
+          title: Text.rich(
+            TextSpan(
+              children: [
+                const WidgetSpan(
+                  child: Icon(
+                    Icons.airport_shuttle,
+                    size: 60,
+                  ),
+                  alignment: PlaceholderAlignment.middle,
+                ),
+                WidgetSpan(
+                  child: Text(
+                    currRouteId!,
+                    style: const TextStyle(fontSize: 30),
+                  ),
+                  alignment: PlaceholderAlignment.middle,
+                ),
+              ],
+            ),
+          ),
+          child: Container(
+              width: double.infinity, height: 150, color: Colors.green),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RouteScreen(
+                routeID: currRouteId!,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    listChildren.add(
       const Text(
         "Görevliler",
         style: TextStyle(fontSize: 30),
       ),
-    ];
+    );
+
     listChildren.addAll(
       List.generate(employees.length, (index) {
         String currId = employees[index];

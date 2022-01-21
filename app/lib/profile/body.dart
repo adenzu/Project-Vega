@@ -5,6 +5,7 @@ import 'package:app/database/functions.dart';
 import 'package:app/general/titled_rect_widget_button.dart';
 import 'package:app/general/util.dart';
 import 'package:app/profile/screen.dart';
+import 'package:app/shuttle/screen.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class ProfileBody extends StatefulWidget {
 
 class _ProfileBodyState extends State<ProfileBody> {
   late DatabaseReference userRef =
-      FirebaseDatabase().reference().child("users/${widget.userId}");
+      FirebaseDatabase.instance.reference().child("users/${widget.userId}");
   // ignore: FirebaseException
   late Reference profilePictureRef =
       FirebaseStorage.instance.ref("profilePictures/${widget.userId}");
@@ -43,6 +44,7 @@ class _ProfileBodyState extends State<ProfileBody> {
   List<String> parentIds = [];
   String? profilePictureURL;
   Image? profilePicture;
+  String? currRouteId;
   final double profilePictureRadius = 60;
 
   @override
@@ -52,6 +54,7 @@ class _ProfileBodyState extends State<ProfileBody> {
     DatabaseReference userNameRef = userRef.child("name");
     DatabaseReference userSurnameRef = userRef.child("surname");
     DatabaseReference userInfoRef = userRef.child("info");
+    DatabaseReference userCurrRouteRef = userRef.child("currentRoute");
 
     userNameRef.onChildRemoved.listen((event) {
       setState(() {
@@ -95,6 +98,20 @@ class _ProfileBodyState extends State<ProfileBody> {
       }
     });
 
+    userCurrRouteRef.onChildRemoved.listen((event) {
+      setState(() {
+        currRouteId = null;
+      });
+    });
+
+    userCurrRouteRef.onValue.listen((event) {
+      if (event.snapshot.exists) {
+        setState(() {
+          userInfo = event.snapshot.value;
+        });
+      }
+    });
+
     if (widget.canSeeParents) {
       DatabaseReference userParentsRef = userRef.child("parents");
 
@@ -115,6 +132,22 @@ class _ProfileBodyState extends State<ProfileBody> {
     }
 
     getProfilePicture();
+  }
+
+  Future<Map<String, String>> getCurrShuttleIdAndPlate() async {
+    String currShuttleId = (await FirebaseDatabase.instance
+            .reference()
+            .child("routes/$currRouteId/shuttleId")
+            .once())
+        .value;
+    return {
+      'id': currShuttleId,
+      'plate': (await FirebaseDatabase.instance
+              .reference()
+              .child("shuttles/$currShuttleId/plate")
+              .once())
+          .value
+    };
   }
 
   @override
@@ -206,6 +239,55 @@ class _ProfileBodyState extends State<ProfileBody> {
         child: Text(userInfo),
       ),
     ];
+
+    if (currRouteId != null) {
+      listViewChildren.addAll([
+        const Text(
+          "Güncel Bulunduğu Servis",
+          style: TextStyle(fontSize: 25),
+        ),
+        FutureBuilder(
+          future: getCurrShuttleIdAndPlate(),
+          builder: (context, AsyncSnapshot<Map<String, String>> snapshot) {
+            if (snapshot.hasData) {
+              String shuttleId = snapshot.data!['id']!;
+              String shuttlePlate = snapshot.data!['plate']!;
+              return TitledRectWidgetButton(
+                title: Text.rich(
+                  TextSpan(
+                    children: [
+                      const WidgetSpan(
+                        child: Icon(
+                          Icons.airport_shuttle,
+                          size: 60,
+                        ),
+                        alignment: PlaceholderAlignment.middle,
+                      ),
+                      TextSpan(
+                        text: shuttlePlate,
+                        children: [
+                          TextSpan(text: "\n$shuttleId"),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                child: Container(
+                    width: double.infinity, height: 150, color: Colors.green),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ShuttleScreen(shuttleId: shuttleId),
+                  ),
+                ),
+              );
+            } else {
+              return const CircularProgressIndicator();
+            }
+          },
+        ),
+      ]);
+    }
 
     if (widget.canSeeParents) {
       listViewChildren.add(
