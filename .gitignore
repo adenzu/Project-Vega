@@ -12,6 +12,11 @@
 !app/lib/*
 !app/lib/*/*
 
+!func
+!func/functions
+!func/functions/src
+!func/functions/src/index.ts
+
 !app/pubspec.yaml
 
 !app/android
