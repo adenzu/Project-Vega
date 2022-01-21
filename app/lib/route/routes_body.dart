@@ -138,24 +138,7 @@ class _RouteBodyState extends State<RouteBody> {
       List.generate(passengersIds.length, (index) {
         String currId = passengersIds[index];
         bool isOn = false;
-        int status = 0;
 
-        routePassengersRef
-            .child('$currId/status')
-            .onChildRemoved
-            .listen((event) {
-          setState(() {
-            status = 0;
-          });
-        });
-
-        routePassengersRef.child('$currId/status').onValue.listen((event) {
-          if (event.snapshot.exists) {
-            setState(() {
-              status = event.snapshot.value;
-            });
-          }
-        });
         return FutureBuilder(
           future: getUserData(userId: currId),
           builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
@@ -165,7 +148,6 @@ class _RouteBodyState extends State<RouteBody> {
                 String surname = snapshot.data!.value['surname'];
                 return PassengerCard(
                     name: '$name $surname',
-                    status: status,
                     routeId: widget.routeID,
                     userId: currId);
               } else {
