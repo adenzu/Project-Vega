@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 
 class PassengerCard extends StatefulWidget {
   final String name;
-  final int status;
   final String userId;
   final String routeId;
 
   const PassengerCard(
       {Key? key,
       required this.name,
-      required this.status,
       required this.routeId,
       required this.userId})
       : super(key: key);
@@ -23,6 +21,7 @@ class PassengerCard extends StatefulWidget {
 
 class _PassengerCardState extends State<PassengerCard> {
   bool _isOn = false;
+  int status = 0;
   Color iconColor = Colors.green;
   final Color _isOnColor = Colors.green;
   final Color _isOffColor = Colors.red;
@@ -79,11 +78,28 @@ class _PassengerCardState extends State<PassengerCard> {
         });
       }
     });
+    //.....................................................................
+    routePassengersRef
+        .child('${widget.userId}/status')
+        .onChildRemoved
+        .listen((event) {
+      setState(() {
+        status = 0;
+      });
+    });
+    routePassengersRef.child('${widget.userId}/status').onValue.listen((event) {
+      if (event.snapshot.exists) {
+        setState(() {
+          status = event.snapshot.value;
+        });
+      }
+    });
+    //........................................................................
   }
 
   @override
   Widget build(BuildContext context) {
-    _setStatus(widget.status);
+    _setStatus(status);
     Size size = MediaQuery.of(context).size;
     return Container(
       width: size.width * 0.95,
