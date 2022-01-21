@@ -31,17 +31,24 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
 
+    print(0);
     checkEmployee().then((value) {
-      if (isEmployee) {
+      print(1);
+      print(value);
+      if (value) {
+        print(2);
         Location.instance.enableBackgroundMode();
         Location.instance.onLocationChanged.listen((LocationData loc) async {
+          print(555);
           if (FirebaseAuth.instance.currentUser != null) {
+            print(3);
             String userId = getUserId();
             DatabaseReference currShuttle = FirebaseDatabase.instance
                 .reference()
                 .child("employees/$userId/currentShuttle");
             DataSnapshot currShuttleDataSnap = await currShuttle.once();
             if (currShuttleDataSnap.exists) {
+              print(4);
               String currShuttleId = currShuttleDataSnap.value;
               setShuttleLocation(currShuttleId, loc.longitude!, loc.altitude!);
             }
@@ -51,8 +58,9 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  Future<void> checkEmployee() async {
+  Future<bool> checkEmployee() async {
     isEmployee = await checkEmployeeExists(getUserId());
+    return isEmployee;
   }
 
   void _handleMessage(RemoteMessage message) {

@@ -275,7 +275,7 @@ Future<bool> checkUserExists(String userId) async {
 Future<bool> checkEmployeeExists(String userId) async {
   return (await FirebaseDatabase.instance
           .reference()
-          .child("employee/$userId")
+          .child("employees/$userId")
           .once())
       .exists;
 }
