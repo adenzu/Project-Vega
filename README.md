@@ -9,3 +9,7 @@ Project Vega is the software development project that is developed by five GTU C
 - Yunus Emre YUMSAK as Developer
 - Mehmet ACAR as Developer
 - Eren ÇAKAR as Developer
+
+## Project Document
+
+[Project Documentation PDF](Vega_Final_Report.pdf)
